@@ -1,0 +1,924 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>東仙台の家 | Room Tour</title>
+<style>
+  :root {
+    --bg: #ECE7DC;
+    --bg-deep: #DEDACD;
+    --ink: #201C17;
+    --wood: #96633C;
+    --accent: #3E5A41;
+    --accent-soft: rgba(62, 90, 65, 0.14);
+    --muted: #7C7362;
+    --line: rgba(32, 28, 23, 0.20);
+    --line-strong: rgba(32, 28, 23, 0.42);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1C1812;
+      --bg-deep: #17130E;
+      --ink: #EDE7D9;
+      --wood: #C08A57;
+      --accent: #8FB37D;
+      --accent-soft: rgba(143, 179, 125, 0.18);
+      --muted: #A79E8C;
+      --line: rgba(237, 231, 217, 0.24);
+      --line-strong: rgba(237, 231, 217, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1C1812; --bg-deep: #17130E; --ink: #EDE7D9; --wood: #C08A57;
+    --accent: #8FB37D; --accent-soft: rgba(143, 179, 125, 0.18); --muted: #A79E8C;
+    --line: rgba(237, 231, 217, 0.24); --line-strong: rgba(237, 231, 217, 0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #ECE7DC; --bg-deep: #DEDACD; --ink: #201C17; --wood: #96633C;
+    --accent: #3E5A41; --accent-soft: rgba(62, 90, 65, 0.14); --muted: #7C7362;
+    --line: rgba(32, 28, 23, 0.20); --line-strong: rgba(32, 28, 23, 0.42);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; scroll-behavior: auto !important; }
+  }
+
+  body {
+    margin: 0;
+    background:
+      repeating-linear-gradient(0deg, rgba(32,28,23,0.015) 0px, rgba(32,28,23,0.015) 1px, transparent 1px, transparent 3px),
+      var(--bg);
+    color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic Medium", "YuGothic", "Noto Sans JP", sans-serif;
+    line-height: 1.9;
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: "Hiragino Mincho ProN", "YuMincho", "Yu Mincho", serif; margin: 0; text-wrap: balance; font-weight: 600; }
+  a { color: inherit; }
+  button { font: inherit; color: inherit; }
+
+  .eyebrow { font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .wrap { max-width: 1180px; margin: 0 auto; padding-inline: clamp(1.25rem, 5vw, 4rem); }
+
+  /* ---------- load veil (entrance reveal) ---------- */
+  #loadVeil {
+    position: fixed; inset: 0; z-index: 999; background: var(--ink);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 1.1s ease, visibility 1.1s ease;
+  }
+  #loadVeil span {
+    font-family: "Hiragino Mincho ProN", "YuMincho", serif; color: #F4F0E5;
+    font-size: clamp(1.1rem, 3vw, 1.5rem); letter-spacing: 0.5em; padding-left: 0.5em;
+    opacity: 0; transition: opacity 1s ease 0.15s;
+  }
+  #loadVeil.show span { opacity: 1; }
+  #loadVeil.hide { opacity: 0; visibility: hidden; }
+  body.pre-reveal .hero-inner, body.pre-reveal .scrollcue { opacity: 0; transform: translateY(14px); }
+  .hero-inner, .scrollcue { transition: opacity 1.1s ease 0.2s, transform 1.1s ease 0.2s; }
+
+  /* ---------- top bar ---------- */
+  .topbar {
+    position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between;
+    padding: 0.9rem clamp(1.1rem, 5vw, 4rem);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--line);
+  }
+  .topbar .mark { font-size: 0.9rem; letter-spacing: 0.06em; }
+  .topbar .mark small { display: block; font-size: 0.58rem; letter-spacing: 0.24em; color: var(--muted); margin-top: 0.15rem; }
+  .menu-btn { background: none; border: 1px solid var(--line-strong); cursor: pointer; width: 42px; height: 42px; min-width: 42px; display: grid; place-items: center; gap: 4px; }
+  .menu-btn span { display: block; width: 18px; height: 1px; background: var(--ink); }
+
+  .drawer {
+    position: fixed; inset: 0; z-index: 60; background: color-mix(in srgb, var(--bg) 97%, transparent);
+    backdrop-filter: blur(6px); display: flex; flex-direction: column; align-items: flex-start; justify-content: center;
+    gap: 0.5rem; padding: clamp(2rem, 8vw, 5rem); opacity: 0; pointer-events: none; transition: opacity 0.35s ease; overflow-y: auto;
+  }
+  .drawer.open { opacity: 1; pointer-events: auto; }
+  .drawer a { font-family: "Hiragino Mincho ProN", "YuMincho", serif; font-size: clamp(1.15rem, 4.2vw, 2rem); text-decoration: none; color: var(--ink); display: flex; align-items: baseline; gap: 0.8rem; }
+  .drawer a span.num { font-size: 0.72rem; color: var(--muted); font-family: "Hiragino Sans", sans-serif; letter-spacing: 0.1em; }
+  .drawer-close { position: absolute; top: 1.2rem; right: clamp(1.1rem, 5vw, 4rem); background: none; border: 1px solid var(--line-strong); width: 42px; height: 42px; cursor: pointer; }
+
+  /* ---------- hero ---------- */
+  .hero { position: relative; min-height: 100svh; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; padding: clamp(6rem, 14vw, 9rem) clamp(1.1rem, 5vw, 4rem) clamp(3rem, 8vw, 5rem); }
+  .hero-slides { position: absolute; inset: 0; z-index: 0; }
+  .hero-slide { position: absolute; inset: 0; opacity: 0; transition: opacity 1.6s ease; overflow: hidden; }
+  .hero-slide.active { opacity: 1; }
+  .hero-slide img { width: 100%; height: 100%; object-fit: cover; display: block; animation: kenburns 16s ease-in-out infinite alternate; }
+  .hero-slide .wash { position: absolute; inset: -6%; display: grid; place-items: center; animation: kenburns 14s ease-in-out infinite alternate; }
+  .hero-slide:nth-child(2) .wash { background: radial-gradient(120% 100% at 80% 20%, #566647 0%, #221c15 60%); }
+  .hero-slide:nth-child(3) .wash { background: radial-gradient(120% 100% at 30% 80%, #5c4a34 0%, #211c16 60%); }
+  .hero-slide:nth-child(4) .wash { background: radial-gradient(120% 100% at 75% 75%, #46564a 0%, #231e18 60%); }
+  .hero-slide:nth-child(5) .wash { background: radial-gradient(120% 100% at 50% 40%, #4f4536 0%, #241f18 60%); }
+  .hero-slide .wash svg { width: 34%; max-width: 220px; opacity: 0.16; stroke: #F2EDE1; }
+  @keyframes kenburns { from { transform: scale(1); } to { transform: scale(1.09); } }
+  .hero-scrim { position: absolute; inset: 0; z-index: 1; background: linear-gradient(0deg, rgba(10,8,5,0.84) 0%, rgba(10,8,5,0.44) 46%, rgba(10,8,5,0.16) 68%, rgba(10,8,5,0.4) 100%); }
+  .hero-inner { position: relative; z-index: 2; max-width: 1180px; margin: 0 auto; width: 100%; color: #F4F0E5; }
+  .hero .eyebrow { display: block; margin-bottom: 1.2rem; color: #C9DABD; }
+  .hero h1 { font-size: clamp(2.5rem, 11vw, 5.6rem); line-height: 1.05; letter-spacing: 0.02em; color: #F8F5EC; }
+  .hero .tagline { margin-top: 1.2rem; font-family: "Hiragino Mincho ProN", "YuMincho", serif; font-size: clamp(1rem, 3.6vw, 1.4rem); color: #D9D2C2; max-width: 30em; }
+  .hero .meta { margin-top: 1.8rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1.4rem; font-size: 0.8rem; letter-spacing: 0.05em; color: #C7BFAE; }
+  .hero .meta b { color: #F4F0E5; font-weight: 600; }
+  .hero-slide-tag { position: absolute; z-index: 2; right: clamp(1.1rem, 5vw, 4rem); bottom: clamp(1.4rem, 4vw, 2.2rem); font-size: 0.64rem; letter-spacing: 0.1em; color: #C7BFAE; border: 1px solid rgba(244,240,229,0.35); padding: 0.3rem 0.6rem; }
+  .scrollcue { position: absolute; left: clamp(1.1rem, 5vw, 4rem); bottom: 2.1rem; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 0.6rem; font-size: 0.66rem; letter-spacing: 0.3em; color: #C7BFAE; }
+  .scrollcue .line { width: 1px; height: 40px; background: linear-gradient(rgba(244,240,229,0.5), transparent); position: relative; overflow: hidden; }
+  .scrollcue .line::after { content: ""; position: absolute; left: 0; top: -40%; width: 100%; height: 40%; background: #F4F0E5; animation: cue 2.2s ease-in-out infinite; }
+  @keyframes cue { 0% { top: -40%; } 60% { top: 100%; } 100% { top: 100%; } }
+
+  /* ---------- section shell ---------- */
+  section { padding-block: clamp(3.6rem, 9vw, 7.5rem); }
+  .section-head { max-width: 42em; margin-bottom: clamp(2.2rem, 5vw, 4rem); }
+  .section-head h2 { font-size: clamp(1.6rem, 5.6vw, 2.5rem); margin-top: 0.7rem; }
+  .section-head p { color: var(--muted); margin-top: 1rem; max-width: 34em; }
+  .rule { border: none; border-top: 1px solid var(--line); margin: 0; }
+
+  .concept blockquote { margin: 0; font-family: "Hiragino Mincho ProN", "YuMincho", serif; font-size: clamp(1.1rem, 4.4vw, 1.6rem); line-height: 2.05; max-width: 34em; font-weight: 500; }
+  .concept blockquote::before { content: "「"; color: var(--accent); }
+  .concept blockquote::after { content: "」"; color: var(--accent); }
+
+  .highlights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(1.5rem, 3vw, 2.2rem); }
+  @media (max-width: 860px) { .highlights-grid { grid-template-columns: 1fr; } }
+  .highlight-card { border-top: 1px solid var(--line-strong); padding-top: 1.4rem; }
+  .highlight-num { font-family: "Hiragino Mincho ProN", serif; font-size: 0.85rem; color: var(--accent); font-variant-numeric: tabular-nums; letter-spacing: 0.08em; }
+  .highlight-visual { aspect-ratio: 5 / 3; background: var(--bg-deep); border: 1px solid var(--line); margin-top: 1rem; display: grid; place-items: center; position: relative; overflow: hidden; }
+  .highlight-visual svg { width: 40%; height: 40%; stroke: var(--wood); }
+  .highlight-visual .tag { position: absolute; left: 0.7rem; bottom: 0.7rem; font-size: 0.6rem; letter-spacing: 0.08em; color: var(--muted); border: 1px solid var(--line-strong); padding: 0.25rem 0.5rem; }
+  .highlight-card h3 { font-size: clamp(1.15rem, 3.6vw, 1.4rem); margin-top: 1rem; }
+  .highlight-card p { color: var(--muted); margin-top: 0.6rem; font-size: 0.92rem; }
+  .highlight-card .jump { display: inline-flex; margin-top: 1rem; font-size: 0.76rem; letter-spacing: 0.05em; text-decoration: none; color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 0.1rem; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; }
+
+  .access-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: center; }
+  @media (max-width: 820px) { .access-grid { grid-template-columns: 1fr; } }
+  .access-copy p { color: var(--muted); max-width: 32em; }
+  .access-copy .facts { list-style: none; margin: 1.6rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.55rem; }
+  .access-copy .facts li { display: flex; gap: 0.9rem; font-size: 0.92rem; }
+  .access-copy .facts b { color: var(--wood); font-weight: 600; min-width: 5.2em; font-family: "Hiragino Mincho ProN", serif; }
+  .sitemap { border: 1px solid var(--line); background: var(--bg-deep); padding: 1.2rem; overflow-x: auto; }
+  .sitemap svg { width: 100%; min-width: 420px; height: auto; display: block; }
+  .sitemap-cap { margin-top: 0.9rem; font-size: 0.72rem; letter-spacing: 0.08em; color: var(--muted); }
+
+  .plan-shell { display: grid; grid-template-columns: 1.3fr 0.9fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: start; }
+  @media (max-width: 900px) { .plan-shell { grid-template-columns: 1fr; } }
+  .plan-tabs { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
+  .plan-tab { background: none; border: 1px solid var(--line-strong); cursor: pointer; padding: 0.55rem 1.3rem; font-size: 0.85rem; letter-spacing: 0.08em; color: var(--muted); }
+  .plan-tab.active { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+  .plan-fig { border: 1px solid var(--line); background: var(--bg-deep); padding: clamp(1rem, 3vw, 2rem); overflow-x: auto; }
+  .floor-svg { display: none; width: 100%; min-width: 620px; height: auto; }
+  .floor-svg.active { display: block; }
+  .plan-note { margin-top: 1rem; font-size: 0.78rem; color: var(--muted); }
+  .hotspot { cursor: pointer; fill: transparent; stroke: var(--line-strong); stroke-width: 1.4; transition: fill 0.25s ease, stroke 0.25s ease; }
+  .hotspot:hover, .hotspot.active { fill: var(--accent-soft); stroke: var(--accent); }
+  .plan-plain rect { fill: transparent; stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 2 4; }
+  .plan-plain text { fill: var(--muted); }
+  .hotspot-label { font-family: "Hiragino Mincho ProN", "YuMincho", serif; font-size: 15px; fill: var(--ink); pointer-events: none; }
+  .hotspot-sub { font-size: 9px; letter-spacing: 0.08em; fill: var(--muted); pointer-events: none; }
+  .plan-draw { fill: none; stroke: var(--line-strong); stroke-width: 1.6; }
+  .plan-floor-badge { font-family: "Hiragino Mincho ProN", serif; font-size: 15px; fill: var(--muted); }
+  .plan-legend { list-style: none; margin: 0; padding: 0; display: none; flex-direction: column; }
+  .plan-legend.active { display: flex; }
+  .plan-legend li { border-top: 1px solid var(--line); }
+  .plan-legend li:last-child { border-bottom: 1px solid var(--line); }
+  .plan-legend button { width: 100%; text-align: left; background: none; border: none; cursor: pointer; padding: 0.85rem 0.2rem; display: flex; align-items: baseline; gap: 0.9rem; color: var(--ink); }
+  .plan-legend button:hover, .plan-legend button.active { color: var(--accent); }
+  .plan-legend .n { font-size: 0.72rem; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 1.6em; }
+  .plan-legend .jp { font-family: "Hiragino Mincho ProN", serif; font-size: 1.05rem; }
+  .plan-legend .en { font-size: 0.68rem; letter-spacing: 0.14em; color: var(--muted); text-transform: uppercase; }
+
+  .room { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.8rem, 4vw, 4rem); align-items: center; border-top: 1px solid var(--line); padding-block: clamp(2.6rem, 7vw, 5.5rem); }
+  .room:last-of-type { border-bottom: 1px solid var(--line); }
+  .room:nth-of-type(even) .room-visual { order: 2; }
+  @media (max-width: 780px) { .room { grid-template-columns: 1fr; } .room:nth-of-type(even) .room-visual { order: 0; } }
+  .room-visual { position: relative; aspect-ratio: 4 / 3; background: var(--bg-deep); border: 1px solid var(--line); display: grid; place-items: center; overflow: hidden; opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+  .room.in-view .room-visual { opacity: 1; transform: translateY(0); }
+  .room-visual svg { width: 46%; height: 46%; stroke: var(--wood); }
+  .room-visual .tag { position: absolute; left: 0.9rem; bottom: 0.9rem; font-size: 0.64rem; letter-spacing: 0.1em; color: var(--muted); border: 1px solid var(--line-strong); padding: 0.3rem 0.6rem; }
+  .room-copy { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease 0.12s, transform 0.7s ease 0.12s; }
+  .room.in-view .room-copy { opacity: 1; transform: translateY(0); }
+  .room-copy .eyebrow { display: block; }
+  .room-copy h3 { font-size: clamp(1.4rem, 5vw, 2.15rem); margin-top: 0.6rem; }
+  .room-copy .en-name { font-size: 0.72rem; letter-spacing: 0.16em; color: var(--muted); text-transform: uppercase; margin-top: 0.3rem; display: block; }
+  .room-copy p { margin-top: 1.1rem; max-width: 30em; color: var(--ink); }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+  .chip { font-size: 0.74rem; padding: 0.35rem 0.75rem; border: 1px solid var(--accent); color: var(--accent); letter-spacing: 0.03em; }
+  .back-to-plan { display: inline-flex; align-items: center; gap: 0.5rem; margin-top: 1.4rem; font-size: 0.78rem; letter-spacing: 0.05em; text-decoration: none; color: var(--muted); border-bottom: 1px solid var(--line-strong); padding-bottom: 0.15rem; background: none; border-top: none; border-left: none; border-right: none; cursor: pointer; }
+  .back-to-plan:hover { color: var(--accent); border-color: var(--accent); }
+
+  .interview-promo { border: 1px solid var(--line); background: var(--bg-deep); padding: clamp(1.6rem, 4vw, 2.6rem); display: flex; flex-wrap: wrap; gap: 1.6rem; align-items: center; justify-content: space-between; }
+  .interview-promo .txt h3 { font-size: clamp(1.2rem, 3.6vw, 1.6rem); }
+  .interview-promo .txt p { color: var(--muted); margin-top: 0.5rem; max-width: 30em; }
+  .btn-outline { display: inline-flex; align-items: center; gap: 0.6rem; border: 1px solid var(--accent); color: var(--accent); text-decoration: none; padding: 0.75rem 1.5rem; font-size: 0.85rem; letter-spacing: 0.06em; white-space: nowrap; }
+  .btn-outline:hover { background: var(--accent); color: var(--bg); }
+
+  .spec-table { width: 100%; border-collapse: collapse; margin-top: 0.5rem; }
+  .spec-table th { text-align: left; font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); font-weight: 600; padding: 0.7rem 0.8rem; border-bottom: 1px solid var(--line-strong); }
+  .spec-table td { padding: 1rem 0.8rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .spec-table td:first-child { font-family: "Hiragino Mincho ProN", serif; font-size: 1.02rem; white-space: nowrap; }
+  .spec-table td:nth-child(2) { color: var(--wood); font-size: 0.86rem; white-space: nowrap; }
+  .spec-table td:nth-child(3) { color: var(--muted); font-size: 0.9rem; }
+  .spec-wrap { overflow-x: auto; }
+  .spec-table { min-width: 560px; }
+
+  footer { border-top: 1px solid var(--line); padding-block: clamp(2.6rem, 6vw, 4.5rem); }
+  .footer-grid { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1.6rem; align-items: flex-end; }
+  footer .title { font-family: "Hiragino Mincho ProN", serif; font-size: 1.2rem; }
+  footer p { color: var(--muted); font-size: 0.84rem; max-width: 30em; margin-top: 0.6rem; }
+  footer .links { display: flex; gap: 1.4rem; flex-wrap: wrap; }
+  footer .links a { font-size: 0.76rem; letter-spacing: 0.08em; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line-strong); padding-bottom: 0.2rem; }
+  footer .links a:hover { color: var(--accent); border-color: var(--accent); }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div id="loadVeil"><span>東仙台の家</span></div>
+
+<div class="drawer" id="drawer" aria-hidden="true">
+  <button class="drawer-close" id="drawerClose" aria-label="メニューを閉じる">✕</button>
+  <a href="#highlights"><span class="num">BEST</span> 見どころ3選</a>
+  <a href="#access"><span class="num">ACCESS</span> 立地</a>
+  <a href="#plan"><span class="num">PLAN</span> 間取り</a>
+  <a href="#room-entrance"><span class="num">01</span> 玄関</a>
+  <a href="#room-datsui"><span class="num">02</span> 脱衣室</a>
+  <a href="#room-bath"><span class="num">03</span> 浴室</a>
+  <a href="#room-pantry"><span class="num">04</span> パントリー</a>
+  <a href="#room-ldk"><span class="num">05</span> L.D.K</a>
+  <a href="#room-void"><span class="num">06</span> 吹き抜け</a>
+  <a href="#room-bedroom"><span class="num">07</span> 主寝室</a>
+  <a href="interview.html"><span class="num">TALK</span> 施主インタビュー</a>
+  <a href="#specs"><span class="num">SPEC</span> 設備</a>
+</div>
+
+<div class="topbar">
+  <div class="mark">東仙台の家<small>ROOM TOUR — HIGASHI-SENDAI</small></div>
+  <button class="menu-btn" id="menuOpen" aria-label="メニューを開く" aria-expanded="false" aria-controls="drawer">
+    <span></span><span></span><span></span>
+  </button>
+</div>
+
+<header class="hero" id="hero">
+  <div class="hero-slides" id="heroSlides" aria-hidden="true">
+    <div class="hero-slide active">
+      <img src="images/exterior-01.jpg" alt="東仙台の家 外観">
+    </div>
+    <!-- 写真差し替え: 下記3枚は室内写真が届き次第、同じ形で <img src="images/..."> に置き換える -->
+    <div class="hero-slide">
+      <div class="wash">
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.2" stroke-linecap="round">
+          <rect x="8" y="24" width="48" height="8"></rect>
+          <rect x="14" y="32" width="16" height="14"></rect>
+          <line x1="14" y1="32" x2="30" y2="46"></line>
+        </svg>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="wash">
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.2" stroke-linecap="round">
+          <rect x="10" y="34" width="44" height="14" rx="7"></rect>
+          <path d="M20 26 q3 -6 0 -10"></path>
+          <path d="M30 26 q3 -6 0 -10"></path>
+          <path d="M40 26 q3 -6 0 -10"></path>
+        </svg>
+      </div>
+    </div>
+    <div class="hero-slide">
+      <div class="wash">
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.2" stroke-linecap="round">
+          <rect x="8" y="36" width="26" height="12"></rect>
+          <rect x="42" y="10" width="14" height="20"></rect>
+          <path d="M42 20 L20 40"></path>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="hero-scrim"></div>
+  <span class="hero-slide-tag" id="heroSlideTag">PHOTO 1 / 4 — 外観</span>
+  <div class="hero-inner">
+    <span class="eyebrow">ROOM TOUR</span>
+    <h1>東仙台の家</h1>
+    <p class="tagline">吹き抜けの光と、家族が集まる大きなL.D.K。</p>
+    <div class="meta">
+      <span>宮城県仙台市</span>
+      <span><b>JR</b> 東仙台駅</span>
+      <span><b>間取り</b> 4LDK + S</span>
+    </div>
+  </div>
+  <div class="scrollcue"><span>SCROLL</span><span class="line"></span></div>
+</header>
+
+<main>
+
+  <section class="concept wrap">
+    <span class="eyebrow">CONCEPT</span>
+    <h2 style="margin-top:0.6rem;">大きな箱と、光を通す吹き抜け</h2>
+    <hr class="rule" style="margin:1.8rem 0 2.4rem;">
+    <blockquote>
+      通りに面して静かに佇む、大きな箱のような外観。
+      玄関からパントリー、19.5帖のL.D.Kまで、家族の気配がひとつながりになる一階と、
+      階段まわりの吹き抜けが、二階からの光をやわらかく届ける二階。
+      壁で仕切るのではなく、動線と光でゆるやかにつなぐ。
+      それが、この家の間取りの考え方です。
+    </blockquote>
+  </section>
+
+  <section id="highlights" class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">BEST 3</span>
+      <h2>見どころポイント3選</h2>
+      <p>数ある工夫の中から、特に驚いてもらいたい3つの場所をピックアップしました。</p>
+    </div>
+    <div class="highlights-grid">
+      <div class="highlight-card">
+        <span class="highlight-num">01</span>
+        <div class="highlight-visual">
+          <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+          <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <line x1="20" y1="8" x2="20" y2="56"></line>
+            <path d="M12 20 L20 8 L28 20"></path>
+            <line x1="10" y1="56" x2="30" y2="56"></line>
+            <path d="M36 40 q6 -20 18 -32"></path>
+          </svg>
+          <span class="tag">PHOTO — 差し替え予定</span>
+        </div>
+        <h3>階段に光を落とす、吹き抜け</h3>
+        <p>2階の窓から届いた光が、吹き抜けを通って1階まで降りてくる。家じゅうがどこかで繋がっている感覚を生む、この家の心臓部です。</p>
+        <button class="jump" data-room="void">→ 吹き抜けを見る</button>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-num">02</span>
+        <div class="highlight-visual">
+          <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+          <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <rect x="8" y="36" width="26" height="12"></rect>
+            <rect x="42" y="10" width="14" height="20"></rect>
+            <path d="M42 20 L20 40"></path>
+          </svg>
+          <span class="tag">PHOTO — 差し替え予定</span>
+        </div>
+        <h3>壁一面がスクリーンになる主寝室</h3>
+        <p>天井投影とウォークインクローゼットを備えた7帖の主寝室は、眠る場所であり、映画館でもある特別な一室。</p>
+        <button class="jump" data-room="bedroom">→ 主寝室を見る</button>
+      </div>
+      <div class="highlight-card">
+        <span class="highlight-num">03</span>
+        <div class="highlight-visual">
+          <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+          <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+            <rect x="8" y="24" width="48" height="8"></rect>
+            <rect x="14" y="32" width="16" height="14"></rect>
+            <line x1="14" y1="32" x2="30" y2="46"></line>
+          </svg>
+          <span class="tag">PHOTO — 差し替え予定</span>
+        </div>
+        <h3>19.5帖のL.D.Kと、隠せるパントリー</h3>
+        <p>屈まず使えるフロントオープン食洗機と、キッチン背面のパントリー。生活感をそっと隠しながら、大きな一室で暮らせます。</p>
+        <button class="jump" data-room="ldk">→ L.D.Kを見る</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="access" class="wrap">
+    <div class="access-grid">
+      <div class="access-copy">
+        <span class="eyebrow">ACCESS</span>
+        <h2 style="margin-top:0.6rem; font-size:clamp(1.5rem,5vw,2.2rem);">東仙台という、暮らしの拠点</h2>
+        <p style="margin-top:1.2rem;">
+          宮城県仙台市、JR東仙台駅を最寄りとした住宅地に計画した住まいです。
+          仙台駅方面へのアクセスも良く、日々の通勤や買い物と、大きなL.D.Kのある静かな暮らしを両立できる立地を選びました。
+        </p>
+        <ul class="facts">
+          <li><b>所在地</b><span>宮城県仙台市</span></li>
+          <li><b>最寄駅</b><span>JR 東仙台駅</span></li>
+          <li><b>間取り</b><span>4LDK + S</span></li>
+          <li><b>延床</b><span>1F 9.10m×8.65m / 2F 7.28m×9.10m</span></li>
+        </ul>
+      </div>
+      <div class="sitemap">
+        <svg viewBox="0 0 480 380" role="img" aria-label="東仙台駅から敷地までの位置関係を示す略図">
+          <g class="plan-draw" opacity="0.5">
+            <line x1="40" y1="40" x2="40" y2="60"></line>
+            <line x1="30" y1="50" x2="50" y2="50"></line>
+            <text x="40" y="30" text-anchor="middle" font-size="11" fill="var(--muted)" stroke="none" font-family="Hiragino Sans, sans-serif">N</text>
+          </g>
+          <g stroke="var(--line)" stroke-width="1">
+            <line x1="0" y1="90" x2="480" y2="70"></line>
+            <line x1="0" y1="170" x2="480" y2="150"></line>
+            <line x1="60" y1="0" x2="30" y2="380"></line>
+            <line x1="260" y1="0" x2="300" y2="380"></line>
+          </g>
+          <g>
+            <rect x="70" y="95" width="70" height="46" class="plan-draw"></rect>
+            <text x="105" y="123" text-anchor="middle" font-size="12" fill="var(--ink)" stroke="none" font-family="Hiragino Sans, sans-serif">駅</text>
+            <text x="105" y="160" text-anchor="middle" font-size="11" fill="var(--muted)" stroke="none" font-family="Hiragino Sans, sans-serif">JR 東仙台駅</text>
+          </g>
+          <path d="M140 118 C220 118, 260 230, 330 250" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-dasharray="3 6"></path>
+          <g>
+            <polygon points="330,225 365,225 365,255 347,270 330,255" class="plan-draw" stroke="var(--wood)"></polygon>
+            <text x="347" y="245" text-anchor="middle" font-size="11" fill="var(--ink)" stroke="none" font-family="Hiragino Sans, sans-serif">邸</text>
+            <text x="347" y="290" text-anchor="middle" font-size="11" fill="var(--muted)" stroke="none" font-family="Hiragino Sans, sans-serif">東仙台の家</text>
+          </g>
+        </svg>
+        <p class="sitemap-cap">※ 位置関係を示す略図です。正確な地図・道のりは追って更新予定です。</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="plan" class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">PLAN</span>
+      <h2>間取り図</h2>
+      <p>4LDK + S。1F / 2F を切り替えて、気になる場所を選ぶと詳しい紹介にジャンプします。実際の設計図をもとにした間取りです。</p>
+    </div>
+    <div class="plan-shell">
+      <div>
+        <div class="plan-tabs" role="tablist" aria-label="階数切り替え">
+          <button class="plan-tab active" id="tab1F" data-floor="1F" role="tab" aria-selected="true">1F</button>
+          <button class="plan-tab" id="tab2F" data-floor="2F" role="tab" aria-selected="false">2F</button>
+        </div>
+        <div class="plan-fig">
+          <svg class="floor-svg active" id="planSvg1F" viewBox="0 0 990 965" role="img" aria-label="1階 間取り図">
+            <text x="60" y="80" class="plan-floor-badge">1F</text>
+            <rect x="40" y="40" width="910" height="865" class="plan-draw"></rect>
+
+            <g class="hotspot" data-room="bath" tabindex="0" role="button" aria-label="浴室">
+              <rect x="40" y="40" width="182" height="318.5"></rect>
+            </g>
+            <text x="131" y="190" text-anchor="middle" class="hotspot-label">浴室</text>
+            <text x="131" y="209" text-anchor="middle" class="hotspot-sub">BATH</text>
+
+            <g class="hotspot" data-room="datsui" tabindex="0" role="button" aria-label="脱衣室">
+              <rect x="222" y="40" width="182" height="318.5"></rect>
+            </g>
+            <text x="313" y="190" text-anchor="middle" class="hotspot-label">脱衣室</text>
+            <text x="313" y="209" text-anchor="middle" class="hotspot-sub">VANITY</text>
+
+            <g class="plan-plain">
+              <rect x="404" y="40" width="182" height="318.5"></rect>
+              <text x="495" y="195" text-anchor="middle" font-size="14">クローゼット</text>
+            </g>
+
+            <g class="hotspot" data-room="entrance" tabindex="0" role="button" aria-label="玄関">
+              <rect x="586" y="40" width="136.5" height="318.5"></rect>
+            </g>
+            <text x="654" y="190" text-anchor="middle" class="hotspot-label">玄関</text>
+            <text x="654" y="209" text-anchor="middle" class="hotspot-sub">ENTRANCE</text>
+
+            <g class="plan-plain">
+              <rect x="722.5" y="40" width="136.5" height="318.5"></rect>
+              <text x="790" y="195" text-anchor="middle" font-size="14">SIC</text>
+            </g>
+            <g class="plan-plain">
+              <rect x="859" y="40" width="91" height="318.5"></rect>
+              <text x="904" y="195" text-anchor="middle" font-size="13">トイレ</text>
+            </g>
+
+            <g class="plan-plain">
+              <rect x="40" y="358.5" width="819" height="45.5"></rect>
+              <text x="450" y="386" text-anchor="middle" font-size="12">廊下</text>
+            </g>
+
+            <g class="hotspot" data-room="pantry" tabindex="0" role="button" aria-label="パントリー">
+              <rect x="40" y="404" width="182" height="182"></rect>
+            </g>
+            <text x="131" y="490" text-anchor="middle" class="hotspot-label">パントリー</text>
+            <text x="131" y="509" text-anchor="middle" class="hotspot-sub">PANTRY</text>
+
+            <g class="hotspot" data-room="ldk" tabindex="0" role="button" aria-label="L.D.K">
+              <rect x="222" y="404" width="500.5" height="182"></rect>
+              <rect x="40" y="586" width="682.5" height="319"></rect>
+            </g>
+            <text x="420" y="500" text-anchor="middle" class="hotspot-label">L.D.K</text>
+            <text x="420" y="519" text-anchor="middle" class="hotspot-sub">LIVING DINING KITCHEN</text>
+            <g class="plan-plain" style="pointer-events:none;">
+              <line x1="60" y1="800" x2="140" y2="900" stroke-dasharray="3 4"></line>
+              <text x="70" y="790" font-size="11">階段</text>
+            </g>
+
+            <g class="hotspot" data-room="hall" tabindex="0" role="button" aria-label="ホール">
+              <rect x="722.5" y="586" width="136.5" height="91"></rect>
+            </g>
+            <text x="790" y="622" text-anchor="middle" class="hotspot-label" font-size="13">ホール</text>
+            <text x="790" y="638" text-anchor="middle" class="hotspot-sub">HALL</text>
+
+            <g class="plan-plain">
+              <rect x="859" y="586" width="91" height="91"></rect>
+              <text x="904" y="632" text-anchor="middle" font-size="11">トイレ</text>
+            </g>
+
+            <g class="plan-plain">
+              <rect x="722.5" y="677" width="227.5" height="228"></rect>
+              <text x="836" y="785" text-anchor="middle" font-size="13">ユーティリティ</text>
+              <text x="836" y="802" text-anchor="middle" font-size="10">(2.5帖)</text>
+            </g>
+
+            <g class="plan-plain">
+              <rect x="300" y="905" width="286" height="60"></rect>
+              <text x="443" y="940" text-anchor="middle" font-size="12">ポーチ</text>
+            </g>
+          </svg>
+
+          <svg class="floor-svg" id="planSvg2F" viewBox="0 0 900 960" role="img" aria-label="2階 間取り図">
+            <text x="60" y="80" class="plan-floor-badge">2F</text>
+            <rect x="40" y="40" width="820" height="880" class="plan-draw"></rect>
+
+            <g class="plan-plain">
+              <rect x="40" y="40" width="390" height="260"></rect>
+              <text x="235" y="165" text-anchor="middle" font-size="14">洋室 1</text>
+              <text x="235" y="184" text-anchor="middle" font-size="10">(4.8帖)</text>
+            </g>
+            <g class="plan-plain">
+              <rect x="40" y="300" width="390" height="260"></rect>
+              <text x="235" y="425" text-anchor="middle" font-size="14">洋室 2</text>
+              <text x="235" y="444" text-anchor="middle" font-size="10">(4.8帖)</text>
+            </g>
+
+            <g class="hotspot" data-room="void" tabindex="0" role="button" aria-label="吹き抜け">
+              <rect x="40" y="560" width="390" height="200"></rect>
+            </g>
+            <circle cx="150" cy="660" r="30" class="plan-draw" opacity="0.5"></circle>
+            <text x="235" y="655" text-anchor="middle" class="hotspot-label">吹き抜け</text>
+            <text x="235" y="674" text-anchor="middle" class="hotspot-sub">VOID TO 1F</text>
+
+            <g class="hotspot" data-room="hall" tabindex="0" role="button" aria-label="ホール">
+              <rect x="40" y="760" width="390" height="160"></rect>
+            </g>
+            <text x="235" y="845" text-anchor="middle" class="hotspot-label" font-size="14">ホール</text>
+            <text x="235" y="863" text-anchor="middle" class="hotspot-sub">HALL</text>
+
+            <g class="plan-plain">
+              <rect x="430" y="40" width="430" height="140"></rect>
+              <text x="645" y="115" text-anchor="middle" font-size="14">収納</text>
+            </g>
+            <g class="plan-plain">
+              <rect x="430" y="180" width="130" height="180"></rect>
+              <text x="495" y="275" text-anchor="middle" font-size="12">トイレ</text>
+            </g>
+            <g class="plan-plain">
+              <rect x="560" y="180" width="300" height="180"></rect>
+              <text x="710" y="270" text-anchor="middle" font-size="14">WIC</text>
+              <text x="710" y="288" text-anchor="middle" font-size="10">(3.0帖)</text>
+            </g>
+
+            <g class="hotspot" data-room="bedroom" tabindex="0" role="button" aria-label="主寝室（シアタールーム）">
+              <rect x="430" y="360" width="430" height="560"></rect>
+            </g>
+            <text x="645" y="630" text-anchor="middle" class="hotspot-label">主寝室</text>
+            <text x="645" y="649" text-anchor="middle" class="hotspot-sub">THEATER ROOM</text>
+          </svg>
+        </div>
+        <p class="plan-note">※ 実際の設計図をもとにした間取り図です。破線の部屋は今後ご紹介予定です。</p>
+      </div>
+
+      <ul class="plan-legend active" id="planLegend1F">
+        <li><button data-room="entrance"><span class="n">01</span><span class="jp">玄関</span><span class="en">Entrance</span></button></li>
+        <li><button data-room="datsui"><span class="n">02</span><span class="jp">脱衣室</span><span class="en">Vanity</span></button></li>
+        <li><button data-room="bath"><span class="n">03</span><span class="jp">浴室</span><span class="en">Bath</span></button></li>
+        <li><button data-room="pantry"><span class="n">04</span><span class="jp">パントリー</span><span class="en">Pantry</span></button></li>
+        <li><button data-room="ldk"><span class="n">05</span><span class="jp">L.D.K</span><span class="en">Living Dining Kitchen</span></button></li>
+        <li><button data-room="hall"><span class="n">—</span><span class="jp">ホール</span><span class="en">Hall</span></button></li>
+      </ul>
+      <ul class="plan-legend" id="planLegend2F">
+        <li><button data-room="void"><span class="n">06</span><span class="jp">吹き抜け</span><span class="en">Void to 1F</span></button></li>
+        <li><button data-room="bedroom"><span class="n">07</span><span class="jp">主寝室</span><span class="en">Theater Room</span></button></li>
+        <li><button data-room="hall"><span class="n">—</span><span class="jp">ホール</span><span class="en">Hall</span></button></li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="wrap">
+
+    <div class="room" id="room-entrance" data-room="entrance">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <rect x="14" y="10" width="26" height="44"></rect>
+          <line x1="36" y1="32" x2="36" y2="34"></line>
+          <line x1="10" y1="54" x2="50" y2="54"></line>
+          <rect x="42" y="40" width="12" height="6"></rect>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">01 / ENTRANCE</span>
+        <h3>玄関</h3>
+        <span class="en-name">Entrance</span>
+        <p>扉を開けた瞬間、住まいの空気が変わる場所。隣にはSIC(シューズインクローゼット)を備え、ベビーカーやアウトドア用品もすっきり収納。来客を迎える時も、家族が出かける時も、この一歩がいつも気持ちいい。</p>
+        <button class="back-to-plan" data-room="entrance">← 間取りで見る</button>
+      </div>
+    </div>
+
+    <div class="room" id="room-datsui" data-room="datsui">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <rect x="8" y="14" width="48" height="6"></rect>
+          <circle cx="18" cy="24" r="2"></circle>
+          <circle cx="32" cy="24" r="2"></circle>
+          <circle cx="46" cy="24" r="2"></circle>
+          <rect x="8" y="40" width="48" height="10"></rect>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">02 / VANITY</span>
+        <h3>脱衣室</h3>
+        <span class="en-name">Vanity Room</span>
+        <p>浴室の隣に、家族が並んでも余裕のロング洗面台を設えました。外から帰った手で、すぐにドアノブや冷蔵庫に触れなくていい。身支度と洗濯動線がひとつになった、小さな安心を積み重ねる場所です。</p>
+        <div class="chips"><span class="chip">ロング洗面台</span></div>
+        <button class="back-to-plan" data-room="datsui">← 間取りで見る</button>
+      </div>
+    </div>
+
+    <div class="room" id="room-bath" data-room="bath">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <rect x="10" y="34" width="44" height="14" rx="7"></rect>
+          <path d="M20 26 q3 -6 0 -10"></path>
+          <path d="M30 26 q3 -6 0 -10"></path>
+          <path d="M40 26 q3 -6 0 -10"></path>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">03 / BATH</span>
+        <h3>浴室</h3>
+        <span class="en-name">Bath</span>
+        <p>浴室乾燥機とミストサウナ機能、明るさを調整できる調光照明を備えた、高機能なバスルーム。一日の終わりを、自分のためだけの時間に変えてくれます。</p>
+        <div class="chips"><span class="chip">高機能バスルーム</span></div>
+        <button class="back-to-plan" data-room="bath">← 間取りで見る</button>
+      </div>
+    </div>
+
+    <div class="room" id="room-pantry" data-room="pantry">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <line x1="10" y1="14" x2="54" y2="14"></line>
+          <line x1="10" y1="30" x2="54" y2="30"></line>
+          <line x1="10" y1="46" x2="54" y2="46"></line>
+          <rect x="16" y="18" width="8" height="8"></rect>
+          <rect x="30" y="34" width="8" height="8"></rect>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">04 / PANTRY</span>
+        <h3>パントリー</h3>
+        <span class="en-name">Pantry</span>
+        <p>キッチンの背面に控える、家電や食品ストックのための小部屋。生活感のあるものをそっとしまえるから、L.D.Kはいつも片づいた表情のままでいられます。</p>
+        <button class="back-to-plan" data-room="pantry">← 間取りで見る</button>
+      </div>
+    </div>
+
+    <div class="room" id="room-ldk" data-room="ldk">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <rect x="8" y="34" width="20" height="12"></rect>
+          <rect x="8" y="26" width="6" height="8"></rect>
+          <rect x="38" y="10" width="18" height="20"></rect>
+          <line x1="47" y1="10" x2="47" y2="30"></line>
+          <line x1="38" y1="20" x2="56" y2="20"></line>
+          <line x1="8" y1="50" x2="56" y2="50"></line>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">05 / L.D.K</span>
+        <h3>L.D.K（19.5帖）</h3>
+        <span class="en-name">Living Dining Kitchen</span>
+        <p>リビング・ダイニング・キッチンをひとつにした19.5帖の大空間。足元まで大きく開く前開き式食洗機を採用し、鍋やまな板の出し入れも屈まずスムーズに。階段まわりの吹き抜けから、二階の光もやわらかく届きます。</p>
+        <div class="chips"><span class="chip">フロントオープン食洗機</span></div>
+        <button class="back-to-plan" data-room="ldk">← 間取りで見る</button>
+      </div>
+    </div>
+
+    <div class="room" id="room-void" data-room="void">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <line x1="20" y1="8" x2="20" y2="56"></line>
+          <path d="M12 20 L20 8 L28 20"></path>
+          <line x1="10" y1="56" x2="30" y2="56"></line>
+          <path d="M36 40 q6 -20 18 -32"></path>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">06 / VOID — 2F</span>
+        <h3>吹き抜け</h3>
+        <span class="en-name">Stairwell Void</span>
+        <p>2階ホールの窓から届いた光が、階段まわりの吹き抜けを通って1階のL.D.Kまで降りてきます。1階と2階、家族それぞれの居場所を、光でやわらかくつなぐこの家の中心です。</p>
+        <button class="back-to-plan" data-room="void">← 間取りで見る</button>
+      </div>
+    </div>
+
+    <div class="room" id="room-bedroom" data-room="bedroom">
+      <div class="room-visual">
+        <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+        <svg viewBox="0 0 64 64" fill="none" stroke-width="1.5" stroke-linecap="round">
+          <rect x="8" y="36" width="26" height="12"></rect>
+          <rect x="8" y="30" width="8" height="8"></rect>
+          <rect x="42" y="10" width="14" height="20"></rect>
+          <path d="M42 20 L20 40"></path>
+        </svg>
+        <span class="tag">PHOTO — 差し替え予定</span>
+      </div>
+      <div class="room-copy">
+        <span class="eyebrow">07 / BEDROOM — 2F</span>
+        <h3>主寝室（7.0帖・シアタールーム）</h3>
+        <span class="en-name">Theater Room</span>
+        <p>壁一面がスクリーンになる、映画のための主寝室。天井投影に対応した配線と遮光カーテンを標準装備し、灯りを落とせば、いつでも自分だけの映画館に。隣接する3.0帖のWICも備え、部屋はいつもすっきりと片づきます。</p>
+        <div class="chips"><span class="chip">プロジェクター設備</span><span class="chip">ウォークインクローゼット</span></div>
+        <button class="back-to-plan" data-room="bedroom">← 間取りで見る</button>
+      </div>
+    </div>
+
+  </div>
+
+  <section class="wrap">
+    <div class="interview-promo">
+      <div class="txt">
+        <span class="eyebrow">INTERVIEW</span>
+        <h3 style="margin-top:0.6rem;">施主インタビュー</h3>
+        <p>この家に暮らすご夫婦おふたりに、それぞれ個別にお話を伺いました。写真とあわせて別ページでご紹介しています。</p>
+      </div>
+      <a class="btn-outline" href="interview.html">インタビューを読む →</a>
+    </div>
+  </section>
+
+  <section id="specs" class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">SPECIFICATION</span>
+      <h2>こだわりの設備</h2>
+    </div>
+    <div class="spec-wrap">
+      <table class="spec-table">
+        <thead>
+          <tr><th>設備</th><th>導入場所</th><th>こだわり</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>フロントオープン食洗機</td><td>L.D.K</td><td>屈まず出し入れできる前開き式。</td></tr>
+          <tr><td>ウォークインクローゼット</td><td>主寝室（WIC 3.0帖）</td><td>衣替え不要の収納力。</td></tr>
+          <tr><td>ロング洗面台</td><td>脱衣室</td><td>家族が並んでも余裕の幅。</td></tr>
+          <tr><td>プロジェクター設備</td><td>主寝室（シアタールーム）</td><td>天井投影対応・遮光カーテン標準装備。</td></tr>
+          <tr><td>高機能バスルーム</td><td>浴室</td><td>浴室乾燥・ミストサウナ・調光照明。</td></tr>
+          <tr><td>吹き抜け</td><td>階段まわり（2F〜1F）</td><td>2階の光を1階のL.D.Kまで届ける。</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-grid">
+    <div>
+      <div class="title">東仙台の家 — Room Tour</div>
+      <p>このページはプレビュー版です。写真・図面・インタビューは今後更新予定です。</p>
+    </div>
+    <div class="links">
+      <a href="interview.html">施主インタビュー</a>
+      <a href="#hero">TOP に戻る ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // entrance reveal
+  var veil = document.getElementById('loadVeil');
+  if (reduceMotion) {
+    veil.remove();
+  } else {
+    document.body.classList.add('pre-reveal');
+    requestAnimationFrame(function () { veil.classList.add('show'); });
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        veil.classList.add('hide');
+        document.body.classList.remove('pre-reveal');
+        setTimeout(function () { veil.remove(); }, 1200);
+      }, 650);
+    });
+    setTimeout(function () {
+      if (veil.parentNode) {
+        veil.classList.add('show', 'hide');
+        document.body.classList.remove('pre-reveal');
+      }
+    }, 3500);
+  }
+
+  // hero photo slideshow
+  var slides = Array.prototype.slice.call(document.querySelectorAll('.hero-slide'));
+  var slideTag = document.getElementById('heroSlideTag');
+  var slideLabels = ['外観', '室内', '室内', '室内'];
+  if (slides.length > 1 && !reduceMotion) {
+    var current = 0;
+    setInterval(function () {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+      if (slideTag) slideTag.textContent = 'PHOTO ' + (current + 1) + ' / ' + slides.length + ' — ' + (slideLabels[current] || '差し替え予定');
+    }, 4500);
+  }
+
+  // drawer menu
+  var drawer = document.getElementById('drawer');
+  var openBtn = document.getElementById('menuOpen');
+  var closeBtn = document.getElementById('drawerClose');
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    openBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+  openBtn.addEventListener('click', function () { setDrawer(true); });
+  closeBtn.addEventListener('click', function () { setDrawer(false); });
+  drawer.querySelectorAll('a').forEach(function (a) {
+    a.addEventListener('click', function () { setDrawer(false); });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') setDrawer(false);
+  });
+
+  // floor plan: 1F / 2F tabs
+  var roomFloor = { entrance: '1F', datsui: '1F', bath: '1F', pantry: '1F', ldk: '1F', void: '2F', bedroom: '2F', hall: null };
+  var planTabs = Array.prototype.slice.call(document.querySelectorAll('.plan-tab'));
+  var floorSvgs = { '1F': document.getElementById('planSvg1F'), '2F': document.getElementById('planSvg2F') };
+  var floorLegends = { '1F': document.getElementById('planLegend1F'), '2F': document.getElementById('planLegend2F') };
+
+  function setFloor(floor) {
+    planTabs.forEach(function (t) {
+      var on = t.getAttribute('data-floor') === floor;
+      t.classList.toggle('active', on);
+      t.setAttribute('aria-selected', on ? 'true' : 'false');
+    });
+    Object.keys(floorSvgs).forEach(function (f) {
+      floorSvgs[f].classList.toggle('active', f === floor);
+      floorLegends[f].classList.toggle('active', f === floor);
+    });
+  }
+  planTabs.forEach(function (t) {
+    t.addEventListener('click', function () { setFloor(t.getAttribute('data-floor')); });
+  });
+
+  // room <-> floor plan sync
+  var rooms = Array.prototype.slice.call(document.querySelectorAll('.room'));
+  var hotspots = Array.prototype.slice.call(document.querySelectorAll('.hotspot'));
+  var legendBtns = Array.prototype.slice.call(document.querySelectorAll('.plan-legend button'));
+
+  function highlightRoom(id) {
+    hotspots.forEach(function (h) { h.classList.toggle('active', h.getAttribute('data-room') === id); });
+    legendBtns.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-room') === id); });
+    var floor = roomFloor[id];
+    if (floor) setFloor(floor);
+  }
+
+  function goToRoom(id) {
+    var el = document.getElementById('room-' + id);
+    if (el) el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    highlightRoom(id);
+  }
+
+  hotspots.forEach(function (h) {
+    var id = h.getAttribute('data-room');
+    h.addEventListener('click', function () { goToRoom(id); });
+    h.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToRoom(id); }
+    });
+  });
+  legendBtns.forEach(function (b) {
+    b.addEventListener('click', function () { goToRoom(b.getAttribute('data-room')); });
+  });
+  document.querySelectorAll('.back-to-plan').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var id = b.getAttribute('data-room');
+      document.getElementById('plan').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      highlightRoom(id);
+    });
+  });
+  document.querySelectorAll('.highlight-card .jump').forEach(function (b) {
+    b.addEventListener('click', function () { goToRoom(b.getAttribute('data-room')); });
+  });
+
+  // reveal on scroll + active sync
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          if (entry.intersectionRatio > 0.5) {
+            highlightRoom(entry.target.getAttribute('data-room'));
+          }
+        }
+      });
+    }, { threshold: [0.15, 0.5] });
+    rooms.forEach(function (r) { io.observe(r); });
+  } else {
+    rooms.forEach(function (r) { r.classList.add('in-view'); });
+  }
+})();
+</script>

@@ -1,0 +1,152 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>奥様のインタビュー | 東仙台の家</title>
+<style>
+  :root {
+    --bg: #ECE7DC; --bg-deep: #DEDACD; --ink: #201C17; --wood: #96633C;
+    --accent: #3E5A41; --accent-soft: rgba(62, 90, 65, 0.14); --muted: #7C7362;
+    --line: rgba(32, 28, 23, 0.20); --line-strong: rgba(32, 28, 23, 0.42);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #1C1812; --bg-deep: #17130E; --ink: #EDE7D9; --wood: #C08A57;
+      --accent: #8FB37D; --accent-soft: rgba(143, 179, 125, 0.18); --muted: #A79E8C;
+      --line: rgba(237, 231, 217, 0.24); --line-strong: rgba(237, 231, 217, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #1C1812; --bg-deep: #17130E; --ink: #EDE7D9; --wood: #C08A57;
+    --accent: #8FB37D; --accent-soft: rgba(143, 179, 125, 0.18); --muted: #A79E8C;
+    --line: rgba(237, 231, 217, 0.24); --line-strong: rgba(237, 231, 217, 0.5);
+  }
+  :root[data-theme="light"] {
+    --bg: #ECE7DC; --bg-deep: #DEDACD; --ink: #201C17; --wood: #96633C;
+    --accent: #3E5A41; --accent-soft: rgba(62, 90, 65, 0.14); --muted: #7C7362;
+    --line: rgba(32, 28, 23, 0.20); --line-strong: rgba(32, 28, 23, 0.42);
+  }
+  * { box-sizing: border-box; }
+  @media (prefers-reduced-motion: reduce) { * { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; } }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Hiragino Sans", "Yu Gothic Medium", "YuGothic", "Noto Sans JP", sans-serif;
+    line-height: 1.9; font-size: 16px; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+  }
+  h1, h2, h3 { font-family: "Hiragino Mincho ProN", "YuMincho", "Yu Mincho", serif; margin: 0; text-wrap: balance; font-weight: 600; }
+  a { color: inherit; }
+  .eyebrow { font-size: 0.72rem; letter-spacing: 0.32em; text-transform: uppercase; color: var(--accent); font-weight: 600; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding-inline: clamp(1.25rem, 5vw, 4rem); }
+
+  .topbar { position: sticky; top: 0; z-index: 50; display: flex; align-items: center; justify-content: space-between; padding: 0.9rem clamp(1.1rem, 5vw, 4rem); background: color-mix(in srgb, var(--bg) 88%, transparent); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .topbar .mark { font-size: 0.9rem; letter-spacing: 0.06em; text-decoration: none; }
+  .topbar .mark small { display: block; font-size: 0.58rem; letter-spacing: 0.24em; color: var(--muted); margin-top: 0.15rem; }
+  .back { font-size: 0.78rem; letter-spacing: 0.05em; text-decoration: none; color: var(--muted); border-bottom: 1px solid var(--line-strong); padding-bottom: 0.15rem; }
+  .back:hover { color: var(--accent); border-color: var(--accent); }
+
+  .profile { display: grid; grid-template-columns: 0.8fr 1.2fr; gap: clamp(2rem, 5vw, 3.5rem); align-items: center; padding-block: clamp(3rem, 8vw, 5.5rem); }
+  @media (max-width: 780px) { .profile { grid-template-columns: 1fr; } }
+  .profile-photo { aspect-ratio: 4 / 5; background: var(--bg-deep); border: 1px solid var(--line); display: grid; place-items: center; position: relative; overflow: hidden; }
+  .profile-photo svg { width: 30%; stroke: var(--wood); }
+  .profile-photo .tag { position: absolute; left: 0.9rem; bottom: 0.9rem; font-size: 0.64rem; letter-spacing: 0.1em; color: var(--muted); border: 1px solid var(--line-strong); padding: 0.3rem 0.6rem; }
+  .profile-copy h1 { font-size: clamp(2rem, 6vw, 2.8rem); margin-top: 0.7rem; }
+  .profile-copy .note { color: var(--muted); font-size: 0.85rem; margin-top: 0.5rem; }
+  .profile-copy p.lead { margin-top: 1.2rem; color: var(--ink); max-width: 30em; }
+
+  .gallery { display: grid; grid-template-columns: repeat(6, 1fr); grid-auto-rows: 110px; gap: 0.6rem; padding-block: clamp(1rem, 3vw, 2rem) clamp(2rem, 5vw, 3rem); }
+  .gallery .g { background: var(--bg-deep); border: 1px solid var(--line); display: grid; place-items: center; position: relative; overflow: hidden; }
+  .gallery .g svg { width: 26%; stroke: var(--wood); opacity: 0.8; }
+  .gallery .g .tag { position: absolute; left: 0.5rem; bottom: 0.5rem; font-size: 0.56rem; letter-spacing: 0.06em; color: var(--muted); }
+  .gallery .g1 { grid-column: span 3; grid-row: span 2; }
+  .gallery .g2 { grid-column: span 3; grid-row: span 3; }
+  .gallery .g3 { grid-column: span 2; grid-row: span 1; }
+  .gallery .g4 { grid-column: span 2; grid-row: span 2; }
+  .gallery .g5 { grid-column: span 2; grid-row: span 2; }
+  .gallery .g6 { grid-column: span 3; grid-row: span 2; }
+  .gallery .g7 { grid-column: span 3; grid-row: span 2; }
+  @media (max-width: 640px) {
+    .gallery { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 130px; }
+    .gallery .g1, .gallery .g2, .gallery .g3, .gallery .g4, .gallery .g5, .gallery .g6, .gallery .g7 { grid-column: span 1; grid-row: span 2; }
+  }
+
+  .qa-list { padding-block: clamp(1rem, 3vw, 2rem) clamp(3rem, 6vw, 4rem); display: flex; flex-direction: column; gap: clamp(1.8rem, 4vw, 2.6rem); }
+  .qa-item { border-top: 1px solid var(--line); padding-top: 1.4rem; }
+  .qa-q { font-family: "Hiragino Mincho ProN", serif; font-size: clamp(1.05rem, 3.6vw, 1.25rem); }
+  .qa-q::before { content: "Q. "; color: var(--accent); }
+  .qa-a { margin-top: 0.9rem; color: var(--ink); }
+  .qa-a i { color: var(--muted); font-style: normal; }
+
+  .crosslink { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding-block: 1.6rem; margin-bottom: clamp(2rem, 5vw, 3rem); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; align-items: center; }
+  .crosslink a { text-decoration: none; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--accent); border-bottom: 1px solid var(--accent); padding-bottom: 0.15rem; }
+
+  footer { border-top: 1px solid var(--line); padding-block: clamp(2.6rem, 6vw, 4rem); }
+  footer p { color: var(--muted); font-size: 0.84rem; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+</style>
+
+<div class="topbar">
+  <a class="mark" href="index.html">東仙台の家<small>ROOM TOUR — HIGASHI-SENDAI</small></a>
+  <a class="back" href="interview.html">← インタビュー一覧</a>
+</div>
+
+<div class="wrap">
+  <div class="profile">
+    <div class="profile-photo">
+      <!-- 写真差し替え: このsvgをobject-fit:coverのimgに置換 -->
+      <svg viewBox="0 0 64 64" fill="none" stroke-width="1.4" stroke-linecap="round">
+        <circle cx="32" cy="24" r="10"></circle>
+        <path d="M14 54 q18 -18 36 0"></path>
+      </svg>
+      <span class="tag">PHOTO — 差し替え予定</span>
+    </div>
+    <div class="profile-copy">
+      <span class="eyebrow">Interview — Wife</span>
+      <h1>奥様（お名前）</h1>
+      <p class="note">※ お名前・プロフィールは後ほどご記入ください。</p>
+      <p class="lead">パントリーや脱衣室の使い勝手、暮らし始めての実感まで。日々の家事や子育ての目線で伺いました。</p>
+    </div>
+  </div>
+
+  <div class="gallery">
+    <!-- 写真差し替え: 各 .g 内のsvgをobject-fit:coverのimgに置換。マスの大きさ(g1〜g7)はそのまま使えます -->
+    <div class="g g1"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><circle cx="32" cy="26" r="9"></circle><path d="M16 54 q16 -16 32 0"></path></svg><span class="tag">PHOTO</span></div>
+    <div class="g g2"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><rect x="8" y="24" width="48" height="8"></rect><rect x="14" y="32" width="16" height="14"></rect></svg><span class="tag">PHOTO</span></div>
+    <div class="g g3"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><line x1="10" y1="14" x2="54" y2="14"></line><line x1="10" y1="30" x2="54" y2="30"></line></svg><span class="tag">PHOTO</span></div>
+    <div class="g g4"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><rect x="8" y="14" width="48" height="6"></rect><circle cx="18" cy="24" r="2"></circle><circle cx="32" cy="24" r="2"></circle></svg><span class="tag">PHOTO</span></div>
+    <div class="g g5"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><rect x="10" y="34" width="44" height="14" rx="7"></rect></svg><span class="tag">PHOTO</span></div>
+    <div class="g g6"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><rect x="8" y="36" width="26" height="12"></rect><rect x="42" y="10" width="14" height="20"></rect></svg><span class="tag">PHOTO</span></div>
+    <div class="g g7"><svg viewBox="0 0 64 64" fill="none" stroke-width="1.4"><circle cx="32" cy="26" r="9"></circle><path d="M16 54 q16 -16 32 0"></path></svg><span class="tag">PHOTO</span></div>
+  </div>
+
+  <div class="qa-list">
+    <div class="qa-item">
+      <p class="qa-q">この土地・間取りに決めた理由を教えてください。</p>
+      <p class="qa-a"><i>（ここに実際の回答を入力してください）</i></p>
+    </div>
+    <div class="qa-item">
+      <p class="qa-q">パントリーや脱衣室の使い勝手はいかがですか。</p>
+      <p class="qa-a"><i>（ここに実際の回答を入力してください）</i></p>
+    </div>
+    <div class="qa-item">
+      <p class="qa-q">一番のお気に入りの場所はどこですか。</p>
+      <p class="qa-a"><i>（ここに実際の回答を入力してください）</i></p>
+    </div>
+    <div class="qa-item">
+      <p class="qa-q">実際に暮らしてみて、いかがですか。</p>
+      <p class="qa-a"><i>（ここに実際の回答を入力してください）</i></p>
+    </div>
+    <div class="qa-item">
+      <p class="qa-q">これから家づくりを考えている方へ、ひとことお願いします。</p>
+      <p class="qa-a"><i>（ここに実際の回答を入力してください）</i></p>
+    </div>
+  </div>
+
+  <div class="crosslink">
+    <span style="color:var(--muted); font-size:0.85rem;">あわせて読みたい</span>
+    <a href="interview-husband.html">ご主人のインタビューを読む →</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>東仙台の家 — Room Tour。このページはプレビュー版です。お名前・回答・写真は今後更新予定です。</p>
+  </div>
+</footer>
