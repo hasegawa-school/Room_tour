@@ -275,23 +275,29 @@
   .concept-photo.cg-2:hover{transform:translateY(-2.9rem);}
   @media (max-width:720px){
     .concept-gallery{
-      flex-direction:row;
-      margin:2.6rem -6vw 0;
-      padding:0 6vw 1.2rem;
-      overflow-x:auto;
-      scroll-snap-type:x proximity;
-      align-items:stretch;
-      scrollbar-width:none;
+      display:grid;
+      grid-template-columns: 1.15fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap:.8rem;
+      margin-top:2.6rem;
+      aspect-ratio:4/3;
     }
-    .concept-gallery::-webkit-scrollbar{display:none;}
     .concept-photo{
       flex:none;
-      width:68vw;
-      aspect-ratio:3/4;
-      scroll-snap-align:start;
+      grid-column:1;
+      grid-row:1 / span 2;
+      aspect-ratio:auto;
+      height:100%;
       transition:transform .25s ease, box-shadow .25s ease;
     }
-    .concept-photo.cg-2, .concept-photo.cg-2:hover{transform:none;}
+    .concept-photo.cg-2{
+      grid-column:2; grid-row:1;
+      transform:none;
+    }
+    .concept-photo.cg-3{
+      grid-column:2; grid-row:2;
+      transform:none;
+    }
     .concept-photo:active{transform:scale(.96);}
   }
 
@@ -1302,32 +1308,25 @@
   const roomData = {
     1: [
       {name:'間取り図', icon:'plan', isBlueprint:true, note:'気になる部屋をタップすると、実際の写真に切り替わります。写真が複数ある部屋は、自動でフェード切り替えします。'},
+      {name:'玄関', size:'', icon:'door', note:'家族と来客、両方の動線が交わる入り口。', photos:[]},
+      {name:'ホール', size:'', icon:'hall', note:'各roomをつなぐ回遊動線。', photos:[]},
       {name:'L.D.K', size:'19.6帖', icon:'sofa', note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。', photos:[],
         points:[
           {x:'30%', y:'38%', title:'キッチン', note:'フロントオープン食洗機など、家事を楽にして生活をよりゆたかにしてくれる設備を採用しました。', photos:[]}
         ]
       },
-      {name:'玄関', size:'', icon:'door', note:'家族と来客、両方の動線が交わる入り口。', photos:[]},
-      {name:'SIC', size:'', icon:'storage', note:'玄関に隣接したシューズインクローゼット。', photos:[]},
-      {name:'パントリー', size:'', icon:'storage', note:'キッチン奥の食品・道具収納スペース。', photos:[]},
-      {name:'浴室', size:'', icon:'water', note:'脱衣室と一体になった水まわり。', photos:[]},
       {name:'脱衣室', size:'', icon:'water', note:'洗面と脱衣を兼ねるスペース。', photos:[]},
-      {name:'クローゼット', size:'', icon:'storage', note:'廊下沿いの大型収納。', photos:[]},
+      {name:'WIC', size:'', icon:'storage', note:'玄関そばに設けた大型のウォークインクローゼット。', photos:[]},
       {name:'トイレ', size:'', icon:'toilet', note:'ホール脇に配置された1階トイレ。', photos:[]},
-      {name:'ユーティリティスペース', size:'2.5帖', icon:'hall', note:'家事や作業に使える多目的スペース。', photos:[]},
-      {name:'廊下 / ホール', size:'', icon:'hall', note:'各roomをつなぐ回遊動線。', photos:[]},
-      {name:'ポーチ', size:'', icon:'window', note:'玄関前の外部アプローチ空間。', photos:[]}
+      {name:'庭', size:'', icon:'window', note:'お手入れいらずで一年中きれいな緑を保てる、広めの人工芝の庭。', photos:[]}
     ],
     2: [
       {name:'間取り図', icon:'plan', isBlueprint:true, note:'気になる部屋をタップすると、実際の写真に切り替わります。写真が複数ある部屋は、自動でフェード切り替えします。'},
+      {name:'ホール', size:'', icon:'hall', note:'吹き抜けを見下ろす回遊廊下。オールラウンドカウンターも設けています。', photos:[]},
       {name:'主寝室', size:'7.0帖', icon:'bed', note:'WICと隣接した、フロア最奥のプライベート空間。', photos:[]},
-      {name:'洋室 A', size:'4.8帖', icon:'bed', note:'吹き抜け側に面した個室。', photos:[]},
-      {name:'洋室 B', size:'4.8帖', icon:'bed', note:'もう一部屋の個室。将来の子ども部屋にも。', photos:[]},
-      {name:'WIC', size:'3.0帖', icon:'storage', note:'主寝室に隣接したウォークインクローゼット。', photos:[]},
-      {name:'収納', size:'', icon:'storage', note:'洋室そばの共用収納。', photos:[]},
-      {name:'トイレ', size:'', icon:'toilet', note:'2階専用のトイレ。', photos:[]},
-      {name:'廊下 / ホール', size:'', icon:'hall', note:'吹き抜けを見下ろす回遊廊下。', photos:[]},
-      {name:'吹き抜け', size:'', icon:'window', note:'1階と光をつなぐ、家のいちばんの見せ場。', photos:[]}
+      {name:'洋室①', size:'4.8帖', icon:'bed', note:'吹き抜け側に面した個室。', photos:[]},
+      {name:'洋室②', size:'4.8帖', icon:'bed', note:'もう一部屋の個室。将来の子ども部屋にも。', photos:[]},
+      {name:'収納', size:'', icon:'storage', note:'洋室そばの共用収納。', photos:[]}
     ]
   };
 
