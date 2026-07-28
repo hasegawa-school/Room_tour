@@ -265,7 +265,7 @@
 
   /* floor plan section */
   .plan-tabs{
-    display:inline-flex; gap:0; border:1px solid var(--line-strong); border-radius:100px; padding:.3rem; margin-bottom:0;
+    display:inline-flex; gap:0; border:1px solid var(--line-strong); border-radius:100px; padding:.3rem; margin:2.2rem 0 3rem;
   }
   .plan-tab{
     border:none; background:transparent; color:var(--ink-dim);
@@ -277,11 +277,9 @@
   .plan-tab:not(.active):hover{color:var(--ink);}
 
   .plan-body{
-    display:grid;
-    grid-template-columns: 1.15fr .85fr;
-    gap:4rem;
-    margin-top:3.4rem;
-    align-items:start;
+    display:flex;
+    flex-direction:column;
+    gap:2.2rem;
   }
   .plan-image-wrap{
     position:relative;
@@ -481,9 +479,6 @@
     color:var(--ink-dim); font-size:.86rem; padding-top:2rem; border-top:1px solid var(--line);
   }
 
-  @media (max-width:960px){
-    .plan-body{grid-template-columns:1fr;gap:2.4rem;}
-  }
 
   @keyframes panelFadeUp{
     from{opacity:0; transform:translateY(24px);}
@@ -877,16 +872,18 @@
       <div class="section-num">04 — Floor Plan</div>
       <h2>間取りをめぐる。</h2>
     </div>
-    <div class="plan-tabs reveal d1">
-      <button class="plan-tab active" data-floor="1">1階</button>
-      <button class="plan-tab" data-floor="2">2階</button>
-    </div>
+  </div>
+
+  <div class="plan-tabs reveal d1">
+    <button class="plan-tab active" data-floor="1">1階</button>
+    <button class="plan-tab" data-floor="2">2階</button>
   </div>
 
   <!-- 1F -->
   <div class="plan-panel active" id="panel-1">
     <div class="plan-body">
-      <div class="plan-image-wrap reveal">
+      <div class="room-grid reveal d1" id="rooms-1"></div>
+      <div class="plan-image-wrap reveal d2">
         <div class="plan-image-stage">
           <img src="images/plan-1f.jpg" alt="1階 間取り図">
           <div class="photo-layer" id="photoLayer-1">
@@ -898,17 +895,15 @@
         </div>
         <div class="plan-caption" id="planCaption-1">1F PLAN</div>
       </div>
-      <div class="reveal d1">
-        <div class="room-grid" id="rooms-1"></div>
-        <div class="room-detail" id="detail-1"></div>
-      </div>
+      <div class="room-detail reveal d2" id="detail-1"></div>
     </div>
   </div>
 
   <!-- 2F -->
   <div class="plan-panel" id="panel-2">
     <div class="plan-body">
-      <div class="plan-image-wrap reveal">
+      <div class="room-grid reveal d1" id="rooms-2"></div>
+      <div class="plan-image-wrap reveal d2">
         <div class="plan-image-stage">
           <img src="images/plan-2f.jpg" alt="2階 間取り図">
           <div class="photo-layer" id="photoLayer-2">
@@ -920,10 +915,7 @@
         </div>
         <div class="plan-caption" id="planCaption-2">2F PLAN</div>
       </div>
-      <div class="reveal d1">
-        <div class="room-grid" id="rooms-2"></div>
-        <div class="room-detail" id="detail-2"></div>
-      </div>
+      <div class="room-detail reveal d2" id="detail-2"></div>
     </div>
   </div>
 </section>
@@ -1062,8 +1054,16 @@
       tabs.forEach(t=>t.classList.remove('active'));
       tab.classList.add('active');
       document.querySelectorAll('.plan-panel').forEach(p=>p.classList.remove('active'));
-      const panel = document.getElementById('panel-'+tab.dataset.floor);
+      const floor = tab.dataset.floor;
+      const panel = document.getElementById('panel-'+floor);
       panel.classList.add('active');
+
+      // 1F/2F切り替え時は、そのフロアの表示を必ず「間取り図」に戻す
+      const grid = document.getElementById('rooms-'+floor);
+      const detail = document.getElementById('detail-'+floor);
+      grid.querySelectorAll('.room-chip').forEach((c, idx)=>c.classList.toggle('active', idx === 0));
+      detail.querySelectorAll('.room-card').forEach((c, idx)=>c.classList.toggle('active', idx === 0));
+      selectRoom(floor, roomData[floor][0]);
 
       // 2回目以降の表示でも毎回ふわっと浮き上がらせる
       const animTargets = panel.querySelectorAll('.plan-image-wrap, .room-grid, .room-detail .room-card.active');
