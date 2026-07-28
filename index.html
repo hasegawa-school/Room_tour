@@ -432,6 +432,9 @@
   .room-slider-wrap{
     position:relative;
     overflow:hidden;
+    padding:10px;
+    margin:-10px;
+    touch-action:pan-y;
   }
   .room-slider{
     display:flex;
@@ -445,6 +448,9 @@
     gap:1.6rem;
   }
   .room-slide-card{
+    display:flex; gap:1.4rem; align-items:flex-start;
+    min-height:96px;
+  }
     display:flex; gap:1.4rem; align-items:flex-start;
   }
   .room-slide-photo{
@@ -514,6 +520,13 @@
   .panel-fade-anim{
     animation:panelFadeUp .8s cubic-bezier(.22,.61,.36,1);
   }
+  @keyframes photoRiseIn{
+    from{opacity:0; transform:translateY(28px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .photo-rise-anim{
+    animation:photoRiseIn .6s cubic-bezier(.22,.61,.36,1);
+  }
 
   /* construction gallery */
   .gallery-progress{
@@ -530,14 +543,13 @@
   }
   .gallery-track{
     display:flex;
-    justify-content:center;
     gap:1.6rem;
     overflow-x:auto;
     scroll-snap-type:x proximity;
     padding-bottom:1.6rem;
-    margin:0 -6vw;
-    padding-left:6vw;
-    padding-right:6vw;
+    width:fit-content;
+    max-width:100%;
+    margin:0 auto;
     scrollbar-width:thin;
     scrollbar-color:var(--wood) transparent;
   }
@@ -1108,7 +1120,7 @@
     <div class="access-item">
       <div class="access-icon"><svg viewBox="0 0 24 24"><path d="M4 21V9l8-5 8 5v12"/><path d="M4 21h16M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/></svg></div>
       <div class="access-text">
-        <div class="access-name">◯◯小学校</div>
+        <div class="access-name">西山小学校</div>
         <div class="access-time">徒歩 5分</div>
       </div>
     </div>
@@ -1117,6 +1129,13 @@
       <div class="access-text">
         <div class="access-name">東仙台駅</div>
         <div class="access-time">徒歩 12分</div>
+      </div>
+    </div>
+    <div class="access-item">
+      <div class="access-icon"><svg viewBox="0 0 24 24"><path d="M4 10c0 5 3.5 9 8 9s8-4 8-9"/><path d="M3 10h18"/><path d="M8 10c0-2 .5-4 1-5M12 10c0-2.5.3-4.5 .8-6M16 10c0-2-.3-4-1-5"/></svg></div>
+      <div class="access-text">
+        <div class="access-name">麺屋くまがい</div>
+        <div class="access-time">徒歩 4分</div>
       </div>
     </div>
   </div>
@@ -1466,10 +1485,19 @@
       d.classList.toggle('active', i === index);
     });
 
+    // 写真が下からふわっとフェードインする演出(毎回再生)
+    const currentSlide = slider.children[index];
+    const photoEl = currentSlide.querySelector('.room-slide-photo');
+    if(photoEl){
+      photoEl.classList.remove('photo-rise-anim');
+      void photoEl.offsetWidth;
+      photoEl.classList.add('photo-rise-anim');
+    }
+
     clearInterval(cycleTimers[floor]);
     const room = rooms[index];
     if(!room.isBlueprint){
-      const stage = slider.children[index].querySelector('.plan-image-stage');
+      const stage = currentSlide.querySelector('.plan-image-stage');
       const layer = stage.querySelector('.photo-layer');
       if(layer) startCycle(floor, layer, room);
     }
@@ -1478,14 +1506,23 @@
   function attachSwipe(floor){
     const slider = document.getElementById('roomSlider-'+floor);
     let startX = null;
-    slider.addEventListener('pointerdown', (e)=>{ startX = e.clientX; });
+    let dragging = false;
+    slider.addEventListener('pointerdown', (e)=>{
+      startX = e.clientX;
+      dragging = true;
+      slider.setPointerCapture(e.pointerId);
+    });
     slider.addEventListener('pointerup', (e)=>{
-      if(startX === null) return;
+      if(!dragging || startX === null) return;
       const diff = e.clientX - startX;
       if(Math.abs(diff) > 40){
         goToRoomSlide(floor, sliderIndex[floor] + (diff < 0 ? 1 : -1));
       }
+      dragging = false;
       startX = null;
+    });
+    ['pointercancel','pointerleave'].forEach(evt=>{
+      slider.addEventListener(evt, ()=>{ dragging = false; startX = null; });
     });
   }
 
