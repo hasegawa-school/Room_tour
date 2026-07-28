@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>施主インタビュー | Our New Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#EDEAE0;
+    --panel:#E2DCCC;
+    --ink:#2A241E;
+    --ink-dim:#5F5648;
+    --wood:#9C6A3E;
+    --sky:#3C6478;
+    --line: rgba(42,36,30,0.14);
+    --line-strong: rgba(42,36,30,0.26);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Zen Kaku Gothic New', sans-serif;
+    font-weight:300;
+    line-height:1.9;
+  }
+  h1,h2,.mincho{font-family:'Shippori Mincho', serif;}
+  a{color:inherit;}
+  img{display:block; max-width:100%;}
+
+  .reveal{
+    opacity:0;
+    transform:translateY(24px);
+    transition:opacity .9s cubic-bezier(.22,.61,.36,1), transform .9s cubic-bezier(.22,.61,.36,1);
+  }
+  .reveal.in{opacity:1; transform:translateY(0);}
+  .reveal.d1{transition-delay:.08s;}
+  .reveal.d2{transition-delay:.18s;}
+
+  @media (prefers-reduced-motion: reduce){
+    .reveal, .reveal.in, *{transition:none !important; animation:none !important;}
+    .reveal{opacity:1; transform:none;}
+  }
+
+  .topnav{
+    padding:1.6rem 6vw;
+    display:flex; align-items:center;
+  }
+  .back-link{
+    display:inline-flex; align-items:center; gap:.5rem;
+    font-size:.85rem; letter-spacing:.04em;
+    color:var(--ink-dim);
+    text-decoration:none;
+    transition:color .3s ease, transform .3s ease;
+  }
+  .back-link:hover{color:var(--ink); transform:translateX(-3px);}
+
+  .hero{
+    padding:2rem 6vw 5rem;
+  }
+  .eyebrow{
+    font-size:.72rem; letter-spacing:.34em; text-transform:uppercase;
+    color:var(--sky); font-weight:500; margin-bottom:1rem;
+  }
+  .hero h1{
+    font-size:clamp(1.9rem, 6vw, 3.4rem);
+    font-weight:600; line-height:1.5;
+    max-width:16em;
+  }
+  .hero p.lead{
+    margin-top:1.4rem;
+    color:var(--ink-dim);
+    max-width:34em;
+  }
+
+  section.qa{
+    padding:0 6vw 5rem;
+    max-width:760px;
+    margin:0 auto;
+  }
+  .qa-item{
+    border-top:1px solid var(--line);
+    padding:3rem 0;
+  }
+  .qa-item:last-child{padding-bottom:0;}
+  .qa-num{
+    font-family:'Shippori Mincho', serif;
+    font-size:.85rem; color:var(--wood); letter-spacing:.1em;
+    margin-bottom:.8rem;
+  }
+  .qa-q{
+    font-family:'Shippori Mincho', serif;
+    font-size:1.35rem; font-weight:600;
+    margin-bottom:1.2rem;
+    line-height:1.6;
+  }
+  .qa-photo{
+    aspect-ratio:16/10;
+    background:var(--panel);
+    border:1px solid var(--line);
+    margin-bottom:1.2rem;
+    display:flex; align-items:center; justify-content:center;
+    overflow:hidden;
+  }
+  .qa-photo img{width:100%; height:100%; object-fit:cover;}
+  .gallery-placeholder{
+    display:flex; flex-direction:column; align-items:center; gap:.7rem;
+    color:var(--ink-dim);
+  }
+  .gallery-placeholder svg{width:32px; height:32px; stroke:var(--line-strong); fill:none; stroke-width:1.2;}
+  .gallery-placeholder span{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase;}
+  .qa-a{
+    color:var(--ink-dim);
+    font-size:1rem;
+  }
+  .qa-a.placeholder{
+    font-style:normal;
+    color:var(--ink-dim);
+    border:1px dashed var(--line-strong);
+    padding:1rem 1.2rem;
+    background:var(--panel);
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:2.4rem 6vw;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:1rem;
+    font-size:.78rem; color:var(--ink-dim); letter-spacing:.05em;
+  }
+
+  ::selection{background:var(--wood); color:var(--bg);}
+</style>
+</head>
+<body>
+
+<div class="topnav">
+  <a class="back-link reveal" href="new-home.html">← トップページに戻る</a>
+</div>
+
+<section class="hero">
+  <div class="eyebrow reveal">Owner's Interview</div>
+  <h1 class="reveal d1">私たちが、<br>この家に決めた理由。</h1>
+  <p class="lead reveal d2">土地選びから間取りの工夫まで、家づくりを通して考えたことを、自分たちの言葉でまとめました。写真と回答は、これから少しずつ追加していきます。</p>
+</section>
+
+<section class="qa">
+
+  <div class="qa-item reveal">
+    <div class="qa-num">Q1</div>
+    <div class="qa-q">なぜこの土地を選んだのですか？</div>
+    <div class="qa-photo">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
+        <span>写真準備中</span>
+      </div>
+    </div>
+    <p class="qa-a placeholder">（ここに回答を入力してください）</p>
+  </div>
+
+  <div class="qa-item reveal">
+    <div class="qa-num">Q2</div>
+    <div class="qa-q">間取りで一番こだわったポイントは？</div>
+    <div class="qa-photo">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
+        <span>写真準備中</span>
+      </div>
+    </div>
+    <p class="qa-a placeholder">（ここに回答を入力してください）</p>
+  </div>
+
+  <div class="qa-item reveal">
+    <div class="qa-num">Q3</div>
+    <div class="qa-q">プロジェクタールームやオールラウンドカウンターなど、遊び心のある設備を入れた理由は？</div>
+    <div class="qa-photo">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
+        <span>写真準備中</span>
+      </div>
+    </div>
+    <p class="qa-a placeholder">（ここに回答を入力してください）</p>
+  </div>
+
+  <div class="qa-item reveal">
+    <div class="qa-num">Q4</div>
+    <div class="qa-q">工務店・ハウスメーカーとのやり取りで印象に残っていることは？</div>
+    <div class="qa-photo">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
+        <span>写真準備中</span>
+      </div>
+    </div>
+    <p class="qa-a placeholder">（ここに回答を入力してください）</p>
+  </div>
+
+  <div class="qa-item reveal">
+    <div class="qa-num">Q5</div>
+    <div class="qa-q">新しい家での暮らしで、一番楽しみにしていることは？</div>
+    <div class="qa-photo">
+      <div class="gallery-placeholder">
+        <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
+        <span>写真準備中</span>
+      </div>
+    </div>
+    <p class="qa-a placeholder">（ここに回答を入力してください）</p>
+  </div>
+
+</section>
+
+<footer>
+  <span>OUR NEW HOME</span>
+  <a class="back-link" href="new-home.html">← トップページに戻る</a>
+</footer>
+
+<script>
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+    });
+  }, {threshold:.18});
+  revealEls.forEach(el=>io.observe(el));
+</script>
+
+</body>
+</html>
