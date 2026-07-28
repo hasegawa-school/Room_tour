@@ -796,7 +796,7 @@
     box-sizing:border-box;
     font-size: min(3.4vw, 2.6rem);
     font-weight:600;
-    max-width:22em;
+    max-width:52rem;
     margin:0 auto 1.6rem;
     line-height:1.7;
   }
@@ -810,6 +810,25 @@
   }
 
   ::selection{background:var(--wood); color:var(--bg);}
+
+  /* トップに戻るボタン */
+  .to-top{
+    position:fixed; right:1.4rem; bottom:1.4rem; z-index:40;
+    width:48px; height:48px; border-radius:50%;
+    background:var(--ink); color:var(--bg);
+    border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 14px 30px -12px rgba(42,36,30,.45);
+    opacity:0; pointer-events:none;
+    transform:translateY(12px);
+    transition:opacity .35s ease, transform .35s ease;
+  }
+  .to-top.visible{opacity:1; pointer-events:auto;}
+  .to-top:hover{transform:translateY(-3px);}
+  .to-top svg{width:20px; height:20px; stroke:var(--bg); fill:none; stroke-width:2;}
+  @media (max-width:640px){
+    .to-top{right:1rem; bottom:1rem; width:44px; height:44px;}
+  }
 </style>
 </head>
 <body>
@@ -1124,17 +1143,21 @@
   <span>Plan &amp; Elevation Drawings, 2026</span>
 </footer>
 
+<button class="to-top" id="toTopBtn" aria-label="ページの一番上に戻る">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
+
 <script>
   // ---- タイトル/コメントを実測して確実に1行ずつ収める ----
   function fitLinesToWidth(containerSelector){
     document.querySelectorAll(containerSelector).forEach(container=>{
       const lines = container.querySelectorAll(':scope > span.line');
       if(!lines.length) return;
-      const available = container.clientWidth;
-      if(available <= 0) return;
       let size = parseFloat(getComputedStyle(container).fontSize);
       let guard = 0;
       const fits = ()=>{
+        const available = container.clientWidth; // 縮むたびに枠の幅を測り直す
+        if(available <= 0) return true;
         let max = 0;
         lines.forEach(l=>{ max = Math.max(max, l.scrollWidth); });
         return max <= available;
@@ -1162,6 +1185,15 @@
       document.querySelectorAll('.hero h1, .closing .mincho').forEach(el=>{ el.style.fontSize = ''; });
       fitAllTitles();
     }, 200);
+  });
+
+  // ---- トップに戻るボタン ----
+  const toTopBtn = document.getElementById('toTopBtn');
+  window.addEventListener('scroll', ()=>{
+    toTopBtn.classList.toggle('visible', window.scrollY > window.innerHeight * 0.8);
+  }, {passive:true});
+  toTopBtn.addEventListener('click', ()=>{
+    window.scrollTo({top:0, behavior:'smooth'});
   });
 
   // ---- scroll reveal ----
