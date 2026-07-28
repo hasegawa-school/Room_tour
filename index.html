@@ -297,13 +297,18 @@
   .plan-image-stage{position:relative;}
   .photo-layer{
     position:absolute; inset:0; width:100%; height:100%;
-    opacity:0; transition:opacity .5s ease;
-    display:flex; align-items:center; justify-content:center;
+    opacity:0; transition:opacity .6s ease;
     background:var(--panel);
     overflow:hidden;
   }
   .photo-layer.is-visible{opacity:1;}
-  .photo-layer img{width:100%; height:100%; object-fit:cover;}
+  .photo-frame{
+    position:absolute; inset:0; width:100%; height:100%;
+    opacity:0; transition:opacity .6s ease;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .photo-frame.is-active{opacity:1;}
+  .photo-frame img{width:100%; height:100%; object-fit:cover; display:block;}
   .photo-layer .photo-tag{
     position:absolute; bottom:.9rem; left:.9rem; z-index:2;
     background:rgba(20,18,16,.55); color:#F1ECE1;
@@ -311,11 +316,12 @@
     padding:.35rem .7rem;
   }
 
-  /* 間取り図の設備タップポイント */
+  /* 部屋の写真の中の設備タップポイント */
   .spot-layer{
     position:absolute; inset:0; width:100%; height:100%;
     opacity:1; transition:opacity .4s ease;
     pointer-events:none;
+    z-index:3;
   }
   .spot-layer.is-hidden{opacity:0;}
   .spot-dot{
@@ -883,8 +889,12 @@
       <div class="plan-image-wrap reveal">
         <div class="plan-image-stage">
           <img src="images/plan-1f.jpg" alt="1階 間取り図">
-          <div class="photo-layer" id="photoLayer-1"></div>
-          <div class="spot-layer" id="spotLayer-1"></div>
+          <div class="photo-layer" id="photoLayer-1">
+            <div class="photo-frame" data-slot="0"></div>
+            <div class="photo-frame" data-slot="1"></div>
+            <span class="photo-tag" id="photoTag-1"></span>
+          </div>
+          <div class="spot-layer is-hidden" id="spotLayer-1"></div>
         </div>
         <div class="plan-caption" id="planCaption-1">1F PLAN</div>
       </div>
@@ -901,8 +911,12 @@
       <div class="plan-image-wrap reveal">
         <div class="plan-image-stage">
           <img src="images/plan-2f.jpg" alt="2階 間取り図">
-          <div class="photo-layer" id="photoLayer-2"></div>
-          <div class="spot-layer" id="spotLayer-2"></div>
+          <div class="photo-layer" id="photoLayer-2">
+            <div class="photo-frame" data-slot="0"></div>
+            <div class="photo-frame" data-slot="1"></div>
+            <span class="photo-tag" id="photoTag-2"></span>
+          </div>
+          <div class="spot-layer is-hidden" id="spotLayer-2"></div>
         </div>
         <div class="plan-caption" id="planCaption-2">2F PLAN</div>
       </div>
@@ -1083,7 +1097,11 @@
   const roomData = {
     1: [
       {name:'間取り図', icon:'plan', isBlueprint:true, note:'気になる部屋をタップすると、実際の写真に切り替わります。写真が複数ある部屋は、自動でフェード切り替えします。'},
-      {name:'L.D.K', size:'19.6帖', icon:'sofa', note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。', photos:[]},
+      {name:'L.D.K', size:'19.6帖', icon:'sofa', note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。', photos:[],
+        points:[
+          {x:'30%', y:'38%', title:'キッチン', note:'フロントオープン食洗機など、家事を楽にして生活をよりゆたかにしてくれる設備を採用しました。', photos:[]}
+        ]
+      },
       {name:'玄関', size:'', icon:'door', note:'家族と来客、両方の動線が交わる入り口。', photos:[]},
       {name:'SIC', size:'', icon:'storage', note:'玄関に隣接したシューズインクローゼット。', photos:[]},
       {name:'パントリー', size:'', icon:'storage', note:'キッチン奥の食品・道具収納スペース。', photos:[]},
@@ -1108,42 +1126,76 @@
     ]
   };
 
-  // ---- 間取り画像ステージのフェード切り替え ----
+  // ---- 間取り画像ステージのクロスフェード切り替え ----
   const cycleTimers = {};
-  function showStagePhoto(floor, html){
+  const photoState = {1:{active:0}, 2:{active:0}};
+
+  function crossfadeTo(floor, html){
     const layer = document.getElementById('photoLayer-'+floor);
-    layer.classList.remove('is-visible');
-    setTimeout(()=>{
-      layer.innerHTML = html;
-      void layer.offsetWidth;
-      layer.classList.add('is-visible');
-    }, 260);
+    const frames = layer.querySelectorAll('.photo-frame');
+    const state = photoState[floor];
+    const nextIdx = state.active === 0 ? 1 : 0;
+    frames[nextIdx].innerHTML = html;
+    void frames[nextIdx].offsetWidth; // reflow
+    frames[nextIdx].classList.add('is-active');
+    frames[state.active].classList.remove('is-active');
+    state.active = nextIdx;
+    layer.classList.add('is-visible');
   }
   function hideStagePhoto(floor){
     clearInterval(cycleTimers[floor]);
-    const layer = document.getElementById('photoLayer-'+floor);
-    layer.classList.remove('is-visible');
+    document.getElementById('photoLayer-'+floor).classList.remove('is-visible');
   }
+
+  function renderRoomSpots(floor, room){
+    const layer = document.getElementById('spotLayer-'+floor);
+    layer.innerHTML = '';
+    const points = room.points || [];
+    if(points.length === 0){
+      layer.classList.add('is-hidden');
+      return;
+    }
+    layer.classList.remove('is-hidden');
+    points.forEach(point=>{
+      const dot = document.createElement('button');
+      dot.className = 'spot-dot';
+      dot.style.left = point.x;
+      dot.style.top = point.y;
+      dot.setAttribute('aria-label', point.title);
+      dot.addEventListener('click', (e)=>{
+        e.stopPropagation();
+        openSpotSheet(point);
+      });
+      layer.appendChild(dot);
+    });
+  }
+
   function selectRoom(floor, room){
     clearInterval(cycleTimers[floor]);
     const caption = document.getElementById('planCaption-'+floor);
+    const tag = document.getElementById('photoTag-'+floor);
     const spotLayer = document.getElementById('spotLayer-'+floor);
+
     if(room.isBlueprint){
       hideStagePhoto(floor);
       caption.textContent = floor+'F PLAN';
-      spotLayer.classList.remove('is-hidden');
+      spotLayer.innerHTML = '';
+      spotLayer.classList.add('is-hidden'); // 間取り図は見るだけ。ポイントは部屋の写真側に表示します
       return;
     }
-    spotLayer.classList.add('is-hidden');
+
     caption.textContent = room.name;
+    tag.textContent = room.name;
+    renderRoomSpots(floor, room);
+
     const photos = room.photos || [];
     if(photos.length === 0){
-      showStagePhoto(floor, `<div class="gallery-placeholder">${placeholderSvg}<span>写真準備中</span></div><span class="photo-tag">${room.name}</span>`);
+      crossfadeTo(floor, `<div class="gallery-placeholder">${placeholderSvg}<span>写真準備中</span></div>`);
       return;
     }
     let idx = 0;
     const render = ()=>{
-      showStagePhoto(floor, `<img src="${photos[idx]}" alt="${room.name}"><span class="photo-tag">${room.name}</span>`);
+      crossfadeTo(floor, `<img src="${photos[idx]}" alt="${room.name}">`);
       idx = (idx+1) % photos.length;
     };
     render();
@@ -1184,37 +1236,7 @@
   buildFloor(1);
   buildFloor(2);
 
-  // ---- 間取り図の設備タップポイント ----
-  // 位置は間取り図画像に対する割合(%)です。左上が 0%,0%、右下が 100%,100%。
-  // 実際にページを見ながら x / y の数値を少しずつ調整してください。
-  // photos に "images/○○.jpg" を追加すると、シートを開いたときに写真がフェードで表示されます。
-  const spotsData = {
-    1: [
-      {x:'33%', y:'57%', title:'フロントオープン食洗機', note:'家事を楽にして生活をよりゆたかにしてくれる機械を導入しました。', photos:[]}
-    ],
-    2: [
-      {x:'50%', y:'80%', title:'オールラウンドカウンター', note:'2階ホールに設けた、用途を限定しない造作カウンター。読書や在宅ワークなど、自由に使えます。', photos:[]}
-    ]
-  };
-
-  function buildSpots(floor){
-    const layer = document.getElementById('spotLayer-'+floor);
-    (spotsData[floor] || []).forEach(spot=>{
-      const dot = document.createElement('button');
-      dot.className = 'spot-dot';
-      dot.style.left = spot.x;
-      dot.style.top = spot.y;
-      dot.setAttribute('aria-label', spot.title);
-      dot.addEventListener('click', (e)=>{
-        e.stopPropagation();
-        openSpotSheet(spot);
-      });
-      layer.appendChild(dot);
-    });
-  }
-  buildSpots(1);
-  buildSpots(2);
-
+  // ---- 設備タップポイントのボトムシート ----
   const spotSheet = document.getElementById('spotSheet');
   const spotSheetPhoto = document.getElementById('spotSheetPhoto');
   const spotSheetTitle = document.getElementById('spotSheetTitle');
@@ -1236,6 +1258,7 @@
   document.getElementById('spotSheetClose').addEventListener('click', closeSpotSheet);
   document.getElementById('spotSheetBackdrop').addEventListener('click', closeSpotSheet);
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeSpotSheet(); });
+
 
   // ---- construction gallery ----
   // 写真が用意でき次第、各項目の image に "images/○○.jpg" を指定してください（null の間はプレースホルダー表示）
