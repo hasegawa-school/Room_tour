@@ -122,7 +122,7 @@
     animation-delay:1.9s;
   }
   .hero h1{
-    font-size:clamp(1.8rem, 9vw, 6.2rem);
+    font-size: min(8.5vw, 6.2rem);
     font-weight:600;
     letter-spacing:.03em;
     line-height:1.25;
@@ -269,9 +269,25 @@
   .concept-photo.cg-2{transform:translateY(-2.2rem);}
   .concept-photo.cg-2:hover{transform:translateY(-2.9rem);}
   @media (max-width:720px){
-    .concept-gallery{flex-direction:column; margin-top:2.6rem;}
-    .concept-photo{aspect-ratio:16/10;}
+    .concept-gallery{
+      flex-direction:row;
+      margin:2.6rem -6vw 0;
+      padding:0 6vw 1.2rem;
+      overflow-x:auto;
+      scroll-snap-type:x proximity;
+      align-items:stretch;
+      scrollbar-width:none;
+    }
+    .concept-gallery::-webkit-scrollbar{display:none;}
+    .concept-photo{
+      flex:none;
+      width:68vw;
+      aspect-ratio:3/4;
+      scroll-snap-align:start;
+      transition:transform .25s ease, box-shadow .25s ease;
+    }
     .concept-photo.cg-2, .concept-photo.cg-2:hover{transform:none;}
+    .concept-photo:active{transform:scale(.96);}
   }
 
   /* exterior */
@@ -771,7 +787,7 @@
     padding-top:7rem; padding-bottom:7rem;
   }
   .closing .mincho{
-    font-size:clamp(1.15rem, 4.4vw, 2.6rem);
+    font-size: min(4.4vw, 2.6rem);
     font-weight:600;
     max-width:18em;
     margin:0 auto 1.6rem;
