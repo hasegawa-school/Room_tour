@@ -432,8 +432,6 @@
   .room-slider-wrap{
     position:relative;
     overflow:hidden;
-    padding:10px;
-    margin:-10px;
     touch-action:pan-y;
   }
   .room-slider{
@@ -446,6 +444,7 @@
     display:flex;
     flex-direction:column;
     gap:1.6rem;
+    padding:10px;
   }
   .room-slide-card{
     display:flex; gap:1.4rem; align-items:flex-start;
@@ -967,7 +966,7 @@
     </div>
   </div>
   <p class="reveal d1" style="color:var(--ink-dim); max-width:34em; margin-bottom:2.6rem;">
-    指やマウスで左右にドラッグすると、昼と夜の表情を見比べられます。
+    昼と夜、それぞれに違う表情を見せるファサード。
   </p>
   <div class="compare-wrap reveal d2" id="exteriorSliderWrap">
     <div class="compare-base">
@@ -1082,7 +1081,7 @@
     </div>
   </div>
   <p class="reveal d1" style="color:var(--ink-dim); max-width:34em; margin-bottom:3rem;">
-    地鎮祭から完成まで、この場所が家になっていく過程を残していきます。写真はこれから随時追加予定です。カードをクリックすると大きく表示できます。
+    地鎮祭から完成まで、この場所が家になっていく過程を残していきます。
   </p>
   <div class="reveal d2">
     <div class="gallery-progress"><div class="gallery-progress-fill" id="galleryProgressFill"></div></div>
@@ -1353,7 +1352,7 @@
   // 2枚以上入れると、自動でフェードしながら切り替わるミニスライドショーになります。
   const roomData = {
     1: [
-      {name:'間取り図', icon:'plan', isBlueprint:true, note:'指で横にスワイプすると、各部屋の写真を見ていけます。右下の「・」でも選べます。'},
+      {name:'間取り図', icon:'plan', isBlueprint:true, note:'玄関からLDK、水まわりまで、生活動線を短くまとめた1階のフロア。', photos:[]},
       {name:'玄関', size:'', icon:'door', note:'家族と来客、両方の動線が交わる入り口。', photos:[]},
       {name:'ホール', size:'', icon:'hall', note:'各roomをつなぐ回遊動線。', photos:[]},
       {name:'L.D.K', size:'19.6帖', icon:'sofa', note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。', photos:[],
@@ -1367,7 +1366,7 @@
       {name:'庭', size:'', icon:'window', note:'お手入れいらずで一年中きれいな緑を保てる、広めの人工芝の庭。', photos:[]}
     ],
     2: [
-      {name:'間取り図', icon:'plan', isBlueprint:true, note:'指で横にスワイプすると、各部屋の写真を見ていけます。右下の「・」でも選べます。'},
+      {name:'間取り図', icon:'plan', isBlueprint:true, note:'吹き抜けを中心に、主寝室と2つの洋室を配置した2階のフロア。', photos:[]},
       {name:'ホール', size:'', icon:'hall', note:'吹き抜けを見下ろす回遊廊下。オールラウンドカウンターも設けています。', photos:[]},
       {name:'主寝室', size:'7.0帖', icon:'bed', note:'WICと隣接した、フロア最奥のプライベート空間。', photos:[]},
       {name:'洋室①', size:'4.8帖', icon:'bed', note:'吹き抜け側に面した個室。', photos:[]},
@@ -1378,7 +1377,7 @@
 
   // ---- 部屋スライダーの構築 ----
   const cycleTimers = {};
-  const sliderIndex = {1:0, 2:0};
+  const domIndex = {}; // DOM上の現在位置(先頭にラスト複製が1つ入るため、実インデックス+1)
 
   function primePhotoLayer(layer, room){
     const frames = layer.querySelectorAll('.photo-frame');
@@ -1408,99 +1407,148 @@
     }, 3600);
   }
 
+  function createRoomSlideEl(floor, room){
+    const slide = document.createElement('div');
+    slide.className = 'room-slide';
+
+    const card = document.createElement('div');
+    card.className = 'room-slide-card';
+    card.innerHTML = `
+      <div class="room-icon">${iconSvg(room.icon)}</div>
+      <div>
+        <h4>${room.name}</h4>
+        ${room.size ? `<div class="room-size">${room.size}</div>` : ''}
+        <p>${room.note}</p>
+      </div>`;
+    slide.appendChild(card);
+
+    const photoWrap = document.createElement('div');
+    photoWrap.className = 'room-slide-photo';
+    const stage = document.createElement('div');
+
+    if(room.isBlueprint){
+      stage.className = 'plan-image-stage blueprint-stage';
+      const img = document.createElement('img');
+      img.src = floor === '2' || floor === 2 ? 'images/plan-2f.jpg' : 'images/plan-1f.jpg';
+      img.alt = floor + '階 間取り図';
+      stage.appendChild(img);
+    } else {
+      stage.className = 'plan-image-stage photo-stage';
+      const layer = document.createElement('div');
+      layer.className = 'photo-layer is-visible';
+      layer.innerHTML = '<div class="photo-frame"></div><div class="photo-frame"></div>';
+      stage.appendChild(layer);
+      primePhotoLayer(layer, room);
+
+      if(room.points && room.points.length){
+        const spotLayer = document.createElement('div');
+        spotLayer.className = 'spot-layer';
+        room.points.forEach(point=>{
+          const dot = document.createElement('button');
+          dot.className = 'spot-dot';
+          dot.style.left = point.x;
+          dot.style.top = point.y;
+          dot.setAttribute('aria-label', point.title);
+          dot.addEventListener('click', (e)=>{
+            e.stopPropagation();
+            openSpotSheet(point);
+          });
+          spotLayer.appendChild(dot);
+        });
+        stage.appendChild(spotLayer);
+      }
+    }
+    photoWrap.appendChild(stage);
+    slide.appendChild(photoWrap);
+    return slide;
+  }
+
   function buildRoomSlider(floor){
     const slider = document.getElementById('roomSlider-'+floor);
     const dotsWrap = document.getElementById('roomDots-'+floor);
+    const rooms = roomData[floor];
 
-    roomData[floor].forEach((room, i)=>{
-      const slide = document.createElement('div');
-      slide.className = 'room-slide';
-
-      const card = document.createElement('div');
-      card.className = 'room-slide-card';
-      card.innerHTML = `
-        <div class="room-icon">${iconSvg(room.icon)}</div>
-        <div>
-          <h4>${room.name}</h4>
-          ${room.size ? `<div class="room-size">${room.size}</div>` : ''}
-          <p>${room.note}</p>
-        </div>`;
-      slide.appendChild(card);
-
-      const photoWrap = document.createElement('div');
-      photoWrap.className = 'room-slide-photo';
-      const stage = document.createElement('div');
-
-      if(room.isBlueprint){
-        stage.className = 'plan-image-stage blueprint-stage';
-        const img = document.createElement('img');
-        img.src = floor === '2' || floor === 2 ? 'images/plan-2f.jpg' : 'images/plan-1f.jpg';
-        img.alt = floor + '階 間取り図';
-        stage.appendChild(img);
-      } else {
-        stage.className = 'plan-image-stage photo-stage';
-        const layer = document.createElement('div');
-        layer.className = 'photo-layer is-visible';
-        layer.innerHTML = '<div class="photo-frame"></div><div class="photo-frame"></div>';
-        stage.appendChild(layer);
-        primePhotoLayer(layer, room);
-
-        if(room.points && room.points.length){
-          const spotLayer = document.createElement('div');
-          spotLayer.className = 'spot-layer';
-          room.points.forEach(point=>{
-            const dot = document.createElement('button');
-            dot.className = 'spot-dot';
-            dot.style.left = point.x;
-            dot.style.top = point.y;
-            dot.setAttribute('aria-label', point.title);
-            dot.addEventListener('click', (e)=>{
-              e.stopPropagation();
-              openSpotSheet(point);
-            });
-            spotLayer.appendChild(dot);
-          });
-          stage.appendChild(spotLayer);
-        }
-      }
-      photoWrap.appendChild(stage);
-      slide.appendChild(photoWrap);
-      slider.appendChild(slide);
-
+    // 実スライドを構築
+    rooms.forEach((room, i)=>{
+      slider.appendChild(createRoomSlideEl(floor, room));
       const dot = document.createElement('button');
       dot.className = 'room-dot' + (i === 0 ? ' active' : '');
       dot.setAttribute('aria-label', room.name);
       dot.addEventListener('click', ()=> goToRoomSlide(floor, i));
       dotsWrap.appendChild(dot);
     });
+
+    // 端まで行ったらループできるよう、先頭にラストの複製・末尾に最初の複製を追加
+    slider.insertBefore(createRoomSlideEl(floor, rooms[rooms.length - 1]), slider.firstElementChild);
+    slider.appendChild(createRoomSlideEl(floor, rooms[0]));
+
+    domIndex[floor] = 1;
+    slider.style.transform = 'translateX(-100%)';
+    triggerSlideEffects(floor, 1);
   }
 
-  function goToRoomSlide(floor, index){
+  function triggerSlideEffects(floor, domIdx){
     const slider = document.getElementById('roomSlider-'+floor);
     const rooms = roomData[floor];
-    index = Math.max(0, Math.min(rooms.length - 1, index));
-    sliderIndex[floor] = index;
-    slider.style.transform = `translateX(${-index * 100}%)`;
+    const slideEl = slider.children[domIdx];
+    if(!slideEl) return;
+    let realIndex = domIdx - 1;
+    if(realIndex < 0) realIndex = rooms.length - 1;
+    if(realIndex >= rooms.length) realIndex = 0;
+
     document.querySelectorAll('#roomDots-'+floor+' .room-dot').forEach((d, i)=>{
-      d.classList.toggle('active', i === index);
+      d.classList.toggle('active', i === realIndex);
     });
 
-    // 写真が下からふわっとフェードインする演出(毎回再生)
-    const currentSlide = slider.children[index];
-    const photoEl = currentSlide.querySelector('.room-slide-photo');
-    if(photoEl){
-      photoEl.classList.remove('photo-rise-anim');
-      void photoEl.offsetWidth;
-      photoEl.classList.add('photo-rise-anim');
-    }
+    // 部屋名・写真、すべてをふわっとフェードで表示
+    ['.room-slide-card', '.room-slide-photo'].forEach(sel=>{
+      const el = slideEl.querySelector(sel);
+      if(!el) return;
+      el.classList.remove('photo-rise-anim');
+      void el.offsetWidth;
+      el.classList.add('photo-rise-anim');
+    });
 
     clearInterval(cycleTimers[floor]);
-    const room = rooms[index];
+    const room = rooms[realIndex];
     if(!room.isBlueprint){
-      const stage = currentSlide.querySelector('.plan-image-stage');
-      const layer = stage.querySelector('.photo-layer');
+      const layer = slideEl.querySelector('.photo-layer');
       if(layer) startCycle(floor, layer, room);
     }
+  }
+
+  function moveTo(floor, targetDomIdx, animate){
+    const slider = document.getElementById('roomSlider-'+floor);
+    domIndex[floor] = targetDomIdx;
+    if(!animate){
+      slider.style.transition = 'none';
+    }
+    slider.style.transform = `translateX(${-targetDomIdx * 100}%)`;
+    if(!animate){
+      void slider.offsetWidth; // reflow して即座に反映
+      slider.style.transition = '';
+    }
+    triggerSlideEffects(floor, targetDomIdx);
+  }
+
+  function goToRoomSlide(floor, realIndex){
+    const rooms = roomData[floor];
+    realIndex = ((realIndex % rooms.length) + rooms.length) % rooms.length;
+    moveTo(floor, realIndex + 1, true);
+  }
+
+  function attachLoopHandling(floor){
+    const slider = document.getElementById('roomSlider-'+floor);
+    const rooms = roomData[floor];
+    slider.addEventListener('transitionend', (e)=>{
+      if(e.propertyName !== 'transform') return;
+      const idx = domIndex[floor];
+      if(idx === 0){
+        moveTo(floor, rooms.length, false); // 先頭の複製 → 本物の最後尾へ瞬間移動
+      } else if(idx === rooms.length + 1){
+        moveTo(floor, 1, false); // 末尾の複製 → 本物の先頭へ瞬間移動
+      }
+    });
   }
 
   function attachSwipe(floor){
@@ -1516,7 +1564,7 @@
       if(!dragging || startX === null) return;
       const diff = e.clientX - startX;
       if(Math.abs(diff) > 40){
-        goToRoomSlide(floor, sliderIndex[floor] + (diff < 0 ? 1 : -1));
+        moveTo(floor, domIndex[floor] + (diff < 0 ? 1 : -1), true);
       }
       dragging = false;
       startX = null;
@@ -1528,6 +1576,8 @@
 
   buildRoomSlider(1);
   buildRoomSlider(2);
+  attachLoopHandling(1);
+  attachLoopHandling(2);
   attachSwipe(1);
   attachSwipe(2);
 
