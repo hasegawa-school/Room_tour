@@ -899,7 +899,7 @@
 
 <section class="hero">
   <div class="hero-slider" id="heroSlider">
-    <div class="hero-slide"><img src="images/exterior.jpg" alt="新しい家の外観パース"></div>
+    <div class="hero-slide"><img src="images/exterior/exterior.jpg" alt="新しい家の外観パース"></div>
     <div class="hero-slide is-placeholder">
       <div class="gallery-placeholder">
         <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
@@ -923,7 +923,7 @@
 </section>
 
 <section id="concept" class="photo-section">
-  <div class="photo-bg" style="background-image:url('images/exterior.jpg')"></div>
+  <div class="photo-bg" style="background-image:url('images/exterior/exterior.jpg')"></div>
   <div class="photo-scrim"></div>
   <div class="section-head reveal">
     <div>
@@ -931,7 +931,7 @@
       <h2>静けさと、風通しのいい家。</h2>
     </div>
   </div>
-  <!-- 写真が用意でき次第、各カードのプレースホルダーを <img src="images/○○.jpg" alt="..."> に差し替えてください -->
+  <!-- 写真が用意でき次第、各カードのプレースホルダーを <img src="images/concept/○○.jpg" alt="..."> に差し替えてください -->
   <div class="concept-gallery">
     <div class="concept-photo cg-1 reveal-left d1">
       <div class="gallery-placeholder">
@@ -991,14 +991,14 @@
   </p>
   <div class="compare-wrap reveal d2" id="exteriorSliderWrap">
     <div class="compare-base">
-      <!-- 夜の写真が用意でき次第、下のプレースホルダーを <img src="images/exterior-night.jpg" alt="外観（夜）"> に差し替えてください -->
+      <!-- 夜の写真が用意でき次第、下のプレースホルダーを <img src="images/exterior/exterior-night.jpg" alt="外観（夜）"> に差し替えてください -->
       <div class="gallery-placeholder">
         <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
         <span>夜の写真 準備中</span>
       </div>
     </div>
     <div class="compare-top" id="exteriorSliderTop">
-      <img src="images/exterior.jpg" alt="新しい家の外観パース（昼）">
+      <img src="images/exterior/exterior.jpg" alt="新しい家の外観パース（昼）">
     </div>
     <div class="compare-handle" id="exteriorSliderHandle"></div>
     <span class="compare-label compare-label-left">昼</span>
@@ -1020,6 +1020,7 @@
   <p class="reveal d1" style="color:var(--ink-dim); max-width:34em; margin-bottom:3rem;">
     間取りの随所に、ちょっと遊び心のある仕掛け（＝ギミック）を散りばめました。
   </p>
+  <!-- 写真が用意でき次第、各カードのプレースホルダーを <img src="images/features/○○.jpg" alt="..."> に差し替えてください -->
   <div class="feature-grid">
     <div class="feature-card reveal d1">
       <div class="feature-thumb">
@@ -1347,7 +1348,7 @@
     return '<svg viewBox="0 0 24 24">'+(icons[name]||icons.hall)+'</svg>';
   }
 
-  // 各部屋の photos に "images/○○.jpg" を追加すると、その部屋の写真としてフェードで表示します。
+  // 各部屋の photos に "images/plan/○○.jpg" を追加すると、その部屋の写真としてフェードで表示します。
   // 2枚以上入れると、自動でフェードしながら切り替わるミニスライドショーになります。
   const roomData = {
     1: [
@@ -1470,7 +1471,7 @@
     if(room.isBlueprint){
       stage.className = 'plan-image-stage blueprint-stage';
       const img = document.createElement('img');
-      img.src = floor === '2' || floor === 2 ? 'images/plan-2f.jpg' : 'images/plan-1f.jpg';
+      img.src = floor === '2' || floor === 2 ? 'images/plan/plan-2f.jpg' : 'images/plan/plan-1f.jpg';
       img.alt = floor + '階 間取り図';
       stage.appendChild(img);
     } else {
@@ -1686,15 +1687,15 @@
 
   // ---- 近隣施設リスト(近い順・タップで詳細表示) ----
   const accessData = [
-    {name:'カフェALTERNA', minutes:0.5, time:'徒歩 30秒', note:'歩いてすぐの距離にあるカフェ。朝のコーヒーや、ちょっとした息抜きにも便利です。', photos:['images/access-cafe-alterna.jpg'],
+    {name:'カフェALTERNA', minutes:0.5, time:'徒歩 30秒', note:'歩いてすぐの距離にあるカフェ。朝のコーヒーや、ちょっとした息抜きにも便利です。', photos:['images/access/cafe-alterna.jpg'],
       icon:'<path d="M4 8h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V8z"/><path d="M17 9h2a2 2 0 0 1 0 4h-2"/><path d="M8 3c0 1-1 1-1 2s1 1 1 2M12 3c0 1-1 1-1 2s1 1 1 2"/>'},
-    {name:'麺屋くまがい', minutes:4, time:'徒歩 4分', note:'近所で評判のラーメン店。忙しい日の夕食にも頼れる存在です。', photos:['images/access-ramen-kumagai.jpg'],
+    {name:'麺屋くまがい', minutes:4, time:'徒歩 4分', note:'近所で評判のラーメン店。忙しい日の夕食にも頼れる存在です。', photos:['images/access/ramen-kumagai.jpg'],
       icon:'<path d="M4 10c0 5 3.5 9 8 9s8-4 8-9"/><path d="M3 10h18"/><path d="M8 10c0-2 .5-4 1-5M12 10c0-2.5.3-4.5 .8-6M16 10c0-2-.3-4-1-5"/>'},
-    {name:'西山小学校', minutes:5, time:'徒歩 5分', note:'徒歩圏内にある小学校。子どもの通学も安心です。', photos:['images/access-school.jpg'],
+    {name:'西山小学校', minutes:5, time:'徒歩 5分', note:'徒歩圏内にある小学校。子どもの通学も安心です。', photos:['images/access/school.jpg'],
       icon:'<path d="M4 21V9l8-5 8 5v12"/><path d="M4 21h16M9 21v-6h6v6"/><path d="M9 12h.01M15 12h.01"/>'},
-    {name:'ファミリーマート鶴ケ谷店', minutes:7, time:'徒歩 7分', note:'日用品や食料品がすぐ手に入る、近所のコンビニエンスストア。', photos:['images/access-familymart.jpg'],
+    {name:'ファミリーマート鶴ケ谷店', minutes:7, time:'徒歩 7分', note:'日用品や食料品がすぐ手に入る、近所のコンビニエンスストア。', photos:['images/access/familymart.jpg'],
       icon:'<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>'},
-    {name:'東仙台駅', minutes:12, time:'徒歩 12分', note:'通勤・通学に便利な最寄り駅。', photos:['images/access-station.jpg'],
+    {name:'東仙台駅', minutes:12, time:'徒歩 12分', note:'通勤・通学に便利な最寄り駅。', photos:['images/access/station.jpg'],
       icon:'<rect x="5" y="3" width="14" height="13" rx="3"/><path d="M5 13h14M9 21l-2-2M15 21l2-2"/><circle cx="9" cy="9.5" r="1"/><circle cx="15" cy="9.5" r="1"/>'}
   ];
 
@@ -1722,7 +1723,7 @@
 
 
   // ---- construction gallery ----
-  // 写真が用意でき次第、各項目の image に "images/○○.jpg" を指定してください（null の間はプレースホルダー表示）
+  // 写真が用意でき次第、各項目の image に "images/gallery/○○.jpg" を指定してください（null の間はプレースホルダー表示）
   const milestones = [
     {date:'2026.—', stage:'地鎮祭', note:'土地に感謝し、工事の無事を祈願。', image:null},
     {date:'2026.—', stage:'基礎工事', note:'配筋・コンクリート打設。家の土台ができる工程。', image:null},
