@@ -418,8 +418,9 @@
   .spot-sheet-close{
     position:absolute; top:1rem; right:1rem;
     width:36px; height:36px; border-radius:50%;
-    border:1px solid var(--line-strong); background:transparent; color:var(--ink);
+    border:1px solid var(--line-strong); background:var(--bg); color:var(--ink);
     cursor:pointer; font-size:1rem; line-height:1;
+    z-index:5;
   }
   .spot-sheet-photo{
     aspect-ratio:4/3;
@@ -428,6 +429,8 @@
     margin-bottom:1.2rem;
     display:flex; align-items:center; justify-content:center;
     overflow:hidden;
+    position:relative;
+    z-index:1;
   }
   .spot-sheet-photo img{width:100%; height:100%; object-fit:cover;}
   .spot-sheet-photo .fade-in{opacity:0; animation:spotPhotoIn .6s ease forwards;}
@@ -621,17 +624,20 @@
     transform:scale(.96);
     transition:transform .35s cubic-bezier(.22,.61,.36,1);
     box-shadow:0 40px 90px -30px rgba(0,0,0,.7);
+    z-index:1;
   }
   .lightbox.open img{transform:scale(1);}
   .lightbox-caption{
     position:absolute; bottom:6vh; left:0; right:0; text-align:center;
     color:rgba(241,236,225,.78); font-size:.86rem; letter-spacing:.04em;
+    z-index:2;
   }
   .lightbox-close{
     position:absolute; top:5vh; right:6vw;
     background:none; border:1px solid rgba(241,236,225,.32); color:#F1ECE1;
     width:40px; height:40px; border-radius:50%; cursor:pointer;
     font-size:1rem; line-height:1;
+    z-index:3;
   }
 
   /* special features */
