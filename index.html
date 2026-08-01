@@ -1346,24 +1346,66 @@
   const roomData = {
     1: [
       {name:'間取り図', icon:'plan', isBlueprint:true, note:'玄関からLDK、水まわりまで、生活動線を短くまとめた1階のフロア。', photos:[]},
-      {name:'玄関', size:'', icon:'door', note:'家族と来客、両方の動線が交わる入り口。', photos:[]},
-      {name:'ホール', size:'', icon:'hall', note:'各roomをつなぐ回遊動線。', photos:[]},
-      {name:'L.D.K', size:'19.6帖', icon:'sofa', note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。', photos:[],
+      {name:'玄関', size:'', icon:'door', note:'家族と来客、両方の動線が交わる入り口。', photos:[],
         points:[
-          {x:'30%', y:'38%', title:'キッチン', note:'フロントオープン食洗機など、家事を楽にして生活をよりゆたかにしてくれる設備を採用しました。', photos:[]}
+          {x:'25%', y:'50%', title:'WIC', note:'玄関そばに設けた、来客用の上着や荷物もしまえるウォークインクローゼット。', photos:[]},
+          {x:'72%', y:'32%', title:'ニッチ', note:'ちょっとした飾り棚になるニッチ。季節の小物や鍵置きにも便利です。', photos:[]}
         ]
       },
-      {name:'脱衣室', size:'', icon:'water', note:'洗面と脱衣を兼ねるスペース。', photos:[]},
+      {name:'ホール', size:'', icon:'hall', note:'各roomをつなぐ回遊動線。', photos:[],
+        points:[
+          {x:'50%', y:'55%', title:'ロング洗面台', note:'家族みんなで身支度できる、横に長い洗面台。', photos:[]}
+        ]
+      },
+      {name:'L.D.K', size:'19.6帖', icon:'sofa', note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。', photos:[],
+        points:[
+          {x:'30%', y:'38%', title:'キッチン', note:'フロントオープン食洗機など、家事を楽にして生活をよりゆたかにしてくれる設備を採用しました。', photos:[]},
+          {x:'55%', y:'48%', title:'ペニンシュラキッチン', note:'リビング・ダイニングに向かって開いた、ペニンシュラキッチン。会話をしながら料理ができます。', photos:[]},
+          {x:'78%', y:'28%', title:'間接照明', note:'テレビ裏に仕込んだ間接照明。夜のリビングをやわらかく照らします。', photos:[]}
+        ]
+      },
+      {name:'脱衣室', size:'', icon:'water', note:'洗面と脱衣を兼ねるスペース。', photos:[],
+        points:[
+          {x:'42%', y:'55%', title:'ドラム洗濯機', note:'乾燥までこなせるドラム式洗濯機。家事の時間を短くしてくれます。', photos:[]}
+        ]
+      },
       {name:'WIC', size:'', icon:'storage', note:'玄関そばに設けた大型のウォークインクローゼット。', photos:[]},
-      {name:'トイレ', size:'', icon:'toilet', note:'ホール脇に配置された1階トイレ。', photos:[]},
-      {name:'庭', size:'', icon:'window', note:'お手入れいらずで一年中きれいな緑を保てる、広めの人工芝の庭。', photos:[]}
+      {name:'トイレ', size:'', icon:'toilet', note:'ホール脇に配置された1階トイレ。', photos:[],
+        points:[
+          {x:'62%', y:'40%', title:'隠し収納', note:'間接照明を仕込んだ隠し収納。生活感を見せずにストックできます。', photos:[]}
+        ]
+      },
+      {name:'庭', size:'', icon:'window', note:'お手入れいらずで一年中きれいな緑を保てる、広めの人工芝の庭。', photos:[],
+        points:[
+          {x:'30%', y:'62%', title:'人工芝', note:'お手入れいらずで一年中きれいな緑を保てる人工芝。', photos:[]},
+          {x:'72%', y:'40%', title:'サイクルポート', note:'雨や日差しから自転車を守る、屋根付きのサイクルポート。', photos:[]}
+        ]
+      }
     ],
     2: [
       {name:'間取り図', icon:'plan', isBlueprint:true, note:'吹き抜けを中心に、主寝室と2つの洋室を配置した2階のフロア。', photos:[]},
-      {name:'ホール', size:'', icon:'hall', note:'吹き抜けを見下ろす回遊廊下。オールラウンドカウンターも設けています。', photos:[]},
-      {name:'主寝室', size:'7.0帖', icon:'bed', note:'WICと隣接した、フロア最奥のプライベート空間。', photos:[]},
-      {name:'洋室①', size:'4.8帖', icon:'bed', note:'吹き抜け側に面した個室。', photos:[]},
-      {name:'洋室②', size:'4.8帖', icon:'bed', note:'もう一部屋の個室。将来の子ども部屋にも。', photos:[]},
+      {name:'ホール', size:'', icon:'hall', note:'吹き抜けを見下ろす回遊廊下。オールラウンドカウンターも設けています。', photos:[],
+        points:[
+          {x:'65%', y:'48%', title:'オールラウンドカウンター', note:'花火が見えるほど眺めのいい、2階ホールのオールラウンドカウンター。', photos:[]},
+          {x:'32%', y:'25%', title:'吹き抜け', note:'1階と光をつなぐ、家のいちばんの見せ場となる吹き抜け。', photos:[]}
+        ]
+      },
+      {name:'主寝室', size:'7.0帖', icon:'bed', note:'WICと隣接した、フロア最奥のプライベート空間。', photos:[],
+        points:[
+          {x:'50%', y:'25%', title:'プロジェクター', note:'壁面に投影して映画や映像を楽しめる、主寝室のプロジェクター。', photos:[]},
+          {x:'72%', y:'55%', title:'カウンター', note:'読書や作業に使える、主寝室に設けたカウンター。', photos:[]}
+        ]
+      },
+      {name:'洋室①', size:'4.8帖', icon:'bed', note:'吹き抜け側に面した個室。', photos:[],
+        points:[
+          {x:'75%', y:'40%', title:'収納', note:'個室に備え付けた収納スペース。', photos:[]}
+        ]
+      },
+      {name:'洋室②', size:'4.8帖', icon:'bed', note:'もう一部屋の個室。将来の子ども部屋にも。', photos:[],
+        points:[
+          {x:'50%', y:'30%', title:'縦滑り窓＋FIX窓', note:'換気用の縦滑り窓と、採光用のFIX窓を組み合わせた窓まわり。', photos:[]}
+        ]
+      },
       {name:'収納', size:'', icon:'storage', note:'洋室そばの共用収納。', photos:[]}
     ]
   };
