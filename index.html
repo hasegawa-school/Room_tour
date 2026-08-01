@@ -531,13 +531,6 @@
   .panel-fade-anim{
     animation:panelFadeUp .8s cubic-bezier(.22,.61,.36,1);
   }
-  @keyframes photoRiseIn{
-    from{opacity:0; transform:translateY(28px);}
-    to{opacity:1; transform:translateY(0);}
-  }
-  .photo-rise-anim{
-    animation:photoRiseIn .6s cubic-bezier(.22,.61,.36,1);
-  }
 
   /* construction gallery */
   .gallery-progress{
@@ -801,7 +794,7 @@
   .access-name{font-family:'Shippori Mincho', serif; font-size:1.05rem; font-weight:600;}
   .access-time{color:var(--wood); font-size:.85rem; margin-top:.15rem;}
   .map-wrap{
-    aspect-ratio:16/10;
+    aspect-ratio:1/1;
     border:1px solid var(--line);
     overflow:hidden;
   }
@@ -1500,15 +1493,6 @@
       d.classList.toggle('active', i === realIndex);
     });
 
-    // 部屋名・写真、すべてをふわっとフェードで表示
-    ['.room-slide-card', '.room-slide-photo'].forEach(sel=>{
-      const el = slideEl.querySelector(sel);
-      if(!el) return;
-      el.classList.remove('photo-rise-anim');
-      void el.offsetWidth;
-      el.classList.add('photo-rise-anim');
-    });
-
     clearInterval(cycleTimers[floor]);
     const room = rooms[realIndex];
     if(!room.isBlueprint){
@@ -1537,17 +1521,22 @@
     moveTo(floor, realIndex + 1, true);
   }
 
+  // ドラッグ開始前に、複製スライド(ループ境界)に留まっていないか必ず補正する
+  function normalizeLoopPosition(floor){
+    const rooms = roomData[floor];
+    const idx = domIndex[floor];
+    if(idx === 0){
+      moveTo(floor, rooms.length, false);
+    } else if(idx === rooms.length + 1){
+      moveTo(floor, 1, false);
+    }
+  }
+
   function attachLoopHandling(floor){
     const slider = document.getElementById('roomSlider-'+floor);
-    const rooms = roomData[floor];
     slider.addEventListener('transitionend', (e)=>{
       if(e.propertyName !== 'transform') return;
-      const idx = domIndex[floor];
-      if(idx === 0){
-        moveTo(floor, rooms.length, false); // 先頭の複製 → 本物の最後尾へ瞬間移動
-      } else if(idx === rooms.length + 1){
-        moveTo(floor, 1, false); // 末尾の複製 → 本物の先頭へ瞬間移動
-      }
+      normalizeLoopPosition(floor);
     });
   }
 
@@ -1555,26 +1544,49 @@
     const wrap = document.getElementById('roomSlider-'+floor).closest('.room-slider-wrap');
     const slider = document.getElementById('roomSlider-'+floor);
     let startX = null;
-    let dragging = false;
+    let startY = null;
     let baseIndex = 0;
     let wrapWidth = 1;
+    let mode = 'idle'; // 'idle' | 'horizontal' | 'vertical'
 
     slider.addEventListener('pointerdown', (e)=>{
+      normalizeLoopPosition(floor); // ループ境界に留まったまま次のドラッグに入らないようにする
       startX = e.clientX;
-      dragging = true;
+      startY = e.clientY;
       baseIndex = domIndex[floor];
       wrapWidth = wrap.clientWidth || 1;
-      slider.style.transition = 'none';
-      slider.setPointerCapture(e.pointerId);
+      mode = 'idle';
     });
     slider.addEventListener('pointermove', (e)=>{
-      if(!dragging || startX === null) return;
-      const diffPx = e.clientX - startX;
-      const diffPercent = (diffPx / wrapWidth) * 100;
+      if(startX === null) return;
+      const dx = e.clientX - startX;
+      const dy = e.clientY - startY;
+
+      if(mode === 'idle'){
+        if(Math.abs(dx) < 6 && Math.abs(dy) < 6) return; // まだ意図が判定できない
+        if(Math.abs(dx) > Math.abs(dy)){
+          // 横方向の意図と判定 → ここからドラッグとして扱う
+          mode = 'horizontal';
+          slider.style.transition = 'none';
+          slider.setPointerCapture(e.pointerId);
+        } else {
+          // 縦スクロールの意図 → 何もせず、ブラウザの縦スクロールに任せる
+          mode = 'vertical';
+          startX = null;
+          return;
+        }
+      }
+      if(mode !== 'horizontal') return;
+      if(e.cancelable) e.preventDefault();
+      const diffPercent = (dx / wrapWidth) * 100;
       slider.style.transform = `translateX(${-baseIndex * 100 + diffPercent}%)`;
     });
     function endDrag(e){
-      if(!dragging || startX === null) return;
+      if(mode !== 'horizontal' || startX === null){
+        startX = null;
+        mode = 'idle';
+        return;
+      }
       const diffPx = e.clientX - startX;
       slider.style.transition = '';
       if(Math.abs(diffPx) > 60){
@@ -1582,13 +1594,14 @@
       } else {
         moveTo(floor, baseIndex, true);
       }
-      dragging = false;
       startX = null;
+      mode = 'idle';
     }
     slider.addEventListener('pointerup', endDrag);
     ['pointercancel','pointerleave'].forEach(evt=>{
       slider.addEventListener(evt, (e)=>{
-        if(dragging){ endDrag(e); }
+        if(mode === 'horizontal'){ endDrag(e); }
+        else { startX = null; mode = 'idle'; }
       });
     });
   }
