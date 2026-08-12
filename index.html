@@ -219,38 +219,6 @@
     .hero-content{padding-bottom:9vh;}
   }
 
-  /* concept — photo background section */
-  .photo-section{
-    position:relative;
-    overflow:hidden;
-    color:#F4F0E5;
-  }
-  .photo-section .photo-bg{
-    position:absolute; inset:-2%;
-    background-size:cover; background-position:center;
-    filter:saturate(1.05) brightness(.88);
-    transform:scale(1.02);
-  }
-  .photo-section .photo-scrim{
-    position:absolute; inset:0;
-    background:linear-gradient(180deg, rgba(20,17,14,.5) 0%, rgba(20,17,14,.68) 55%, rgba(20,17,14,.82) 100%);
-  }
-  .photo-section > *{position:relative; z-index:2;}
-  .photo-section .section-head::after{background:rgba(244,240,229,.35);}
-  .photo-section .section-num{color:rgba(244,240,229,.65);}
-  .photo-section .concept-grid p{color:rgba(244,240,229,.85);}
-  .photo-section .fact{border-bottom-color:rgba(244,240,229,.18);}
-  .photo-section .fact-label{color:#BFDCE8;}
-  .photo-section .concept-facts{
-    border-left:none;
-    padding:1.8rem 2rem;
-    background:rgba(255,255,255,.07);
-    -webkit-backdrop-filter:blur(16px);
-    backdrop-filter:blur(16px);
-    border:1px solid rgba(255,255,255,.16);
-    border-radius:4px;
-  }
-
   /* concept */
   .concept-grid{
     display:grid;
@@ -835,6 +803,28 @@
 
   ::selection{background:var(--wood); color:var(--bg);}
 
+  /* ページ読み込み時のローディング */
+  .page-loader{
+    position:fixed; inset:0; z-index:200;
+    background:var(--bg);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:1.3rem;
+    transition:opacity .6s ease, visibility .6s ease;
+  }
+  .page-loader.is-hidden{opacity:0; visibility:hidden; pointer-events:none;}
+  .loader-mark{
+    width:42px; height:42px;
+    border-radius:50%;
+    border:2px solid var(--line-strong);
+    border-top-color:var(--wood);
+    animation:loaderSpin .9s linear infinite;
+  }
+  @keyframes loaderSpin{ to{transform:rotate(360deg);} }
+  .loader-label{
+    font-size:.7rem; letter-spacing:.34em; text-transform:uppercase;
+    color:var(--ink-dim);
+  }
+
   /* トップに戻るボタン */
   .to-top{
     position:fixed; right:1.4rem; bottom:1.4rem; z-index:40;
@@ -888,6 +878,11 @@
 </head>
 <body>
 
+<div class="page-loader" id="pageLoader">
+  <div class="loader-mark"></div>
+  <div class="loader-label">Loading</div>
+</div>
+
 <button class="toc-toggle" id="tocToggle" aria-label="目次を開く" aria-expanded="false">
   <svg viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
 </button>
@@ -926,9 +921,7 @@
   <div class="scroll-cue"><span class="line"></span>SCROLL</div>
 </section>
 
-<section id="concept" class="photo-section">
-  <div class="photo-bg" style="background-image:url('images/exterior/exterior.jpg')"></div>
-  <div class="photo-scrim"></div>
+<section id="concept">
   <div class="section-head reveal">
     <div>
       <div class="section-num">01 — Concept</div>
@@ -974,19 +967,19 @@
     <div class="concept-facts reveal d2">
       <div class="fact">
         <div class="fact-label">Land Area</div>
-        <div class="fact-value">60坪</div>
+        <div class="fact-value">59.0坪</div>
       </div>
       <div class="fact">
         <div class="fact-label">Total Floor Area</div>
-        <div class="fact-value">38坪</div>
+        <div class="fact-value">38.4坪</div>
       </div>
       <div class="fact">
         <div class="fact-label">Layout</div>
-        <div class="fact-value">3LDK</div>
+        <div class="fact-value">4LDKS</div>
       </div>
       <div class="fact">
         <div class="fact-label">Completion</div>
-        <div class="fact-value">2026.11.30</div>
+        <div class="fact-value">2026.11.24</div>
       </div>
     </div>
   </div>
@@ -1042,10 +1035,20 @@
           <span>写真準備中</span>
         </div>
       </div>
+      <h3>スライディングドア<span class="feature-loc">1F 玄関</span></h3>
+      <p>玄関ドアに採用した、使い勝手のいいスライディングドア。荷物を抱えていても、開け閉めがスムーズです。</p>
+    </div>
+    <div class="feature-card reveal d2">
+      <div class="feature-thumb">
+        <div class="gallery-placeholder">
+          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
+          <span>写真準備中</span>
+        </div>
+      </div>
       <h3>LDKの大開口窓<span class="feature-loc">1F LDK</span></h3>
       <p>LDKに設けた大きな開口窓。庭の緑を室内に取り込み、光と風がたっぷり入る開放的なリビングにしました。</p>
     </div>
-    <div class="feature-card reveal d2">
+    <div class="feature-card reveal d3">
       <div class="feature-thumb">
         <div class="gallery-placeholder">
           <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
@@ -1055,7 +1058,7 @@
       <h3>シアタールーム<span class="feature-loc">2F 主寝室</span></h3>
       <p>壁面を大きなスクリーンにして、映画や映像を楽しめる部屋。照明を落とせば、自宅がそのままホームシアターに変わります。</p>
     </div>
-    <div class="feature-card reveal d3">
+    <div class="feature-card reveal d4">
       <div class="feature-thumb">
         <div class="gallery-placeholder">
           <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
@@ -1064,16 +1067,6 @@
       </div>
       <h3>オールラウンドカウンター<span class="feature-loc">2F ホール</span></h3>
       <p>用途をひとつに決めない、2階ホールのカウンター。読書、在宅ワーク、ちょっとした作業スペースとして、自由に使えます。</p>
-    </div>
-    <div class="feature-card reveal d4">
-      <div class="feature-thumb">
-        <div class="gallery-placeholder">
-          <svg viewBox="0 0 24 24"><path d="M4 5h16v14H4z"/><path d="M4 15l4.5-4.5L12 14l3-3 5 5"/><circle cx="9" cy="9" r="1.4"/></svg>
-          <span>写真準備中</span>
-        </div>
-      </div>
-      <h3>自然を感じる広い芝<span class="feature-loc">1F 庭</span></h3>
-      <p>お手入れいらずで一年中きれいな緑を保てる、広めの人工芝の庭。思いきり走り回れるスペースにもなります。</p>
     </div>
     <div class="feature-card reveal d4">
       <div class="feature-thumb">
@@ -1844,6 +1837,52 @@
   }
 
   initDragSlider('exteriorSliderWrap', 'exteriorSliderTop', 'exteriorSliderHandle');
+
+  // ---- 主要な写真のプリロード & ローディング画面 ----
+  function collectPreloadUrls(){
+    const urls = new Set();
+    Object.values(roomData).forEach(rooms=>{
+      rooms.forEach(room=>{
+        (room.photos || []).forEach(p=>urls.add(p));
+        (room.points || []).forEach(pt=>(pt.photos || []).forEach(p=>urls.add(p)));
+      });
+    });
+    accessData.forEach(a=>(a.photos || []).forEach(p=>urls.add(p)));
+    milestones.forEach(m=>{ if(m.image) urls.add(m.image); });
+    return Array.from(urls);
+  }
+
+  (function initPageLoader(){
+    const loader = document.getElementById('pageLoader');
+    const minDisplayMs = 550;
+    const maxWaitMs = 2500;
+    const startTime = Date.now();
+
+    function hideLoader(){
+      const elapsed = Date.now() - startTime;
+      const wait = Math.max(0, minDisplayMs - elapsed);
+      setTimeout(()=>{ loader.classList.add('is-hidden'); }, wait);
+    }
+
+    const urls = collectPreloadUrls();
+    if(urls.length === 0){
+      hideLoader();
+      return;
+    }
+    let loadedCount = 0;
+    const failSafe = setTimeout(hideLoader, maxWaitMs);
+    urls.forEach(url=>{
+      const img = new Image();
+      img.onload = img.onerror = ()=>{
+        loadedCount++;
+        if(loadedCount >= urls.length){
+          clearTimeout(failSafe);
+          hideLoader();
+        }
+      };
+      img.src = url;
+    });
+  })();
 </script>
 
 </body>
