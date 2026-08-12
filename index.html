@@ -667,7 +667,7 @@
   /* before/after compare slider */
   .compare-wrap{
     position:relative;
-    aspect-ratio:16/10;
+    aspect-ratio:1/1;
     overflow:hidden;
     border:1px solid var(--line);
     user-select:none;
@@ -714,21 +714,23 @@
 
   /* interview teaser */
   .interview-teaser{
-    display:flex; gap:2.4rem; align-items:center; flex-wrap:wrap;
+    display:flex; flex-direction:column; align-items:center;
+    text-align:center;
+    gap:1.8rem;
     background:var(--panel);
     border:1px solid var(--line);
-    padding:2rem;
+    padding:2.6rem 2rem;
   }
   .interview-teaser-photo{
-    flex:none;
-    width:min(220px, 100%);
-    aspect-ratio:4/5;
+    width:100%;
+    max-width:480px;
+    aspect-ratio:16/9;
     background:var(--bg);
     border:1px solid var(--line);
     display:flex; align-items:center; justify-content:center;
   }
-  .interview-teaser-body{flex:1; min-width:240px;}
-  .interview-teaser-body p{color:var(--ink-dim); max-width:34em; margin-bottom:1.4rem;}
+  .interview-teaser-body{max-width:34em;}
+  .interview-teaser-body p{color:var(--ink-dim); margin-bottom:1.4rem;}
   .interview-link{
     display:inline-flex; align-items:center; gap:.5rem;
     background:var(--wood); color:var(--bg);
@@ -1012,7 +1014,6 @@
   </div>
   <div class="exterior-caption reveal d3">
     <span>濃色の塗り壁と、ガレージまわりの木目調パネルを組み合わせた立面。</span>
-    <span>Exterior Perspective</span>
   </div>
 </section>
 
@@ -1273,7 +1274,7 @@
     entries.forEach(e=>{
       if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, {threshold:.18});
+  }, {threshold:0, rootMargin:'0px 0px -22% 0px'});
   revealEls.forEach(el=>io.observe(el));
 
   // ---- placeholder icon (共通) ----

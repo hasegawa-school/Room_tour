@@ -303,7 +303,7 @@
     entries.forEach(e=>{
       if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
     });
-  }, {threshold:.18});
+  }, {threshold:0, rootMargin:'0px 0px -22% 0px'});
   revealEls.forEach(el=>io.observe(el));
 </script>
 
