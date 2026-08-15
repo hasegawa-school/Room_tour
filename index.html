@@ -82,19 +82,22 @@
   }
   .hero-slider{
     position:absolute; inset:0; width:100%; height:100%;
-    display:flex;
-    transition:transform .9s cubic-bezier(.22,.61,.36,1);
-    will-change:transform;
   }
   .hero-slide{
-    position:relative;
-    flex:none;
+    position:absolute; inset:0;
     width:100%; height:100%;
+    opacity:0;
+    transition:opacity 1.6s ease;
   }
+  .hero-slide.is-active{opacity:1; z-index:1;}
+  .hero-slide:first-child{opacity:1;}
   .hero-slide img{
     width:100%; height:100%; object-fit:cover;
-    animation:heroZoom 3.6s cubic-bezier(.22,.61,.36,1) forwards;
     filter:saturate(1.04) brightness(1.02);
+    transform:scale(1.12);
+  }
+  .hero-slide.is-active img{
+    animation:heroZoom 4.2s cubic-bezier(.22,.61,.36,1) forwards;
   }
   .hero-slide.is-placeholder{
     background:var(--panel);
@@ -381,14 +384,19 @@
     background:var(--bg);
     border-radius:18px 18px 0 0;
     padding:1.6rem 1.6rem calc(1.6rem + env(safe-area-inset-bottom, 0px));
-    transform:translateY(100%);
-    transition:transform .4s cubic-bezier(.22,.61,.36,1);
+    transform:translateY(115%);
+    visibility:hidden;
+    transition:transform .4s cubic-bezier(.22,.61,.36,1), visibility 0s linear .4s;
     max-height:80vh; overflow-y:auto;
     box-shadow:0 -20px 60px -20px rgba(42,36,30,.4);
   }
   .spot-sheet.open{pointer-events:auto;}
   .spot-sheet.open .spot-sheet-backdrop{opacity:1;}
-  .spot-sheet.open .spot-sheet-panel{transform:translateY(0);}
+  .spot-sheet.open .spot-sheet-panel{
+    transform:translateY(0);
+    visibility:visible;
+    transition:transform .4s cubic-bezier(.22,.61,.36,1), visibility 0s linear 0s;
+  }
   .spot-sheet-close{
     position:absolute; top:1rem; right:1rem;
     width:36px; height:36px; border-radius:50%;
@@ -597,10 +605,10 @@
     background:rgba(15,13,11,.92);
     display:flex; align-items:center; justify-content:center;
     padding:6vw;
-    opacity:0; pointer-events:none;
-    transition:opacity .35s ease;
+    opacity:0; visibility:hidden; pointer-events:none;
+    transition:opacity .35s ease, visibility 0s linear .35s;
   }
-  .lightbox.open{opacity:1; pointer-events:auto;}
+  .lightbox.open{opacity:1; visibility:visible; pointer-events:auto; transition:opacity .35s ease, visibility 0s linear 0s;}
   .lightbox img{
     max-width:min(900px, 100%); max-height:80vh;
     transform:scale(.96);
@@ -1192,7 +1200,7 @@
   <span>Plan &amp; Elevation Drawings, 2026</span>
 </footer>
 
-<div class="debug-version">Build 2026-08-15 · v4</div>
+<div class="debug-version">Build 2026-08-15 · v5</div>
 
 <button class="to-top" id="toTopBtn" aria-label="ページの一番上に戻る">
   <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -1298,7 +1306,7 @@
   }
   function goToHeroSlide(i){
     heroIndex = (i + heroSlides.length) % heroSlides.length;
-    heroSlider.style.transform = `translateX(${-heroIndex*100}%)`;
+    heroSlides.forEach((slide, idx)=>slide.classList.toggle('is-active', idx===heroIndex));
     heroDots.querySelectorAll('.hero-dot').forEach((d, idx)=>d.classList.toggle('active', idx===heroIndex));
   }
   function startHeroAuto(){
@@ -1307,6 +1315,7 @@
   }
   if(heroSlider && heroSlides.length > 1){
     renderHeroDots();
+    goToHeroSlide(0);
     startHeroAuto();
 
     // swipe support
