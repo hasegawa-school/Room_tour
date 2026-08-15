@@ -316,7 +316,7 @@
     display:flex; align-items:center; justify-content:center;
   }
   .photo-frame.is-active{opacity:1;}
-  .photo-frame img{width:100%; height:100%; object-fit:cover; display:block;}
+  .photo-frame img{width:100%; height:100%; object-fit:cover; display:block; pointer-events:none; -webkit-user-drag:none;}
   .photo-layer .photo-tag{
     position:absolute; bottom:.9rem; left:.9rem; z-index:2;
     background:rgba(20,18,16,.55); color:#F1ECE1;
@@ -421,10 +421,14 @@
     position:relative;
     overflow:hidden;
     touch-action:pan-y;
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    user-select:none;
   }
   .room-slider{
     display:flex;
     transition:transform .55s cubic-bezier(.22,.61,.36,1);
+    touch-action:pan-y;
   }
   .room-slide{
     flex:none;
@@ -446,7 +450,7 @@
     border:1px solid var(--line);
     padding:1.4rem;
   }
-  .room-slide-photo .blueprint-stage img{width:100%; height:auto; display:block;}
+  .room-slide-photo .blueprint-stage img{width:100%; height:auto; display:block; pointer-events:none; -webkit-user-drag:none;}
   .plan-image-stage.photo-stage{aspect-ratio:4/3;}
 
   .room-dots{
@@ -787,6 +791,14 @@
   }
 
   ::selection{background:var(--wood); color:var(--bg);}
+
+  /* iOSの自動リンク化(住所・電話番号などの検出)で色が変わってしまうのを防ぐ */
+  a[x-apple-data-detectors],
+  a[x-apple-data-detectors] *{
+    color: inherit !important;
+    text-decoration: inherit !important;
+    cursor: inherit !important;
+  }
 
   /* ページ読み込み時のローディング */
   .page-loader{
@@ -1170,7 +1182,7 @@
   <span>Plan &amp; Elevation Drawings, 2026</span>
 </footer>
 
-<div class="debug-version">Build 2026-08-15 · v1</div>
+<div class="debug-version">Build 2026-08-15 · v2</div>
 
 <button class="to-top" id="toTopBtn" aria-label="ページの一番上に戻る">
   <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
@@ -1652,7 +1664,14 @@
       const t = e.changedTouches[0];
       onEnd(t.clientX);
     });
-    slider.addEventListener('touchcancel', ()=>{ startX = null; mode = 'idle'; });
+    slider.addEventListener('touchcancel', ()=>{
+      if(mode === 'horizontal'){
+        slider.style.transition = '';
+        moveTo(floor, baseIndex, true);
+      }
+      startX = null;
+      mode = 'idle';
+    });
 
     // マウス操作(PC)
     let mouseDown = false;
