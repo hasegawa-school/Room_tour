@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="format-detection" content="telephone=no, date=no, address=no, email=no, url=no">
 <title>新しい家 | Our New Home</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -549,14 +550,10 @@
     background:var(--panel);
     border:1px solid var(--line);
     display:flex; align-items:center; justify-content:center;
-    transition:border-color .35s ease, transform .35s ease;
   }
-  .gallery-card:hover .gallery-thumb{border-color:var(--sky); transform:translateY(-4px);}
   .gallery-thumb img{
     width:100%; height:100%; object-fit:cover;
-    transition:transform .6s cubic-bezier(.22,.61,.36,1);
   }
-  .gallery-card:hover .gallery-thumb img{transform:scale(1.06);}
   .gallery-placeholder{
     display:flex; flex-direction:column; align-items:center; gap:.7rem;
     color:var(--ink-dim);
@@ -625,11 +622,6 @@
     background:var(--panel);
     border:1px solid var(--line);
     padding:1.6rem;
-    transition:transform .35s ease, box-shadow .35s ease;
-  }
-  .feature-card:hover, .feature-card:active{
-    transform:translateY(-5px);
-    box-shadow:0 30px 50px -30px rgba(42,36,30,.3);
   }
   .feature-thumb{
     aspect-ratio:4/3;
@@ -1312,10 +1304,10 @@
 
     // swipe support
     let touchStartX = null;
-    heroSlider.addEventListener('pointerdown', (e)=>{ touchStartX = e.clientX; });
-    heroSlider.addEventListener('pointerup', (e)=>{
+    heroSlider.addEventListener('touchstart', (e)=>{ touchStartX = e.touches[0].clientX; }, {passive:true});
+    heroSlider.addEventListener('touchend', (e)=>{
       if(touchStartX === null) return;
-      const diff = e.clientX - touchStartX;
+      const diff = e.changedTouches[0].clientX - touchStartX;
       if(Math.abs(diff) > 50){
         goToHeroSlide(heroIndex + (diff < 0 ? 1 : -1));
         startHeroAuto();
@@ -1615,45 +1607,42 @@
     let wrapWidth = 1;
     let mode = 'idle'; // 'idle' | 'horizontal' | 'vertical'
 
-    slider.addEventListener('pointerdown', (e)=>{
+    function onStart(clientX, clientY){
       normalizeLoopPosition(floor); // ループ境界に留まったまま次のドラッグに入らないようにする
-      startX = e.clientX;
-      startY = e.clientY;
+      startX = clientX;
+      startY = clientY;
       baseIndex = domIndex[floor];
       wrapWidth = wrap.clientWidth || 1;
       mode = 'idle';
-    });
-    slider.addEventListener('pointermove', (e)=>{
-      if(startX === null) return;
-      const dx = e.clientX - startX;
-      const dy = e.clientY - startY;
+    }
+    function onMove(clientX, clientY){
+      if(startX === null) return null;
+      const dx = clientX - startX;
+      const dy = clientY - startY;
 
       if(mode === 'idle'){
-        if(Math.abs(dx) < 6 && Math.abs(dy) < 6) return; // まだ意図が判定できない
+        if(Math.abs(dx) < 6 && Math.abs(dy) < 6) return 'wait'; // まだ意図が判定できない
         if(Math.abs(dx) > Math.abs(dy)){
-          // 横方向の意図と判定 → ここからドラッグとして扱う
           mode = 'horizontal';
           slider.style.transition = 'none';
-          slider.setPointerCapture(e.pointerId);
         } else {
-          // 縦スクロールの意図 → 何もせず、ブラウザの縦スクロールに任せる
-          mode = 'vertical';
+          mode = 'vertical'; // 縦スクロールの意図 → ブラウザに任せる
           startX = null;
-          return;
+          return 'vertical';
         }
       }
-      if(mode !== 'horizontal') return;
-      if(e.cancelable) e.preventDefault();
+      if(mode !== 'horizontal') return null;
       const diffPercent = (dx / wrapWidth) * 100;
       slider.style.transform = `translateX(${-baseIndex * 100 + diffPercent}%)`;
-    });
-    function endDrag(e){
+      return 'horizontal';
+    }
+    function onEnd(clientX){
       if(mode !== 'horizontal' || startX === null){
         startX = null;
         mode = 'idle';
         return;
       }
-      const diffPx = e.clientX - startX;
+      const diffPx = clientX - startX;
       slider.style.transition = '';
       if(Math.abs(diffPx) > 60){
         moveTo(floor, baseIndex + (diffPx < 0 ? 1 : -1), true);
@@ -1663,12 +1652,37 @@
       startX = null;
       mode = 'idle';
     }
-    slider.addEventListener('pointerup', endDrag);
-    ['pointercancel','pointerleave'].forEach(evt=>{
-      slider.addEventListener(evt, (e)=>{
-        if(mode === 'horizontal'){ endDrag(e); }
-        else { startX = null; mode = 'idle'; }
-      });
+
+    // タッチ操作(スマホ・iOSでも安定して動くよう touch イベントを使用)
+    slider.addEventListener('touchstart', (e)=>{
+      const t = e.touches[0];
+      onStart(t.clientX, t.clientY);
+    }, {passive:true});
+    slider.addEventListener('touchmove', (e)=>{
+      const t = e.touches[0];
+      const result = onMove(t.clientX, t.clientY);
+      if(result === 'horizontal' && e.cancelable) e.preventDefault();
+    }, {passive:false});
+    slider.addEventListener('touchend', (e)=>{
+      const t = e.changedTouches[0];
+      onEnd(t.clientX);
+    });
+    slider.addEventListener('touchcancel', ()=>{ startX = null; mode = 'idle'; });
+
+    // マウス操作(PC)
+    let mouseDown = false;
+    slider.addEventListener('mousedown', (e)=>{
+      mouseDown = true;
+      onStart(e.clientX, e.clientY);
+    });
+    window.addEventListener('mousemove', (e)=>{
+      if(!mouseDown) return;
+      onMove(e.clientX, e.clientY);
+    });
+    window.addEventListener('mouseup', (e)=>{
+      if(!mouseDown) return;
+      mouseDown = false;
+      onEnd(e.clientX);
     });
   }
 
@@ -1823,18 +1837,28 @@
       handle.style.left = pct + '%';
     }
 
-    wrap.addEventListener('pointerdown', (e)=>{
+    wrap.addEventListener('touchstart', (e)=>{
       dragging = true;
-      wrap.setPointerCapture(e.pointerId);
+      setPosition(e.touches[0].clientX);
+    }, {passive:true});
+    wrap.addEventListener('touchmove', (e)=>{
+      if(!dragging) return;
+      if(e.cancelable) e.preventDefault();
+      setPosition(e.touches[0].clientX);
+    }, {passive:false});
+    ['touchend','touchcancel'].forEach(evt=>{
+      wrap.addEventListener(evt, ()=>{ dragging = false; });
+    });
+
+    wrap.addEventListener('mousedown', (e)=>{
+      dragging = true;
       setPosition(e.clientX);
     });
-    wrap.addEventListener('pointermove', (e)=>{
+    window.addEventListener('mousemove', (e)=>{
       if(!dragging) return;
       setPosition(e.clientX);
     });
-    ['pointerup','pointercancel','pointerleave'].forEach(evt=>{
-      wrap.addEventListener(evt, ()=>{ dragging = false; });
-    });
+    window.addEventListener('mouseup', ()=>{ dragging = false; });
   }
 
   initDragSlider('exteriorSliderWrap', 'exteriorSliderTop', 'exteriorSliderHandle');
