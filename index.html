@@ -531,53 +531,50 @@
   }
 
   .plan-intro{
-    max-width:48em;
+    max-width:760px;
+    margin:1.6rem auto 0;
+    text-align:center;
     color:var(--ink-dim);
-    margin-top:-2rem;
-    margin-bottom:3.4rem;
-    font-size:1rem;
-  }
-
-  .plan-intro strong{
-    color:var(--ink);
-    font-weight:500;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.9rem;
+    line-height:2.05;
+    letter-spacing:.04em;
   }
 
   .plan-tabs{
-    display:inline-flex;
-    gap:0;
-    border:1px solid var(--line-strong);
-    border-radius:100px;
-    padding:.3rem;
-    margin:0 0 3rem;
-    background:rgba(237,234,224,.65);
+    display:flex;
+    justify-content:center;
+    gap:.5rem;
+    margin:2.8rem 0 2.2rem;
   }
 
   .plan-tab{
-    border:none;
+    appearance:none;
+    border:1px solid var(--line-strong);
     background:transparent;
     color:var(--ink-dim);
-    font-family:'Shippori Mincho',serif;
-    font-size:.95rem;
-    letter-spacing:.08em;
-    padding:.6rem 1.7rem;
+    min-width:100px;
+    padding:.72rem 1.45rem;
     border-radius:100px;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.78rem;
+    letter-spacing:.12em;
     cursor:pointer;
     transition:
-      background .35s ease,
-      color .35s ease,
-      transform .35s ease;
+      background .3s ease,
+      color .3s ease,
+      border-color .3s ease,
+      transform .3s ease;
+  }
+
+  .plan-tab:hover{
+    transform:translateY(-1px);
   }
 
   .plan-tab.active{
-    background:var(--wood);
-    color:var(--bg);
-    font-weight:600;
-  }
-
-  .plan-tab:not(.active):hover{
-    color:var(--ink);
-    transform:translateY(-1px);
+    background:var(--ink);
+    color:#fff;
+    border-color:var(--ink);
   }
 
   .plan-panel{
@@ -588,14 +585,11 @@
     display:block;
   }
 
-  /* 間取り図 */
+  /* ---------- floor plan ---------- */
 
   .plan-map-section{
-    display:grid;
-    grid-template-columns:minmax(0,1fr) 250px;
-    gap:3rem;
-    align-items:start;
-    margin-bottom:4rem;
+    width:min(100%,1100px);
+    margin:0 auto;
   }
 
   .plan-map-wrap{
@@ -631,250 +625,119 @@
     pointer-events:none;
   }
 
-  .plan-map-caption{
-    position:absolute;
-    top:1rem;
-    left:1rem;
-    z-index:4;
-    background:rgba(237,234,224,.92);
-    border:1px solid var(--line);
-    padding:.45rem .8rem;
-    font-family:'Shippori Mincho',serif;
-    font-size:.78rem;
-    letter-spacing:.1em;
-    box-shadow:0 10px 24px -18px rgba(42,36,30,.45);
-  }
-
-  .plan-map-hint{
-    position:absolute;
-    left:50%;
-    bottom:1rem;
-    transform:translateX(-50%);
-    z-index:4;
-    background:rgba(42,36,30,.82);
-    color:var(--bg);
-    padding:.5rem 1rem;
-    border-radius:100px;
-    font-size:.7rem;
-    letter-spacing:.08em;
-    white-space:nowrap;
-    pointer-events:none;
-    transition:opacity .5s ease;
-  }
-
-  .plan-map-hint.is-hidden{
-    opacity:0;
-  }
-
   .plan-hotspot{
     position:absolute;
     transform:translate(-50%,-50%);
-    width:auto;
-    min-width:38px;
-    height:38px;
-    border:none;
-    background:none;
+    width:34px;
+    height:34px;
     padding:0;
+    border:0;
+    background:transparent;
     cursor:pointer;
     pointer-events:auto;
     z-index:3;
   }
 
   .plan-hotspot-inner{
-    position:relative;
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:.55rem;
+    width:100%;
+    height:100%;
   }
 
   .plan-hotspot-dot{
-    width:22px;
-    height:22px;
+    position:relative;
+    display:block;
+    width:17px;
+    height:17px;
     border-radius:50%;
     background:var(--wood);
-    border:2px solid var(--bg);
+    border:4px solid rgba(255,255,255,.92);
     box-shadow:
-      0 5px 18px rgba(42,36,30,.35),
-      0 0 0 1px rgba(156,106,62,.25);
-    position:relative;
-    flex:none;
+      0 2px 12px rgba(42,36,30,.22),
+      0 0 0 1px rgba(42,36,30,.08);
     transition:
       transform .3s ease,
       background .3s ease;
   }
 
-  .plan-hotspot-dot::before{
-    content:"";
-    position:absolute;
-    inset:-8px;
-    border-radius:50%;
-    border:1px solid var(--wood);
-    animation:planSpotPulse 2.2s ease-out infinite;
-  }
-
   .plan-hotspot-dot::after{
     content:"";
     position:absolute;
-    left:50%;
-    top:50%;
-    width:5px;
-    height:5px;
+    inset:-8px;
+    border:1px solid rgba(156,106,62,.5);
     border-radius:50%;
-    background:var(--bg);
-    transform:translate(-50%,-50%);
+    animation:planPulse 2.2s infinite;
   }
 
-  @keyframes planSpotPulse{
+  .plan-hotspot-name{
+    position:absolute;
+    left:50%;
+    top:calc(100% + 5px);
+    transform:translateX(-50%);
+    white-space:nowrap;
+    padding:.25rem .55rem;
+    border-radius:4px;
+    background:rgba(42,36,30,.88);
+    color:#fff;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.65rem;
+    letter-spacing:.06em;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .25s ease;
+  }
+
+  .plan-hotspot:hover .plan-hotspot-dot,
+  .plan-hotspot:focus-visible .plan-hotspot-dot,
+  .plan-hotspot.is-selected .plan-hotspot-dot{
+    transform:scale(1.2);
+    background:var(--sky);
+  }
+
+  .plan-hotspot:hover .plan-hotspot-name,
+  .plan-hotspot:focus-visible .plan-hotspot-name,
+  .plan-hotspot.is-selected .plan-hotspot-name{
+    opacity:1;
+  }
+
+  @keyframes planPulse{
     0%{
-      transform:scale(.7);
-      opacity:.7;
+      transform:scale(.75);
+      opacity:.8;
+    }
+    70%{
+      transform:scale(1.15);
+      opacity:0;
     }
     100%{
-      transform:scale(1.6);
+      transform:scale(1.15);
       opacity:0;
     }
   }
 
-  .plan-hotspot-name{
-    background:rgba(237,234,224,.94);
-    border:1px solid var(--line-strong);
-    padding:.28rem .65rem;
-    white-space:nowrap;
-    font-family:'Shippori Mincho',serif;
-    font-size:.74rem;
-    color:var(--ink);
-    box-shadow:0 8px 20px -14px rgba(42,36,30,.5);
-    transition:
-      background .3s ease,
-      color .3s ease,
-      transform .3s ease;
-  }
-
-  .plan-hotspot:hover .plan-hotspot-dot,
-  .plan-hotspot.is-selected .plan-hotspot-dot{
-    background:var(--sky);
-    transform:scale(1.16);
-  }
-
-  .plan-hotspot:hover .plan-hotspot-name,
-  .plan-hotspot.is-selected .plan-hotspot-name{
-    background:var(--ink);
-    color:var(--bg);
-    transform:translateY(-2px);
-  }
-
-  .plan-map-note{
-    padding:1.5rem;
-    border-left:1px solid var(--line-strong);
+  .plan-hint{
+    margin:1rem 0 0;
+    text-align:center;
     color:var(--ink-dim);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.76rem;
+    letter-spacing:.08em;
   }
 
-  .plan-map-note-label{
-    color:var(--sky);
-    font-size:.68rem;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    margin-bottom:.8rem;
-  }
-
-  .plan-map-note h3{
-    font-size:1.2rem;
-    font-weight:600;
-    margin-bottom:.8rem;
-  }
-
-  .plan-map-note p{
-    font-size:.88rem;
-  }
-
-  .plan-map-note .mini-guide{
-    margin-top:1.4rem;
-    padding-top:1.2rem;
-    border-top:1px solid var(--line);
-    font-size:.78rem;
-    color:var(--ink-dim);
-  }
-
-  .plan-map-note .mini-guide span{
-    color:var(--wood);
-    margin-right:.3rem;
-  }
-
-  /* room tour */
+  /* ---------- room detail ---------- */
 
   .room-tour{
-    position:relative;
-    /*
-     * 間取りのホットスポットからルームツアーへ移動した際、
-     * 左上固定メニューボタンと部屋名が重ならないようにする。
-     * 固定ボタンの高さ(46px) + 上位置(1.2rem) + 余白(1rem)を基準にし、
-     * 端末ごとの画面サイズやブラウザ差に左右されにくい位置へ揃える。
-     */
-    scroll-margin-top:calc(46px + 1.2rem + 1rem + env(safe-area-inset-top, 0px));
-  }
-
-  .room-tour-header{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:1.5rem;
-    margin-bottom:1.2rem;
-    flex-wrap:wrap;
-  }
-
-  .room-tour-label{
-    font-size:.7rem;
-    letter-spacing:.22em;
-    color:var(--sky);
-    text-transform:uppercase;
-  }
-
-  .room-tour-current{
-    font-family:'Shippori Mincho',serif;
-    font-size:1.25rem;
-    font-weight:600;
-  }
-
-  .room-nav{
-    display:flex;
-    gap:.55rem;
-    overflow-x:auto;
-    padding:.3rem 0 1rem;
-    scrollbar-width:none;
-    -webkit-overflow-scrolling:touch;
-  }
-
-  .room-nav::-webkit-scrollbar{
     display:none;
+    width:min(100%,1100px);
+    margin:4.5rem auto 0;
+    scroll-margin-top:calc(46px + 1.2rem + 1rem + env(safe-area-inset-top,0px));
   }
 
-  .room-nav-button{
-    flex:none;
-    border:1px solid var(--line-strong);
-    background:transparent;
-    border-radius:100px;
-    padding:.5rem .9rem;
-    font-family:'Shippori Mincho',serif;
-    font-size:.78rem;
-    cursor:pointer;
-    color:var(--ink-dim);
-    transition:
-      background .3s ease,
-      color .3s ease,
-      border-color .3s ease,
-      transform .3s ease;
-  }
-
-  .room-nav-button:hover{
-    transform:translateY(-2px);
-    color:var(--ink);
-  }
-
-  .room-nav-button.active{
-    background:var(--ink);
-    color:var(--bg);
-    border-color:var(--ink);
+  .room-tour.active{
+    display:block;
+    animation:panelFadeUp .65s cubic-bezier(.22,.61,.36,1);
   }
 
   .room-slider-wrap{
@@ -884,7 +747,6 @@
     -webkit-touch-callout:none;
     -webkit-user-select:none;
     user-select:none;
-    margin-top:.5rem;
   }
 
   .room-slider{
@@ -897,221 +759,190 @@
   .room-slide{
     flex:none;
     width:100%;
-    display:grid;
-    grid-template-columns:minmax(0,1.3fr) minmax(260px,.7fr);
-    gap:2.5rem;
-    align-items:start;
-    padding:.5rem 0 1rem;
+    min-width:100%;
+    padding:0 0 1rem;
   }
 
-  .room-slide-main{
-    min-width:0;
+  /* 写真より上に表示する部屋見出し */
+
+  .room-detail-heading{
+    margin-bottom:1.35rem;
   }
 
-  .room-slide-photo{
+  .room-kicker{
+    display:flex;
+    align-items:center;
+    gap:.65rem;
+    color:var(--wood);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.68rem;
+    font-weight:500;
+    letter-spacing:.14em;
+    margin-bottom:.55rem;
+  }
+
+  .room-kicker-line{
+    width:30px;
+    height:1px;
+    background:var(--wood);
+  }
+
+  .room-detail-heading h3{
+    margin:0;
+    color:var(--ink);
+    font-family:'Shippori Mincho',serif;
+    font-size:clamp(1.8rem,4vw,3rem);
+    font-weight:400;
+    line-height:1.3;
+    letter-spacing:.04em;
+  }
+
+  .room-detail-size{
+    margin-top:.35rem;
+    color:var(--wood);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.75rem;
+    letter-spacing:.08em;
+  }
+
+  .room-detail-description{
+    max-width:720px;
+    margin:.75rem 0 0;
+    color:var(--ink-dim);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.8rem;
+    line-height:1.95;
+    letter-spacing:.035em;
+  }
+
+  /* 写真そのもの */
+
+  .room-photo-stage{
     position:relative;
+    width:100%;
+    aspect-ratio:16 / 10;
+    overflow:hidden;
     background:var(--panel);
     border:1px solid var(--line);
-    overflow:hidden;
     box-shadow:0 28px 60px -48px rgba(42,36,30,.5);
   }
 
-  .plan-image-stage{
-    position:relative;
-    width:100%;
-  }
-
-  .photo-stage{
-    aspect-ratio:4 / 3;
-  }
-
-  .blueprint-stage{
-    aspect-ratio:4 / 3;
-    background:var(--bg);
-  }
-
-  .blueprint-frame{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .blueprint-frame img{
-    width:100%;
-    height:100%;
-    object-fit:contain;
+  .room-photo-stage img{
     display:block;
-    -webkit-user-drag:none;
-  }
-
-  .room-photo-label{
-    position:absolute;
-    left:1rem;
-    bottom:1rem;
-    z-index:5;
-    background:rgba(42,36,30,.78);
-    color:var(--bg);
-    padding:.38rem .7rem;
-    font-size:.67rem;
-    letter-spacing:.1em;
-  }
-
-  .photo-layer{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    opacity:0;
-    transition:opacity .6s ease;
-    background:var(--panel);
-    overflow:hidden;
-  }
-
-  .photo-layer.is-visible{
-    opacity:1;
-  }
-
-  .photo-frame{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    opacity:0;
-    transition:opacity .6s ease;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-  }
-
-  .photo-frame.is-active{
-    opacity:1;
-  }
-
-  .photo-frame img{
     width:100%;
     height:100%;
     object-fit:cover;
-    display:block;
     -webkit-user-drag:none;
   }
 
-  /* 部屋写真上の＋ポイント */
-
-  .spot-layer{
-    position:absolute;
-    inset:0;
+  .room-photo-stage .gallery-placeholder{
     width:100%;
     height:100%;
-    opacity:1;
-    transition:opacity .4s ease;
+  }
+
+  /* 写真上の＋ポイント */
+
+  .room-photo-points{
+    position:absolute;
+    inset:0;
     pointer-events:none;
     z-index:3;
   }
 
-  .spot-layer.is-hidden{
-    opacity:0;
-  }
-
-  .spot-dot{
+  .room-photo-point{
     position:absolute;
     transform:translate(-50%,-50%);
     width:34px;
     height:34px;
+    padding:0;
+    border:2px solid var(--bg);
     border-radius:50%;
     background:var(--wood);
-    border:2px solid var(--bg);
+    color:var(--bg);
     box-shadow:0 5px 18px rgba(42,36,30,.4);
     cursor:pointer;
     pointer-events:auto;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:0;
   }
 
-  .spot-dot::before{
+  .room-photo-point::before{
     content:"";
     position:absolute;
     inset:-8px;
     border-radius:50%;
-    border:1.5px solid var(--wood);
+    border:1px solid var(--wood);
     opacity:.55;
     animation:spotPulse 2s ease-out infinite;
   }
 
-  .spot-dot::after{
+  .room-photo-point::after{
     content:"+";
     position:absolute;
     left:50%;
     top:50%;
     transform:translate(-50%,-54%);
-    color:var(--bg);
     font-size:1rem;
     line-height:1;
     font-weight:300;
   }
 
-  @keyframes spotPulse{
-    0%{
-      transform:scale(.75);
-      opacity:.7;
-    }
-    100%{
-      transform:scale(1.7);
-      opacity:0;
-    }
+  /* 360° */
+
+  .room-360-wrap{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:.9rem;
   }
 
-  /* 部屋説明 */
+  .room-360-button{
+    appearance:none;
+    display:inline-flex;
+    align-items:center;
+    gap:.55rem;
+    min-height:40px;
+    padding:.62rem 1rem;
+    border:1px solid var(--line-strong);
+    border-radius:100px;
+    background:transparent;
+    color:var(--ink);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.68rem;
+    letter-spacing:.08em;
+    text-decoration:none;
+    cursor:pointer;
+    transition:
+      background .3s ease,
+      color .3s ease,
+      border-color .3s ease,
+      transform .3s ease;
+  }
+
+  .room-360-button::before{
+    content:'360°';
+    color:var(--wood);
+    font-size:.62rem;
+  }
+
+  .room-360-button:hover{
+    background:var(--ink);
+    color:var(--bg);
+    border-color:var(--ink);
+    transform:translateY(-1px);
+  }
+
+  /* room information */
 
   .room-info{
-    padding:.3rem 0 0;
-  }
-
-  .room-info-eyebrow{
-    color:var(--sky);
-    font-size:.67rem;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-    margin-bottom:.8rem;
-  }
-
-  .room-info h3{
-    font-size:clamp(1.5rem,3vw,2.25rem);
-    line-height:1.4;
-    font-weight:600;
-    margin-bottom:.2rem;
-  }
-
-  .room-size{
-    color:var(--wood);
-    font-size:.86rem;
-    letter-spacing:.08em;
-    margin-bottom:1rem;
-  }
-
-  .room-info > p{
-    color:var(--ink-dim);
-    font-size:.92rem;
-    max-width:34em;
-  }
-
-  .room-points{
-    margin-top:1.6rem;
-    padding-top:1.2rem;
+    margin-top:1.55rem;
+    padding-top:1.3rem;
     border-top:1px solid var(--line);
   }
 
   .room-points-label{
-    font-size:.66rem;
-    letter-spacing:.18em;
-    color:var(--sky);
-    text-transform:uppercase;
     margin-bottom:.7rem;
+    color:var(--ink-dim);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.62rem;
+    letter-spacing:.12em;
   }
 
   .room-point-tags{
@@ -1121,11 +952,16 @@
   }
 
   .room-point-tag{
-    border:1px solid var(--line-strong);
-    background:transparent;
-    padding:.35rem .65rem;
+    appearance:none;
+    display:inline-block;
+    padding:.45rem .7rem;
+    border:1px solid var(--line);
     border-radius:100px;
-    font-size:.72rem;
+    background:transparent;
+    color:var(--ink-dim);
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.65rem;
+    letter-spacing:.04em;
     cursor:pointer;
     transition:
       background .3s ease,
@@ -1136,22 +972,57 @@
   .room-point-tag:hover{
     background:var(--wood);
     color:var(--bg);
-    transform:translateY(-2px);
+    transform:translateY(-1px);
+  }
+
+  /* room controls */
+
+  .room-slider-footer{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:40px;
+    margin-top:.35rem;
+  }
+
+  .room-dots{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:.45rem;
+  }
+
+  .room-dot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    border:0;
+    padding:0;
+    background:rgba(42,36,30,.22);
+    cursor:pointer;
+    transition:
+      transform .25s ease,
+      background .25s ease;
+  }
+
+  .room-dot.active{
+    background:var(--wood);
+    transform:scale(1.4);
   }
 
   .room-bottom-actions{
     display:flex;
-    align-items:center;
     justify-content:space-between;
+    align-items:center;
     gap:1rem;
-    margin-top:1.8rem;
+    margin-top:1.7rem;
     padding-top:1.3rem;
     border-top:1px solid var(--line);
-    flex-wrap:wrap;
   }
 
   .room-return-plan,
   .room-next-button{
+    appearance:none;
     display:inline-flex;
     align-items:center;
     justify-content:center;
@@ -1160,8 +1031,9 @@
     padding:.65rem 1rem;
     border-radius:100px;
     cursor:pointer;
-    font-family:'Shippori Mincho',serif;
-    font-size:.78rem;
+    font-family:'Zen Kaku Gothic New',sans-serif;
+    font-size:.68rem;
+    letter-spacing:.06em;
     transition:
       transform .3s ease,
       background .3s ease,
@@ -1182,85 +1054,130 @@
 
   .room-return-plan:hover,
   .room-next-button:hover{
-    transform:translateY(-2px);
-  }
-
-  .room-return-plan span,
-  .room-next-button span{
-    transition:transform .3s ease;
-  }
-
-  .room-next-button:hover span{
-    transform:translateX(3px);
-  }
-
-  .room-return-plan:hover span{
-    transform:translateX(-3px);
-  }
-
-  .room-slider-footer{
-    position:relative;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    min-height:40px;
-    margin-top:.3rem;
-  }
-
-  .room-dots{
-    display:flex;
-    gap:.5rem;
-    justify-content:center;
-  }
-
-  .room-dot{
-    width:8px;
-    height:8px;
-    border-radius:50%;
-    background:var(--line-strong);
-    border:none;
-    padding:0;
-    cursor:pointer;
-    transition:
-      background .3s ease,
-      transform .3s ease;
-  }
-
-  .room-dot.active{
-    background:var(--ink);
-    transform:scale(1.35);
-  }
-
-  .room-counter{
-    position:absolute;
-    right:0;
-    color:var(--ink-dim);
-    font-family:'Shippori Mincho',serif;
-    font-size:.72rem;
-    letter-spacing:.08em;
+    transform:translateY(-1px);
   }
 
   .room-swipe-hint{
     text-align:center;
     color:var(--ink-dim);
-    font-size:.68rem;
-    letter-spacing:.12em;
-    margin-top:.5rem;
-    opacity:.75;
+    font-size:.66rem;
+    letter-spacing:.1em;
+    margin-top:.45rem;
+    opacity:.72;
   }
 
   .panel-fade-anim{
-    animation:panelFadeUp .8s cubic-bezier(.22,.61,.36,1);
+    animation:panelFadeUp .65s cubic-bezier(.22,.61,.36,1);
   }
 
   @keyframes panelFadeUp{
     from{
       opacity:0;
-      transform:translateY(24px);
+      transform:translateY(18px);
     }
     to{
       opacity:1;
       transform:translateY(0);
+    }
+  }
+
+  @media (max-width:720px){
+
+    .plan-intro{
+      margin-top:1.25rem;
+      font-size:.78rem;
+      line-height:2;
+      text-align:left;
+    }
+
+    .plan-tabs{
+      margin:2.1rem 0 1.8rem;
+    }
+
+    .plan-tab{
+      min-width:86px;
+      padding:.65rem 1.15rem;
+      font-size:.7rem;
+    }
+
+    .plan-map-wrap{
+      box-shadow:0 20px 45px -35px rgba(42,36,30,.42);
+    }
+
+    .plan-hotspot{
+      width:28px;
+      height:28px;
+    }
+
+    .plan-hotspot-dot{
+      width:13px;
+      height:13px;
+      border-width:3px;
+    }
+
+    .plan-hotspot-name{
+      display:none;
+    }
+
+    .plan-hint{
+      margin-top:.8rem;
+      font-size:.7rem;
+    }
+
+    .room-tour{
+      margin-top:3.4rem;
+    }
+
+    .room-detail-heading{
+      margin-bottom:1.05rem;
+    }
+
+    .room-kicker{
+      font-size:.62rem;
+      margin-bottom:.4rem;
+    }
+
+    .room-detail-heading h3{
+      font-size:1.8rem;
+    }
+
+    .room-detail-description{
+      margin-top:.65rem;
+      font-size:.72rem;
+      line-height:1.9;
+    }
+
+    .room-photo-stage{
+      aspect-ratio:4 / 5;
+    }
+
+    .room-360-wrap{
+      margin-top:.75rem;
+    }
+
+    .room-360-button{
+      min-height:38px;
+      padding:.58rem .85rem;
+      font-size:.62rem;
+    }
+
+    .room-info{
+      margin-top:1.25rem;
+    }
+
+    .room-bottom-actions{
+      margin-top:1.25rem;
+    }
+
+    .room-return-plan,
+    .room-next-button{
+      min-height:40px;
+      padding:.6rem .8rem;
+      font-size:.62rem;
+    }
+
+    .room-swipe-hint{
+      font-size:.6rem;
     }
   }
 
@@ -2044,145 +1961,10 @@
   }
 
   /* =========================================================
-     MOBILE
+     MOBILE SUPPORT FOR GLOBAL UI
      ========================================================= */
 
-  @media (max-width:900px){
-
-    .plan-map-section{
-      grid-template-columns:1fr;
-      gap:1.4rem;
-    }
-
-    .plan-map-note{
-      border-left:none;
-      border-top:1px solid var(--line);
-      padding:1.3rem 0 0;
-    }
-
-    .room-slide{
-      grid-template-columns:1fr;
-      gap:1.6rem;
-    }
-
-    .room-info{
-      padding:.2rem 0;
-    }
-
-    .room-slide-photo{
-      order:0;
-    }
-
-    .room-info{
-      order:1;
-    }
-  }
-
   @media (max-width:640px){
-
-    .plan-intro{
-      margin-top:-1.4rem;
-      font-size:.9rem;
-      margin-bottom:2.2rem;
-    }
-
-    .plan-tabs{
-      margin-bottom:2rem;
-    }
-
-    .plan-tab{
-      padding:.55rem 1.35rem;
-    }
-
-    .plan-map{
-      aspect-ratio:1 / 1.05;
-    }
-
-    .plan-map-caption{
-      top:.7rem;
-      left:.7rem;
-      font-size:.68rem;
-    }
-
-    .plan-map-hint{
-      bottom:.7rem;
-      font-size:.61rem;
-      padding:.4rem .75rem;
-    }
-
-    .plan-hotspot{
-      min-width:30px;
-      height:30px;
-    }
-
-    .plan-hotspot-dot{
-      width:18px;
-      height:18px;
-    }
-
-    .plan-hotspot-name{
-      display:none;
-    }
-
-    .plan-hotspot.is-selected .plan-hotspot-name{
-      display:block;
-      position:absolute;
-      left:50%;
-      bottom:27px;
-      transform:translateX(-50%);
-      font-size:.64rem;
-      padding:.22rem .48rem;
-    }
-
-    .room-tour-header{
-      margin-bottom:.8rem;
-    }
-
-    .room-tour-current{
-      font-size:1.1rem;
-    }
-
-    .room-nav{
-      margin-right:-6vw;
-      padding-right:6vw;
-    }
-
-    .room-slide{
-      gap:1.25rem;
-    }
-
-    .room-info h3{
-      font-size:1.65rem;
-    }
-
-    .room-info > p{
-      font-size:.88rem;
-    }
-
-    .room-bottom-actions{
-      align-items:stretch;
-    }
-
-    .room-return-plan,
-    .room-next-button{
-      flex:1;
-      min-width:0;
-      padding:.65rem .7rem;
-    }
-
-    .room-counter{
-      display:none;
-    }
-
-    .room-swipe-hint{
-      font-size:.61rem;
-    }
-
-    .spot-dot{
-      width:31px;
-      height:31px;
-    }
-
     .spot-sheet-panel{
       padding-left:1.2rem;
       padding-right:1.2rem;
@@ -2624,223 +2406,60 @@
   </div>
 
   <p class="plan-intro reveal d1">
-    図面を見るだけではわからない、この家の暮らしを、
-    <strong>部屋を歩くように</strong>めぐっていきます。
-    気になる場所をタップして、次の場所へ進んでみてください。
+    間取り図をタップしていただくことで、各部屋の表情豊かな写真をすぐにご確認いただけます。間取りとともに広がる暮らしのイメージを、心地よくお楽しみください。
   </p>
 
   <div class="plan-tabs reveal d1">
-
-    <button
-      class="plan-tab active"
-      data-floor="1"
-    >
-      1階
-    </button>
-
-    <button
-      class="plan-tab"
-      data-floor="2"
-    >
-      2階
-    </button>
-
+    <button class="plan-tab active" data-floor="1" type="button">1階</button>
+    <button class="plan-tab" data-floor="2" type="button">2階</button>
   </div>
 
-  <!-- =======================================================
-       1F
-       ======================================================= -->
-
-  <div
-    class="plan-panel active"
-    id="panel-1"
-  >
+  <div class="plan-panel active" id="panel-1">
 
     <div class="plan-map-section reveal d2">
-
       <div class="plan-map-wrap">
-
         <div class="plan-map">
-
-          <img
-            src="images/plan/plan-1f.jpg"
-            alt="1階間取り図"
-          >
-
-          <div class="plan-map-caption">
-            1F FLOOR PLAN
-          </div>
-
-          <div
-            class="plan-map-hint"
-            id="planHint-1"
-          >
-            気になる場所をタップ
-          </div>
-
-          <div
-            class="plan-map-overlay"
-            id="planHotspots-1"
-          ></div>
-
+          <img src="images/plan/plan-1f.jpg" alt="1階間取り図">
+          <div class="plan-map-overlay" id="planHotspots-1"></div>
         </div>
-
       </div>
 
+      <p class="plan-hint">気になるところをタップ</p>
     </div>
 
-    <div class="room-tour">
-
-      <div class="room-tour-header">
-
-        <div>
-          <div class="room-tour-label">
-            Room Tour / 1F
-          </div>
-
-          <div
-            class="room-tour-current"
-            id="roomCurrent-1"
-          >
-            玄関
-          </div>
-        </div>
-
-      </div>
-
-      <div
-        class="room-nav"
-        id="roomNav-1"
-      ></div>
-
+    <div class="room-tour" id="roomTour-1">
       <div class="room-slider-wrap">
-
-        <div
-          class="room-slider"
-          id="roomSlider-1"
-        ></div>
-
+        <div class="room-slider" id="roomSlider-1"></div>
       </div>
 
       <div class="room-slider-footer">
-
-        <div
-          class="room-dots"
-          id="roomDots-1"
-        ></div>
-
-        <div
-          class="room-counter"
-          id="roomCounter-1"
-        >
-          01 / 08
-        </div>
-
+        <div class="room-dots" id="roomDots-1"></div>
       </div>
-
-      <div class="room-swipe-hint">
-        ← SWIPE →　部屋をめくる
-      </div>
-
     </div>
 
   </div>
 
-  <!-- =======================================================
-       2F
-       ======================================================= -->
-
-  <div
-    class="plan-panel"
-    id="panel-2"
-  >
+  <div class="plan-panel" id="panel-2">
 
     <div class="plan-map-section reveal d2">
-
       <div class="plan-map-wrap">
-
         <div class="plan-map">
-
-          <img
-            src="images/plan/plan-2f.jpg"
-            alt="2階間取り図"
-          >
-
-          <div class="plan-map-caption">
-            2F FLOOR PLAN
-          </div>
-
-          <div
-            class="plan-map-hint"
-            id="planHint-2"
-          >
-            気になる場所をタップ
-          </div>
-
-          <div
-            class="plan-map-overlay"
-            id="planHotspots-2"
-          ></div>
-
+          <img src="images/plan/plan-2f.jpg" alt="2階間取り図">
+          <div class="plan-map-overlay" id="planHotspots-2"></div>
         </div>
-
       </div>
 
+      <p class="plan-hint">気になるところをタップ</p>
     </div>
 
-    <div class="room-tour">
-
-      <div class="room-tour-header">
-
-        <div>
-          <div class="room-tour-label">
-            Room Tour / 2F
-          </div>
-
-          <div
-            class="room-tour-current"
-            id="roomCurrent-2"
-          >
-            ホール
-          </div>
-        </div>
-
-      </div>
-
-      <div
-        class="room-nav"
-        id="roomNav-2"
-      ></div>
-
+    <div class="room-tour" id="roomTour-2">
       <div class="room-slider-wrap">
-
-        <div
-          class="room-slider"
-          id="roomSlider-2"
-        ></div>
-
+        <div class="room-slider" id="roomSlider-2"></div>
       </div>
 
       <div class="room-slider-footer">
-
-        <div
-          class="room-dots"
-          id="roomDots-2"
-        ></div>
-
-        <div
-          class="room-counter"
-          id="roomCounter-2"
-        >
-          01 / 06
-        </div>
-
+        <div class="room-dots" id="roomDots-2"></div>
       </div>
-
-      <div class="room-swipe-hint">
-        ← SWIPE →　部屋をめくる
-      </div>
-
     </div>
 
   </div>
@@ -3474,718 +3093,281 @@
 
 
   /* =========================================================
-     ROOM DATA
+     04 — FLOOR PLAN / ROOM TOUR
      ========================================================= */
-
-  const icons = {
-
-    plan:
-      '<rect x="3" y="3" width="18" height="18" rx="1"/>' +
-      '<path d="M9 3v18M3 9h18"/>',
-
-    bed:
-      '<path d="M3 18v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7"/>' +
-      '<path d="M3 18h18"/>' +
-      '<path d="M5 11V7a2 2 0 0 1 2-2h3v6"/>',
-
-    sofa:
-      '<path d="M4 11V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3"/>' +
-      '<path d="M2 13a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3H2z"/>' +
-      '<path d="M4 18v2M20 18v2"/>',
-
-    door:
-      '<rect x="5" y="3" width="14" height="18" rx="1"/>' +
-      '<circle cx="14.5" cy="12" r="1"/>',
-
-    storage:
-      '<rect x="4" y="4" width="16" height="16" rx="1"/>' +
-      '<path d="M4 10h16M9 4v6M9 14v6"/>',
-
-    water:
-      '<path d="M12 3s6 6.5 6 11a6 6 0 1 1-12 0c0-4.5 6-11 6-11z"/>',
-
-    toilet:
-      '<path d="M6 3h9v6H6z"/>' +
-      '<path d="M6 9c-2 0-3 2-2.5 5 .5 3 2.5 7 8.5 7s8-4 8.5-7C21 11 20 9 18 9"/>',
-
-    hall:
-      '<path d="M4 21V9l8-6 8 6v12"/>' +
-      '<path d="M9 21v-6h6v6"/>',
-
-    window:
-      '<rect x="4" y="4" width="16" height="16" rx="1"/>' +
-      '<path d="M12 4v16M4 12h16"/>'
-
-  };
-
-  function iconSvg(name){
-
-    return (
-      '<svg viewBox="0 0 24 24">' +
-      (icons[name] || icons.hall) +
-      '</svg>'
-    );
-
-  }
-
-
-  /*
-   * 写真を追加すると、
-   * その部屋の写真として表示されます。
-   *
-   * 例：
-   * photos:[
-   *   'images/plan/ldk-01.jpg',
-   *   'images/plan/ldk-02.jpg'
-   * ]
-   */
 
   const roomData = {
 
     1:[
-
       {
+        id:'entrance',
         name:'玄関',
-        icon:'door',
-        note:
-          '家族と来客、両方の動線が交わる入り口。',
+        note:'家に入った瞬間から、この家らしさを感じられる玄関。収納とニッチをすっきりとまとめています。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'25%',
-            y:'50%',
-            title:'WIC',
-            note:
-              '玄関そばに設けた、荷物をしまえるウォークインクローゼット。',
-            photos:[]
-          },
-          {
-            x:'72%',
-            y:'32%',
-            title:'ニッチ',
-            note:
-              'ちょっとした飾り棚になる丸いニッチ。季節の小物や鍵置きにも便利です。',
-            photos:[]
-          }
+          {x:'25%',y:'50%',title:'WIC',note:'玄関そばに設けた、荷物をしまえるウォークインクローゼット。',photos:[]},
+          {x:'72%',y:'32%',title:'ニッチ',note:'ちょっとした飾り棚になる丸いニッチ。季節の小物や鍵置きにも便利です。',photos:[]}
         ]
       },
-
       {
+        id:'hall',
         name:'ホール',
-        icon:'hall',
-        note:
-          '各roomをつなぐ回遊動線。',
+        note:'玄関からLDKへとつながるホール。洗面カウンターを配置し、暮らしの動線を整えています。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'50%',
-            y:'55%',
-            title:'洗面カウンター',
-            note:
-              '家族みんなで身支度できる、ロング洗面台。',
-            photos:[]
-          }
+          {x:'50%',y:'55%',title:'洗面カウンター',note:'家族みんなで身支度できる、ロング洗面台。',photos:[]}
         ]
       },
-
       {
+        id:'ldk',
         name:'L.D.K',
         size:'19.6帖',
-        icon:'sofa',
-        note:
-          'キッチン・ダイニング・リビングがひとつながりになった、家の中心。',
+        note:'キッチン・ダイニング・リビングがひとつながりになった、家の中心。庭まで視線がつながる開放的な空間です。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'55%',
-            y:'48%',
-            title:'キッチン',
-            note:
-              'リビング・ダイニングに向かって開いた、ペニンシュラキッチン。家族で会話をしながら料理ができます。',
-            photos:[]
-          },
-          {
-            x:'78%',
-            y:'28%',
-            title:'間接照明',
-            note:
-              'テレビ裏に仕込んだ間接照明。夜のリビングをやわらかく照らします。',
-            photos:[]
-          }
+          {x:'55%',y:'48%',title:'キッチン',note:'リビング・ダイニングに向かって開いた、ペニンシュラキッチン。家族で会話をしながら料理ができます。',photos:[]},
+          {x:'78%',y:'28%',title:'間接照明',note:'テレビ裏に仕込んだ間接照明。夜のリビングをやわらかく照らします。',photos:[]}
         ]
       },
-
       {
+        id:'wash',
         name:'脱衣室',
-        icon:'water',
-        note:
-          'バスルームに繋がるスペース。',
+        note:'洗濯から浴室までの家事動線をまとめた、毎日の使いやすさを考えた空間です。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'42%',
-            y:'55%',
-            title:'ドラム洗濯機',
-            note:
-              '乾燥までこなせるドラム式洗濯機。家事の時間を短くしてくれます。',
-            photos:[]
-          },
-          {
-            x:'68%',
-            y:'42%',
-            title:'浴室',
-            note:
-              '黒を基調にした、ホテルライクなバスルーム。',
-            photos:[]
-          }
+          {x:'42%',y:'55%',title:'ドラム洗濯機',note:'乾燥までこなせるドラム式洗濯機。家事の時間を短くしてくれます。',photos:[]},
+          {x:'68%',y:'42%',title:'浴室',note:'黒を基調にした、ホテルライクなバスルーム。',photos:[]}
         ]
       },
-
       {
+        id:'wic',
         name:'WIC',
-        icon:'storage',
-        note:
-          '玄関そばに設けた大型のウォークインクローゼット。',
-        photos:[]
-      },
-
-      {
-        name:'トイレ',
-        icon:'toilet',
-        note:
-          'ホール脇に配置された1階トイレ。',
+        note:'玄関そばに設けた大型のウォークインクローゼット。日々の衣類や身の回りのものをまとめて収納できます。',
         photos:[],
+        panorama:'',
+        points:[]
+      },
+      {
+        id:'toilet',
+        name:'トイレ',
+        note:'ホール脇に配置された1階トイレ。生活感をできるだけ見せないよう、収納をさりげなく取り入れています。',
+        photos:[],
+        panorama:'',
         points:[
-          {
-            x:'62%',
-            y:'40%',
-            title:'隠し収納',
-            note:
-              '間接照明を仕込んだ隠し収納。生活感を見せずにストックできます。',
-            photos:[]
-          }
+          {x:'62%',y:'40%',title:'隠し収納',note:'間接照明を仕込んだ隠し収納。生活感を見せずにストックできます。',photos:[]}
         ]
       },
-
       {
+        id:'garden',
         name:'庭',
-        icon:'window',
-        note:
-          'お手入れいらずで一年中きれいな緑を保てる、広めの人工芝の庭。',
+        note:'LDKから自然につながる外の空間。家の中と外を行き来しながら楽しめる場所です。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'30%',
-            y:'62%',
-            title:'人工芝',
-            note:
-              'お手入れいらずで一年中きれいな緑を保てる人工芝。',
-            photos:[]
-          },
-          {
-            x:'72%',
-            y:'40%',
-            title:'サイクルポート',
-            note:
-              '雨や日差しからバイクを守る、屋根付きのサイクルポート。',
-            photos:[]
-          }
+          {x:'30%',y:'62%',title:'人工芝',note:'お手入れいらずで一年中きれいな緑を保てる人工芝。',photos:[]},
+          {x:'72%',y:'40%',title:'サイクルポート',note:'雨や日差しからバイクを守る、屋根付きのサイクルポート。',photos:[]}
         ]
       }
-
     ],
 
     2:[
-
       {
+        id:'hall',
         name:'ホール',
-        icon:'hall',
-        note:
-          '吹き抜けを見下ろす回遊廊下。オールラウンドカウンターも設けています。',
+        note:'吹き抜けを見下ろす回遊廊下。オールラウンドカウンターも設けています。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'65%',
-            y:'48%',
-            title:'オールラウンドカウンター',
-            note:
-              '花火が見えるほど眺めのいい、2階ホールのカウンター。',
-            photos:[]
-          },
-          {
-            x:'32%',
-            y:'25%',
-            title:'吹き抜け',
-            note:
-              '1階と光をつなぐ吹き抜け。光が差し込んで、幻想的な空間を演出します。',
-            photos:[]
-          }
+          {x:'65%',y:'48%',title:'オールラウンドカウンター',note:'花火が見えるほど眺めのいい、2階ホールのカウンター。',photos:[]},
+          {x:'32%',y:'25%',title:'吹き抜け',note:'1階と光をつなぐ吹き抜け。光が差し込んで、幻想的な空間を演出します。',photos:[]}
         ]
       },
-
       {
+        id:'master',
         name:'主寝室',
         size:'7.0帖',
-        icon:'bed',
-        note:
-          'WICと隣接した、フロア最奥のプライベート空間。',
+        note:'WICと隣接した、フロア最奥のプライベート空間。夜はプロジェクターを使って映画を楽しめます。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'50%',
-            y:'25%',
-            title:'プロジェクター',
-            note:
-              '壁面に投影して映画や映像を楽しめる、主寝室のプロジェクター。',
-            photos:[]
-          },
-          {
-            x:'72%',
-            y:'55%',
-            title:'ワークスペース',
-            note:
-              'サイドワークに使える、主寝室に設けたカウンター。',
-            photos:[]
-          }
+          {x:'50%',y:'25%',title:'プロジェクター',note:'壁面に投影して映画や映像を楽しめる、主寝室のプロジェクター。',photos:[]},
+          {x:'72%',y:'55%',title:'ワークスペース',note:'サイドワークに使える、主寝室に設けたカウンター。',photos:[]}
         ]
       },
-
       {
+        id:'room1',
         name:'洋室①',
         size:'4.8帖',
-        icon:'bed',
-        note:
-          '明るい壁紙のこども部屋。来客の方もこちらへ。',
+        note:'明るい壁紙のこども部屋。コンパクトながら収納を確保した使いやすい個室です。',
         photos:[],
+        panorama:'',
         points:[
-          {
-            x:'75%',
-            y:'40%',
-            title:'収納',
-            note:
-              '個室に備え付けた収納スペース。',
-            photos:[]
-          }
+          {x:'75%',y:'40%',title:'収納',note:'個室に備え付けた収納スペース。',photos:[]}
         ]
       },
-
       {
+        id:'room2',
         name:'洋室②',
         size:'4.8帖',
-        icon:'bed',
-        note:
-          'もう一つのこども部屋。',
-        photos:[]
+        note:'もう一つのこども部屋。暮らし方に合わせて柔軟に使える、シンプルな個室です。',
+        photos:[],
+        panorama:'',
+        points:[]
       },
-
       {
+        id:'storage',
         name:'収納',
-        icon:'storage',
-        note:
-          '2階の共用収納。',
-        photos:[]
+        note:'2階の共用収納。家の中のものをすっきりと収めるためのスペースです。',
+        photos:[],
+        panorama:'',
+        points:[]
       }
-
     ]
-
   };
 
-
-  /* =========================================================
-     FLOOR PLAN HOTSPOTS
-     ========================================================= */
 
   const floorHotspots = {
-
     1:[
-      {
-        room:1,
-        name:'玄関',
-        x:'14%',
-        y:'74%'
-      },
-      {
-        room:2,
-        name:'ホール',
-        x:'31%',
-        y:'46%'
-      },
-      {
-        room:3,
-        name:'L.D.K',
-        x:'54%',
-        y:'53%'
-      },
-      {
-        room:4,
-        name:'脱衣室',
-        x:'76%',
-        y:'35%'
-      },
-      {
-        room:5,
-        name:'WIC',
-        x:'88%',
-        y:'62%'
-      },
-      {
-        room:6,
-        name:'トイレ',
-        x:'76%',
-        y:'78%'
-      },
-      {
-        room:7,
-        name:'庭',
-        x:'53%',
-        y:'89%'
-      }
+      {room:0,name:'玄関',x:'14%',y:'74%'},
+      {room:1,name:'ホール',x:'31%',y:'46%'},
+      {room:2,name:'L.D.K',x:'54%',y:'53%'},
+      {room:3,name:'脱衣室',x:'76%',y:'35%'},
+      {room:4,name:'WIC',x:'88%',y:'62%'},
+      {room:5,name:'トイレ',x:'76%',y:'78%'},
+      {room:6,name:'庭',x:'53%',y:'89%'}
     ],
-
     2:[
-      {
-        room:1,
-        name:'ホール',
-        x:'43%',
-        y:'44%'
-      },
-      {
-        room:2,
-        name:'主寝室',
-        x:'24%',
-        y:'26%'
-      },
-      {
-        room:3,
-        name:'洋室①',
-        x:'69%',
-        y:'25%'
-      },
-      {
-        room:4,
-        name:'洋室②',
-        x:'73%',
-        y:'68%'
-      },
-      {
-        room:5,
-        name:'収納',
-        x:'49%',
-        y:'78%'
-      }
+      {room:0,name:'ホール',x:'43%',y:'44%'},
+      {room:1,name:'主寝室',x:'24%',y:'26%'},
+      {room:2,name:'洋室①',x:'69%',y:'25%'},
+      {room:3,name:'洋室②',x:'73%',y:'68%'},
+      {room:4,name:'収納',x:'49%',y:'78%'}
     ]
-
   };
 
-
-  /* =========================================================
-     ROOM STATE
-     ========================================================= */
-
-  const cycleTimers = {};
-
-  const domIndex = {};
 
   const roomState = {
-    1:{},
-    2:{}
+    1:{current:0},
+    2:{current:0}
   };
 
 
-  /* =========================================================
-     PHOTO LAYER
-     ========================================================= */
+  function escapeHtml(value){
+    return String(value ?? '')
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;')
+      .replace(/'/g,'&#039;');
+  }
 
-  function primePhotoLayer(
-    layer,
-    room
-  ){
 
-    const frames =
-      layer.querySelectorAll(
-        '.photo-frame'
-      );
+  function roomPhotoHtml(room){
 
-    const photos =
-      room.photos || [];
-
-    const html =
-      photos.length
-      ? `<img src="${photos[0]}" alt="${room.name}">`
-      : `
-        <div class="gallery-placeholder">
-          ${placeholderSvg}
-          <span>写真準備中</span>
-        </div>
+    if(room.photos && room.photos.length){
+      return `
+        <img
+          src="${escapeHtml(room.photos[0])}"
+          alt="${escapeHtml(room.name)}"
+          draggable="false"
+        >
       `;
-
-    frames[0].innerHTML = html;
-
-    frames[0].classList.add(
-      'is-active'
-    );
-
-  }
-
-
-  function startCycle(
-    floor,
-    layer,
-    room
-  ){
-
-    clearInterval(
-      cycleTimers[floor]
-    );
-
-    const photos =
-      room.photos || [];
-
-    if(photos.length <= 1)
-      return;
-
-    const frames =
-      layer.querySelectorAll(
-        '.photo-frame'
-      );
-
-    let active = 0;
-    let idx = 1 % photos.length;
-
-    cycleTimers[floor] =
-      setInterval(()=>{
-
-        const next =
-          active === 0 ? 1 : 0;
-
-        frames[next].innerHTML =
-          `<img src="${photos[idx]}" alt="${room.name}">`;
-
-        void frames[next].offsetWidth;
-
-        frames[next].classList.add(
-          'is-active'
-        );
-
-        frames[active].classList.remove(
-          'is-active'
-        );
-
-        active = next;
-
-        idx =
-          (idx + 1) %
-          photos.length;
-
-      },3600);
-
-  }
-
-
-  /* =========================================================
-     CREATE ROOM SLIDE
-     ========================================================= */
-
-  function createRoomSlideEl(
-    floor,
-    room,
-    realIndex
-  ){
-
-    const slide =
-      document.createElement('div');
-
-    slide.className =
-      'room-slide';
-
-    /*
-     * 左側：写真
-     */
-
-    const photoWrap =
-      document.createElement('div');
-
-    photoWrap.className =
-      'room-slide-photo';
-
-    const stage =
-      document.createElement('div');
-
-    if(room.isBlueprint){
-
-      stage.className =
-        'plan-image-stage blueprint-stage';
-
-      const frame =
-        document.createElement('div');
-
-      frame.className =
-        'blueprint-frame';
-
-      const img =
-        document.createElement('img');
-
-      img.src =
-        floor === '2'
-        ? 'images/plan/plan-2f.jpg'
-        : 'images/plan/plan-1f.jpg';
-
-      img.alt =
-        floor + '階 間取り図';
-
-      frame.appendChild(img);
-
-      stage.appendChild(frame);
-
-    }else{
-
-      stage.className =
-        'plan-image-stage photo-stage';
-
-      const layer =
-        document.createElement('div');
-
-      layer.className =
-        'photo-layer is-visible';
-
-      layer.innerHTML =
-        '<div class="photo-frame"></div>' +
-        '<div class="photo-frame"></div>';
-
-      stage.appendChild(layer);
-
-      primePhotoLayer(
-        layer,
-        room
-      );
-
-      if(
-        room.points &&
-        room.points.length
-      ){
-
-        const spotLayer =
-          document.createElement('div');
-
-        spotLayer.className =
-          'spot-layer';
-
-        room.points.forEach(
-          point=>{
-
-            const dot =
-              document.createElement('button');
-
-            dot.className =
-              'spot-dot';
-
-            dot.style.left =
-              point.x;
-
-            dot.style.top =
-              point.y;
-
-            dot.setAttribute(
-              'aria-label',
-              point.title
-            );
-
-            dot.addEventListener(
-              'click',
-              e=>{
-
-                e.stopPropagation();
-
-                openSpotSheet(point);
-
-              }
-            );
-
-            spotLayer.appendChild(dot);
-
-          }
-        );
-
-        stage.appendChild(
-          spotLayer
-        );
-
-      }
-
     }
 
-    const label =
-      document.createElement('div');
+    return `
+      <div class="gallery-placeholder">
+        ${placeholderSvg}
+        <span>写真準備中</span>
+      </div>
+    `;
+  }
 
-    label.className =
-      'room-photo-label';
 
-    label.textContent =
-      room.isBlueprint
-      ? 'FLOOR PLAN'
-      : 'ROOM PHOTO';
+  function createRoomSlide(floor,room,index){
 
-    stage.appendChild(label);
+    const slide = document.createElement('div');
+    slide.className = 'room-slide';
 
-    photoWrap.appendChild(stage);
+    const number = String(index + 1).padStart(2,'0');
 
-    /*
-     * 右側：部屋情報
-     */
+    const points = room.points || [];
 
-    const info =
-      document.createElement('div');
+    const pointButtons = points.map((point,pointIndex)=>`
+      <button
+        class="room-photo-point"
+        style="left:${point.x};top:${point.y};"
+        type="button"
+        data-point-index="${pointIndex}"
+        aria-label="${escapeHtml(point.title)}"
+      ></button>
+    `).join('');
 
-    info.className =
-      'room-info';
-
-    const pointsHtml =
-      room.points &&
-      room.points.length
-      ? `
-        <div class="room-points">
-
-          <div class="room-points-label">
-            Detail Points
-          </div>
-
-          <div class="room-point-tags">
-
-            ${room.points.map(
-              (point,index)=>`
-                <button
-                  class="room-point-tag"
-                  data-point-index="${index}"
-                >
-                  ＋ ${point.title}
-                </button>
-              `
-            ).join('')}
-
-          </div>
-
+    const pointTags = points.length ? `
+      <div class="room-info">
+        <div class="room-points-label">POINT</div>
+        <div class="room-point-tags">
+          ${points.map((point,pointIndex)=>`
+            <button
+              class="room-point-tag"
+              type="button"
+              data-point-index="${pointIndex}"
+            >
+              ＋ ${escapeHtml(point.title)}
+            </button>
+          `).join('')}
         </div>
-      `
-      : '';
+      </div>
+    ` : '';
 
-    info.innerHTML = `
+    slide.innerHTML = `
 
-      <div class="room-info-eyebrow">
-        ${String(realIndex + 1).padStart(2,'0')}
-        / ROOM
+      <div class="room-detail-heading">
+
+        <div class="room-kicker">
+          <span>${number} / ROOM</span>
+          <span class="room-kicker-line"></span>
+        </div>
+
+        <h3>${escapeHtml(room.name)}</h3>
+
+        ${room.size ? `
+          <div class="room-detail-size">
+            ${escapeHtml(room.size)}
+          </div>
+        ` : ''}
+
+        <p class="room-detail-description">
+          ${escapeHtml(room.note)}
+        </p>
+
       </div>
 
-      <h3>${room.name}</h3>
+      <div class="room-photo-stage">
+        ${roomPhotoHtml(room)}
+        ${points.length ? `
+          <div class="room-photo-points">
+            ${pointButtons}
+          </div>
+        ` : ''}
+      </div>
 
-      ${
-        room.size
-        ? `<div class="room-size">${room.size}</div>`
-        : ''
-      }
+      <div class="room-360-wrap">
+        <button
+          class="room-360-button"
+          type="button"
+          data-floor="${floor}"
+          data-room-id="${escapeHtml(room.id)}"
+          data-panorama="${escapeHtml(room.panorama || '')}"
+        >
+          360°で見る
+        </button>
+      </div>
 
-      <p>${room.note}</p>
-
-      ${pointsHtml}
+      ${pointTags}
 
       <div class="room-bottom-actions">
 
@@ -4207,1056 +3389,313 @@
 
       </div>
 
+      <div class="room-swipe-hint">
+        ← SWIPE →　部屋をめくる
+      </div>
+
     `;
 
-    info
-      .querySelectorAll(
-        '.room-point-tag'
-      )
-      .forEach(button=>{
-
-        button.addEventListener(
-          'click',
-          ()=>{
-
-            const pointIndex =
-              Number(
-                button.dataset.pointIndex
-              );
-
-            openSpotSheet(
-              room.points[pointIndex]
-            );
-
-          }
-        );
-
+    slide.querySelectorAll('.room-point-tag').forEach(button=>{
+      button.addEventListener('click',()=>{
+        const point = points[Number(button.dataset.pointIndex)];
+        if(point) openSpotSheet(point);
       });
+    });
 
-    info
-      .querySelector(
-        '.room-return-plan'
-      )
-      .addEventListener(
-        'click',
-        ()=>{
-          returnToPlan(floor);
-        }
-      );
+    slide.querySelectorAll('.room-photo-point').forEach(button=>{
+      button.addEventListener('click',event=>{
+        event.stopPropagation();
+        const point = points[Number(button.dataset.pointIndex)];
+        if(point) openSpotSheet(point);
+      });
+    });
 
-    info
-      .querySelector(
-        '.room-next-button'
-      )
-      .addEventListener(
-        'click',
-        ()=>{
-          nextRoom(floor);
-        }
-      );
+    slide.querySelector('.room-return-plan').addEventListener('click',()=>{
+      returnToPlan(floor);
+    });
 
-    slide.appendChild(photoWrap);
-    slide.appendChild(info);
+    slide.querySelector('.room-next-button').addEventListener('click',()=>{
+      nextRoom(floor);
+    });
+
+    slide.querySelector('.room-360-button').addEventListener('click',event=>{
+      const button = event.currentTarget;
+      open360Room({
+        floor:button.dataset.floor,
+        roomId:button.dataset.roomId,
+        panorama:button.dataset.panorama
+      });
+    });
 
     return slide;
-
   }
 
-
-  /* =========================================================
-     BUILD ROOM NAV
-     ========================================================= */
-
-  function buildRoomNav(floor){
-
-    const nav =
-      document.getElementById(
-        'roomNav-'+floor
-      );
-
-    const rooms =
-      roomData[floor];
-
-    nav.innerHTML = '';
-
-    rooms.forEach(
-      (room,index)=>{
-
-        const button =
-          document.createElement('button');
-
-        button.className =
-          'room-nav-button' +
-          (index === 0 ? ' active' : '');
-
-        button.type =
-          'button';
-
-        button.textContent =
-          room.name;
-
-        button.addEventListener(
-          'click',
-          ()=>{
-            goToRoomSlide(
-              floor,
-              index
-            );
-          }
-        );
-
-        nav.appendChild(button);
-
-      }
-    );
-
-  }
-
-
-  /* =========================================================
-     BUILD ROOM SLIDER
-     ========================================================= */
 
   function buildRoomSlider(floor){
 
-    const slider =
-      document.getElementById(
-        'roomSlider-'+floor
-      );
+    const slider = document.getElementById(`roomSlider-${floor}`);
+    const dots = document.getElementById(`roomDots-${floor}`);
+    const rooms = roomData[floor];
 
-    const dotsWrap =
-      document.getElementById(
-        'roomDots-'+floor
-      );
-
-    const rooms =
-      roomData[floor];
+    if(!slider || !dots) return;
 
     slider.innerHTML = '';
-    dotsWrap.innerHTML = '';
+    dots.innerHTML = '';
 
-    /*
-     * 実スライド
-     */
+    rooms.forEach((room,index)=>{
+      slider.appendChild(createRoomSlide(floor,room,index));
 
-    rooms.forEach(
-      (room,i)=>{
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.className = 'room-dot';
+      dot.setAttribute('aria-label',`${index + 1} ${room.name}`);
+      dot.addEventListener('click',()=>goToRoom(floor,index));
+      dots.appendChild(dot);
+    });
 
-        slider.appendChild(
-          createRoomSlideEl(
-            floor,
-            room,
-            i
-          )
-        );
-
-        const dot =
-          document.createElement('button');
-
-        dot.className =
-          'room-dot' +
-          (i === 0 ? ' active' : '');
-
-        dot.type =
-          'button';
-
-        dot.setAttribute(
-          'aria-label',
-          room.name
-        );
-
-        dot.addEventListener(
-          'click',
-          ()=>{
-            goToRoomSlide(
-              floor,
-              i
-            );
-          }
-        );
-
-        dotsWrap.appendChild(dot);
-
-      }
-    );
-
-    /*
-     * 無限ループ用
-     */
-
-    slider.insertBefore(
-      createRoomSlideEl(
-        floor,
-        rooms[rooms.length - 1],
-        rooms.length - 1
-      ),
-      slider.firstElementChild
-    );
-
-    slider.appendChild(
-      createRoomSlideEl(
-        floor,
-        rooms[0],
-        0
-      )
-    );
-
-    domIndex[floor] = 1;
-
-    slider.style.transform =
-      'translateX(-100%)';
-
-    updateRoomUI(
-      floor,
-      0
-    );
-
+    updateRoomSlider(floor,false);
   }
 
 
-  /* =========================================================
-     UPDATE ROOM UI
-     ========================================================= */
+  function updateRoomSlider(floor,animate=true){
 
-  function updateRoomUI(
-    floor,
-    realIndex
-  ){
+    const slider = document.getElementById(`roomSlider-${floor}`);
+    const dots = document.querySelectorAll(`#roomDots-${floor} .room-dot`);
+    const index = roomState[floor].current;
 
-    const rooms =
-      roomData[floor];
+    if(!slider) return;
 
-    const room =
-      rooms[realIndex];
+    slider.style.transition = animate
+      ? 'transform .55s cubic-bezier(.22,.61,.36,1)'
+      : 'none';
 
-    /*
-     * dots
-     */
+    slider.style.transform = `translateX(-${index * 100}%)`;
 
-    document
-      .querySelectorAll(
-        '#roomDots-' +
-        floor +
-        ' .room-dot'
-      )
-      .forEach(
-        (dot,i)=>{
-          dot.classList.toggle(
-            'active',
-            i === realIndex
-          );
-        }
-      );
-
-    /*
-     * room nav
-     */
-
-    document
-      .querySelectorAll(
-        '#roomNav-' +
-        floor +
-        ' .room-nav-button'
-      )
-      .forEach(
-        (button,i)=>{
-          button.classList.toggle(
-            'active',
-            i === realIndex
-          );
-        }
-      );
-
-    /*
-     * current title
-     */
-
-    const current =
-      document.getElementById(
-        'roomCurrent-'+floor
-      );
-
-    if(current){
-      current.textContent =
-        room.name;
-    }
-
-    /*
-     * counter
-     */
-
-    const counter =
-      document.getElementById(
-        'roomCounter-'+floor
-      );
-
-    if(counter){
-
-      counter.textContent =
-        String(realIndex + 1)
-          .padStart(2,'0') +
-        ' / ' +
-        String(rooms.length)
-          .padStart(2,'0');
-
-    }
-
-    /*
-     * plan hotspot
-     */
-
-    highlightPlanHotspot(
-      floor,
-      realIndex
-    );
-
-    /*
-     * photo cycle
-     */
-
-    clearInterval(
-      cycleTimers[floor]
-    );
-
-    const slider =
-      document.getElementById(
-        'roomSlider-'+floor
-      );
-
-    const slide =
-      slider.children[
-        domIndex[floor]
-      ];
-
-    if(
-      slide &&
-      !room.isBlueprint
-    ){
-
-      const layer =
-        slide.querySelector(
-          '.photo-layer'
-        );
-
-      if(layer){
-
-        startCycle(
-          floor,
-          layer,
-          room
-        );
-
-      }
-
-    }
-
-    /*
-     * room navigation scroll
-     */
-
-    scrollRoomNavIntoView(
-      floor,
-      realIndex
-    );
-
+    dots.forEach((dot,i)=>{
+      dot.classList.toggle('active',i === index);
+    });
   }
 
 
-  /* =========================================================
-     MOVE
-     ========================================================= */
+  function goToRoom(floor,index){
 
-  function moveTo(
-    floor,
-    targetDomIdx,
-    animate=true
-  ){
+    const rooms = roomData[floor];
+    if(!rooms || !rooms.length) return;
 
-    const slider =
-      document.getElementById(
-        'roomSlider-'+floor
-      );
+    const normalized =
+      ((index % rooms.length) + rooms.length) % rooms.length;
 
-    domIndex[floor] =
-      targetDomIdx;
+    roomState[floor].current = normalized;
+    updateRoomSlider(floor,true);
 
-    if(!animate){
-      slider.style.transition =
-        'none';
-    }
+    const tour = document.getElementById(`roomTour-${floor}`);
+    if(tour) tour.classList.add('active');
 
-    slider.style.transform =
-      `translateX(${-targetDomIdx * 100}%)`;
-
-    if(!animate){
-
-      void slider.offsetWidth;
-
-      slider.style.transition =
-        '';
-
-    }
-
-    let realIndex =
-      targetDomIdx - 1;
-
-    const rooms =
-      roomData[floor];
-
-    if(realIndex < 0)
-      realIndex =
-        rooms.length - 1;
-
-    if(realIndex >= rooms.length)
-      realIndex = 0;
-
-    updateRoomUI(
-      floor,
-      realIndex
-    );
-
+    highlightPlanHotspot(floor,normalized);
   }
 
 
-  function goToRoomSlide(
-    floor,
-    realIndex
-  ){
+  function openRoom(floor,index){
 
-    const rooms =
-      roomData[floor];
+    goToRoom(floor,index);
 
-    realIndex =
-      (
-        realIndex %
-        rooms.length +
-        rooms.length
-      ) %
-      rooms.length;
+    const tour = document.getElementById(`roomTour-${floor}`);
+    if(!tour) return;
 
-    moveTo(
-      floor,
-      realIndex + 1,
-      true
-    );
-
+    setTimeout(()=>{
+      tour.scrollIntoView({
+        behavior:'smooth',
+        block:'start'
+      });
+    },80);
   }
 
 
   function nextRoom(floor){
+    goToRoom(floor,roomState[floor].current + 1);
+  }
 
-    const rooms =
-      roomData[floor];
 
-    const current =
-      domIndex[floor] - 1;
-
-    const next =
-      (current + 1) %
-      rooms.length;
-
-    goToRoomSlide(
-      floor,
-      next
-    );
-
+  function previousRoom(floor){
+    goToRoom(floor,roomState[floor].current - 1);
   }
 
 
   function returnToPlan(floor){
 
-    goToRoomSlide(
-      floor,
-      0
-    );
+    const tour = document.getElementById(`roomTour-${floor}`);
+    if(tour) tour.classList.remove('active');
 
-    const map =
-      document.querySelector(
-        '#panel-'+floor+
-        ' .plan-map-section'
-      );
+    document.querySelectorAll(`#planHotspots-${floor} .plan-hotspot`)
+      .forEach(button=>button.classList.remove('is-selected'));
+
+    const map = document.querySelector(`#panel-${floor} .plan-map-section`);
 
     if(map){
-
-      setTimeout(
-        ()=>{
-          map.scrollIntoView({
-            behavior:'smooth',
-            block:'start'
-          });
-        },
-        120
-      );
-
+      setTimeout(()=>{
+        map.scrollIntoView({
+          behavior:'smooth',
+          block:'start'
+        });
+      },60);
     }
-
   }
 
 
-  /* =========================================================
-     NORMALIZE LOOP
-     ========================================================= */
+  function buildPlanHotspots(floor){
 
-  function normalizeLoopPosition(
-    floor
-  ){
-
-    const rooms =
-      roomData[floor];
-
-    const idx =
-      domIndex[floor];
-
-    if(idx === 0){
-
-      moveTo(
-        floor,
-        rooms.length,
-        false
-      );
-
-    }else if(
-      idx === rooms.length + 1
-    ){
-
-      moveTo(
-        floor,
-        1,
-        false
-      );
-
-    }
-
-  }
-
-
-  function attachLoopHandling(
-    floor
-  ){
-
-    const slider =
-      document.getElementById(
-        'roomSlider-'+floor
-      );
-
-    slider.addEventListener(
-      'transitionend',
-      e=>{
-
-        if(
-          e.propertyName !==
-          'transform'
-        ) return;
-
-        normalizeLoopPosition(
-          floor
-        );
-
-      }
-    );
-
-  }
-
-
-  /* =========================================================
-     ROOM NAV SCROLL
-     ========================================================= */
-
-  function scrollRoomNavIntoView(
-    floor,
-    realIndex
-  ){
-
-    const nav =
-      document.getElementById(
-        'roomNav-'+floor
-      );
-
-    if(!nav) return;
-
-    const button =
-      nav.children[realIndex];
-
-    if(!button) return;
-
-    button.scrollIntoView({
-      behavior:'smooth',
-      block:'nearest',
-      inline:'center'
-    });
-
-  }
-
-
-  /* =========================================================
-     PLAN HOTSPOTS
-     ========================================================= */
-
-  function buildPlanHotspots(
-    floor
-  ){
-
-    const overlay =
-      document.getElementById(
-        'planHotspots-'+floor
-      );
-
+    const overlay = document.getElementById(`planHotspots-${floor}`);
     if(!overlay) return;
 
     overlay.innerHTML = '';
 
-    const spots =
-      floorHotspots[floor];
+    (floorHotspots[floor] || []).forEach(spot=>{
 
-    spots.forEach(
-      spot=>{
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'plan-hotspot';
+      button.style.left = spot.x;
+      button.style.top = spot.y;
+      button.dataset.room = spot.room;
+      button.setAttribute('aria-label',`${spot.name}を見る`);
 
-        const button =
-          document.createElement('button');
+      button.innerHTML = `
+        <span class="plan-hotspot-inner">
+          <span class="plan-hotspot-dot"></span>
+          <span class="plan-hotspot-name">${escapeHtml(spot.name)}</span>
+        </span>
+      `;
 
-        button.className =
-          'plan-hotspot';
+      button.addEventListener('click',()=>{
+        openRoom(floor,Number(spot.room));
+      });
 
-        button.type =
-          'button';
-
-        button.style.left =
-          spot.x;
-
-        button.style.top =
-          spot.y;
-
-        button.dataset.room =
-          spot.room;
-
-        button.setAttribute(
-          'aria-label',
-          spot.name + 'を見る'
-        );
-
-        button.innerHTML = `
-
-          <span class="plan-hotspot-inner">
-
-            <span class="plan-hotspot-dot"></span>
-
-            <span class="plan-hotspot-name">
-              ${spot.name}
-            </span>
-
-          </span>
-
-        `;
-
-        button.addEventListener(
-          'click',
-          ()=>{
-
-            const realIndex =
-              Number(spot.room);
-
-            /*
-             * plan hotspot は
-             * roomData上のindexと一致
-             */
-
-            goToRoomSlide(
-              floor,
-              realIndex
-            );
-
-            const tour =
-              document.querySelector(
-                '#panel-'+floor+
-                ' .room-tour'
-              );
-
-            if(tour){
-
-              setTimeout(
-                ()=>{
-                  tour.scrollIntoView({
-                    behavior:'smooth',
-                    block:'start'
-                  });
-                },
-                80
-              );
-
-            }
-
-          }
-        );
-
-        overlay.appendChild(
-          button
-        );
-
-      }
-    );
-
+      overlay.appendChild(button);
+    });
   }
 
 
-  function highlightPlanHotspot(
-    floor,
-    realIndex
-  ){
+  function highlightPlanHotspot(floor,index){
 
-    document
-      .querySelectorAll(
-        '#planHotspots-'+floor+
-        ' .plan-hotspot'
-      )
-      .forEach(
-        button=>{
+    document.querySelectorAll(`#planHotspots-${floor} .plan-hotspot`)
+      .forEach(button=>{
+        button.classList.toggle(
+          'is-selected',
+          Number(button.dataset.room) === index
+        );
+      });
+  }
 
-          const room =
-            Number(
-              button.dataset.room
-            );
 
-          button.classList.toggle(
-            'is-selected',
-            room === realIndex
-          );
+  function attachSwipe(floor){
 
-        }
-      );
+    const slider = document.getElementById(`roomSlider-${floor}`);
+    const wrap = slider?.closest('.room-slider-wrap');
+    if(!slider || !wrap) return;
 
-    const hint =
-      document.getElementById(
-        'planHint-'+floor
-      );
+    let startX = null;
+    let startY = null;
+    let tracking = false;
 
-    if(
-      hint &&
-      realIndex !== 0
-    ){
+    slider.addEventListener('touchstart',event=>{
 
-      hint.classList.add(
-        'is-hidden'
-      );
+      if(event.target.closest('button')) return;
 
-    }else if(hint){
+      const touch = event.touches[0];
+      startX = touch.clientX;
+      startY = touch.clientY;
+      tracking = true;
 
-      hint.classList.remove(
-        'is-hidden'
-      );
+    },{passive:true});
 
-    }
+    slider.addEventListener('touchend',event=>{
 
+      if(!tracking) return;
+      tracking = false;
+
+      const touch = event.changedTouches[0];
+      const dx = touch.clientX - startX;
+      const dy = touch.clientY - startY;
+
+      startX = null;
+      startY = null;
+
+      if(Math.abs(dx) < 45 || Math.abs(dx) <= Math.abs(dy)) return;
+
+      if(dx < 0){
+        nextRoom(floor);
+      }else{
+        previousRoom(floor);
+      }
+
+    },{passive:true});
+
+    let mouseDown = false;
+    let mouseStartX = 0;
+    let mouseStartY = 0;
+
+    slider.addEventListener('mousedown',event=>{
+
+      if(event.target.closest('button')) return;
+
+      mouseDown = true;
+      mouseStartX = event.clientX;
+      mouseStartY = event.clientY;
+      slider.style.cursor = 'grabbing';
+    });
+
+    window.addEventListener('mouseup',event=>{
+
+      if(!mouseDown) return;
+      mouseDown = false;
+      slider.style.cursor = '';
+
+      const dx = event.clientX - mouseStartX;
+      const dy = event.clientY - mouseStartY;
+
+      if(Math.abs(dx) < 45 || Math.abs(dx) <= Math.abs(dy)) return;
+
+      if(dx < 0){
+        nextRoom(floor);
+      }else{
+        previousRoom(floor);
+      }
+    });
   }
 
 
   /* =========================================================
-     SWIPE
+     360° BUTTON
      ========================================================= */
 
-  function attachSwipe(
-    floor
-  ){
+  function open360Room(data){
 
-    const wrap =
-      document
-        .getElementById(
-          'roomSlider-'+floor
-        )
-        .closest(
-          '.room-slider-wrap'
-        );
-
-    const slider =
-      document.getElementById(
-        'roomSlider-'+floor
-      );
-
-    let startX = null;
-    let startY = null;
-    let baseIndex = 0;
-    let wrapWidth = 1;
-    let mode = 'idle';
-
-    function onStart(
-      clientX,
-      clientY
-    ){
-
-      normalizeLoopPosition(
-        floor
-      );
-
-      startX = clientX;
-      startY = clientY;
-
-      baseIndex =
-        domIndex[floor];
-
-      wrapWidth =
-        wrap.clientWidth || 1;
-
-      mode = 'idle';
-
-    }
-
-    function onMove(
-      clientX,
-      clientY
-    ){
-
-      if(startX === null)
-        return null;
-
-      const dx =
-        clientX - startX;
-
-      const dy =
-        clientY - startY;
-
-      if(mode === 'idle'){
-
-        if(
-          Math.abs(dx) < 6 &&
-          Math.abs(dy) < 6
-        ){
-          return 'wait';
-        }
-
-        if(
-          Math.abs(dx) >
-          Math.abs(dy)
-        ){
-
-          mode =
-            'horizontal';
-
-          slider.style.transition =
-            'none';
-
-        }else{
-
-          mode =
-            'vertical';
-
-          startX = null;
-
-          return 'vertical';
-
-        }
-
-      }
-
-      if(mode !== 'horizontal')
-        return null;
-
-      const diffPercent =
-        (dx / wrapWidth) * 100;
-
-      slider.style.transform =
-        `translateX(${
-          -baseIndex * 100 +
-          diffPercent
-        }%)`;
-
-      return 'horizontal';
-
-    }
-
-    function onEnd(clientX){
-
-      if(
-        mode !== 'horizontal' ||
-        startX === null
-      ){
-
-        startX = null;
-        mode = 'idle';
-
-        return;
-
-      }
-
-      const diffPx =
-        clientX - startX;
-
-      slider.style.transition =
-        '';
-
-      if(Math.abs(diffPx) > 60){
-
-        moveTo(
-          floor,
-          baseIndex +
-          (diffPx < 0 ? 1 : -1),
-          true
-        );
-
-      }else{
-
-        moveTo(
-          floor,
-          baseIndex,
-          true
-        );
-
-      }
-
-      startX = null;
-      mode = 'idle';
-
-    }
-
+    sessionStorage.setItem('selected360Floor',data.floor || '');
+    sessionStorage.setItem('selected360Room',data.roomId || '');
+    sessionStorage.setItem('selected360Panorama',data.panorama || '');
 
     /*
-     * touch
-     */
+      05の360° GALLERYを実装した際には、ここから
+      open360Gallery(data) を呼び出せます。
+    */
 
-    slider.addEventListener(
-      'touchstart',
-      e=>{
+    if(typeof window.open360Gallery === 'function'){
+      window.open360Gallery(data);
+      return;
+    }
 
-        const t =
-          e.touches[0];
+    if(data.panorama){
+      window.dispatchEvent(
+        new CustomEvent('open360Room',{detail:data})
+      );
+      return;
+    }
 
-        onStart(
-          t.clientX,
-          t.clientY
-        );
-
-      },
-      {passive:true}
-    );
-
-    slider.addEventListener(
-      'touchmove',
-      e=>{
-
-        const t =
-          e.touches[0];
-
-        const result =
-          onMove(
-            t.clientX,
-            t.clientY
-          );
-
-        if(
-          result ===
-          'horizontal' &&
-          e.cancelable
-        ){
-
-          e.preventDefault();
-
-        }
-
-      },
-      {passive:false}
-    );
-
-    slider.addEventListener(
-      'touchend',
-      e=>{
-
-        const t =
-          e.changedTouches[0];
-
-        onEnd(t.clientX);
-
-      }
-    );
-
-    slider.addEventListener(
-      'touchcancel',
-      ()=>{
-
-        if(
-          mode ===
-          'horizontal'
-        ){
-
-          slider.style.transition =
-            '';
-
-          moveTo(
-            floor,
-            baseIndex,
-            true
-          );
-
-        }
-
-        startX = null;
-        mode = 'idle';
-
-      }
-    );
-
-
-    /*
-     * mouse
-     */
-
-    let mouseDown = false;
-
-    slider.addEventListener(
-      'mousedown',
-      e=>{
-
-        /*
-         * ＋ボタンなどをクリックした際に
-         * ドラッグ開始扱いにしない
-         */
-
-        if(
-          e.target.closest(
-            'button'
-          )
-        ){
-          return;
-        }
-
-        mouseDown = true;
-
-        onStart(
-          e.clientX,
-          e.clientY
-        );
-
-      }
-    );
-
-    window.addEventListener(
-      'mousemove',
-      e=>{
-
-        if(!mouseDown)
-          return;
-
-        onMove(
-          e.clientX,
-          e.clientY
-        );
-
-      }
-    );
-
-    window.addEventListener(
-      'mouseup',
-      e=>{
-
-        if(!mouseDown)
-          return;
-
-        mouseDown = false;
-
-        onEnd(
-          e.clientX
-        );
-
-      }
-    );
-
+    openSpotSheet({
+      title:'360° GALLERY',
+      note:'この空間の360°画像は、現在準備中です。360°撮影した画像を追加すると、ここから直接見ることができます。',
+      photos:[]
+    });
   }
 
 
@@ -5264,96 +3703,35 @@
      FLOOR TABS
      ========================================================= */
 
-  const tabs =
-    document.querySelectorAll(
-      '.plan-tab'
-    );
+  document.querySelectorAll('.plan-tab').forEach(tab=>{
 
-  tabs.forEach(
-    tab=>{
+    tab.addEventListener('click',()=>{
 
-      tab.addEventListener(
-        'click',
-        ()=>{
+      const floor = tab.dataset.floor;
 
-          tabs.forEach(
-            t=>{
-              t.classList.remove(
-                'active'
-              );
-            }
-          );
+      document.querySelectorAll('.plan-tab').forEach(item=>{
+        item.classList.toggle('active',item === tab);
+      });
 
-          tab.classList.add(
-            'active'
-          );
+      document.querySelectorAll('.plan-panel').forEach(panel=>{
+        panel.classList.toggle('active',panel.id === `panel-${floor}`);
+      });
 
-          document
-            .querySelectorAll(
-              '.plan-panel'
-            )
-            .forEach(
-              p=>{
-                p.classList.remove(
-                  'active'
-                );
-              }
-            );
+      document.querySelectorAll('.room-tour').forEach(tour=>{
+        tour.classList.remove('active');
+      });
 
-          const floor =
-            tab.dataset.floor;
+      roomState[floor].current = 0;
+      updateRoomSlider(floor,false);
 
-          const panel =
-            document.getElementById(
-              'panel-'+floor
-            );
+      document.querySelectorAll('.plan-hotspot').forEach(button=>{
+        button.classList.remove('is-selected');
+      });
 
-          panel.classList.add(
-            'active'
-          );
-
-          /*
-           * フロア切り替え時は
-           * 必ず間取り図から開始
-           */
-
-          goToRoomSlide(
-            floor,
-            0
-          );
-
-          /*
-           * ふわっと表示
-           */
-
-          const animTargets =
-            panel.querySelectorAll(
-              '.plan-map-section,.room-tour'
-            );
-
-          animTargets.forEach(
-            el=>{
-
-              el.classList.remove(
-                'panel-fade-anim'
-              );
-
-              void el.offsetWidth;
-
-              el.classList.add(
-                'panel-fade-anim'
-              );
-
-            }
-          );
-
-          // フロア切り替え時にボタンのフォーカス移動で画面がずれないようにする
-          tab.blur();
-
-        }
-      );
-
+      /* 画面移動は行わない */
+      tab.blur();
     });
+  });
 
 
   /* =========================================================
@@ -5363,14 +3741,8 @@
   buildPlanHotspots(1);
   buildPlanHotspots(2);
 
-  buildRoomNav(1);
-  buildRoomNav(2);
-
   buildRoomSlider(1);
   buildRoomSlider(2);
-
-  attachLoopHandling(1);
-  attachLoopHandling(2);
 
   attachSwipe(1);
   attachSwipe(2);
@@ -5380,103 +3752,49 @@
      SPOT SHEET
      ========================================================= */
 
-  const spotSheet =
-    document.getElementById(
-      'spotSheet'
-    );
+  const spotSheet = document.getElementById('spotSheet');
+  const spotSheetPhoto = document.getElementById('spotSheetPhoto');
+  const spotSheetTitle = document.getElementById('spotSheetTitle');
+  const spotSheetNote = document.getElementById('spotSheetNote');
 
-  const spotSheetPhoto =
-    document.getElementById(
-      'spotSheetPhoto'
-    );
+  function openSpotSheet(spot){
 
-  const spotSheetTitle =
-    document.getElementById(
-      'spotSheetTitle'
-    );
+    if(!spotSheet) return;
 
-  const spotSheetNote =
-    document.getElementById(
-      'spotSheetNote'
-    );
+    spotSheetTitle.textContent = spot.title || '';
+    spotSheetNote.textContent = spot.note || '';
 
-
-  function openSpotSheet(
-    spot
-  ){
-
-    spotSheetTitle.textContent =
-      spot.title;
-
-    spotSheetNote.textContent =
-      spot.note;
-
-    if(
-      spot.photos &&
-      spot.photos.length
-    ){
-
-      spotSheetPhoto.innerHTML =
-        `
+    if(spot.photos && spot.photos.length){
+      spotSheetPhoto.innerHTML = `
         <img
           class="fade-in"
-          src="${spot.photos[0]}"
-          alt="${spot.title}"
+          src="${escapeHtml(spot.photos[0])}"
+          alt="${escapeHtml(spot.title || '')}"
         >
-        `;
-
+      `;
     }else{
-
-      spotSheetPhoto.innerHTML =
-        `
+      spotSheetPhoto.innerHTML = `
         <div class="gallery-placeholder fade-in">
           ${placeholderSvg}
           <span>写真準備中</span>
         </div>
-        `;
-
+      `;
     }
 
-    spotSheet.classList.add(
-      'open'
-    );
-
-    document.body.style.overflow =
-      'hidden';
-
+    spotSheet.classList.add('open');
+    document.body.style.overflow = 'hidden';
   }
-
 
   function closeSpotSheet(){
 
-    spotSheet.classList.remove(
-      'open'
-    );
+    if(!spotSheet) return;
 
-    document.body.style.overflow =
-      '';
-
+    spotSheet.classList.remove('open');
+    document.body.style.overflow = '';
   }
 
-
-  document
-    .getElementById(
-      'spotSheetClose'
-    )
-    .addEventListener(
-      'click',
-      closeSpotSheet
-    );
-
-  document
-    .getElementById(
-      'spotSheetBackdrop'
-    )
-    .addEventListener(
-      'click',
-      closeSpotSheet
-    );
-
+  document.getElementById('spotSheetClose')?.addEventListener('click',closeSpotSheet);
+  document.getElementById('spotSheetBackdrop')?.addEventListener('click',closeSpotSheet);
 
   /* =========================================================
      ACCESS DATA
