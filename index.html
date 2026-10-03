@@ -805,6 +805,13 @@
 
   .room-tour{
     position:relative;
+    /*
+     * 間取りのホットスポットからルームツアーへ移動した際、
+     * 左上固定メニューボタンと部屋名が重ならないようにする。
+     * 固定ボタンの高さ(46px) + 上位置(1.2rem) + 余白(1rem)を基準にし、
+     * 端末ごとの画面サイズやブラウザ差に左右されにくい位置へ揃える。
+     */
+    scroll-margin-top:calc(46px + 1.2rem + 1rem + env(safe-area-inset-top, 0px));
   }
 
   .room-tour-header{
@@ -2680,27 +2687,6 @@
 
       </div>
 
-      <div class="plan-map-note">
-
-        <div class="plan-map-note-label">
-          Walk through the house
-        </div>
-
-        <h3>1階をめぐる。</h3>
-
-        <p>
-          玄関からホールを抜けて、
-          家の中心となるLDKへ。
-          水まわりや庭まで、暮らしの動線を追いながら見ていきます。
-        </p>
-
-        <div class="mini-guide">
-          <span>＋</span>
-          気になる部屋を選ぶと、下のルームツアーへ移動します。
-        </div>
-
-      </div>
-
     </div>
 
     <div class="room-tour">
@@ -2716,7 +2702,7 @@
             class="room-tour-current"
             id="roomCurrent-1"
           >
-            間取り図
+            玄関
           </div>
         </div>
 
@@ -2800,27 +2786,6 @@
 
       </div>
 
-      <div class="plan-map-note">
-
-        <div class="plan-map-note-label">
-          Walk through the house
-        </div>
-
-        <h3>2階をめぐる。</h3>
-
-        <p>
-          吹き抜けを中心に、
-          主寝室と2つの洋室を配置。
-          ホールからそれぞれの部屋へ歩いていくように見ていきます。
-        </p>
-
-        <div class="mini-guide">
-          <span>＋</span>
-          気になる部屋を選ぶと、下のルームツアーへ移動します。
-        </div>
-
-      </div>
-
     </div>
 
     <div class="room-tour">
@@ -2836,7 +2801,7 @@
             class="room-tour-current"
             id="roomCurrent-2"
           >
-            間取り図
+            ホール
           </div>
         </div>
 
@@ -3580,15 +3545,6 @@
     1:[
 
       {
-        name:'間取り図',
-        icon:'plan',
-        isBlueprint:true,
-        note:
-          '玄関からLDK、水まわりまで、生活動線を短くまとめた1階のフロア。',
-        photos:[]
-      },
-
-      {
         name:'玄関',
         icon:'door',
         note:
@@ -3740,15 +3696,6 @@
     ],
 
     2:[
-
-      {
-        name:'間取り図',
-        icon:'plan',
-        isBlueprint:true,
-        note:
-          '吹き抜けを中心に、主寝室と2つの洋室を配置した2階のフロア。',
-        photos:[]
-      },
 
       {
         name:'ホール',
@@ -5399,6 +5346,9 @@
 
             }
           );
+
+          // フロア切り替え時にボタンのフォーカス移動で画面がずれないようにする
+          tab.blur();
 
         }
       );
